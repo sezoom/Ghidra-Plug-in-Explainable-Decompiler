@@ -1,0 +1,30 @@
+// ===============================================
+// Ghidra Explainable-Decompiler - build.gradle (FINAL FIXED VERSION)
+// ===============================================
+
+def ghidraInstallDir = System.getenv("GHIDRA_INSTALL_DIR")
+if (ghidraInstallDir == null) {
+    ghidraInstallDir = project.findProperty("GHIDRA_INSTALL_DIR")
+}
+if (ghidraInstallDir == null) {
+    throw new GradleException("""
+        GHIDRA_INSTALL_DIR is not set!
+        Please run:
+        export GHIDRA_INSTALL_DIR="/Applications/Ghidra.app/Contents/Resources/ghidra"
+        (or use -PGHIDRA_INSTALL_DIR=... when running gradle)
+    """)
+}
+
+repositories {
+    mavenCentral()
+}
+
+apply from: new File(ghidraInstallDir).getCanonicalPath() + "/support/buildExtension.gradle"
+
+group = 'ai.renamer'
+version = '1.0'
+
+dependencies {
+    // Only dependency we need for JSON communication with the Python backend
+    implementation 'com.google.code.gson:gson:2.10.1'
+}
