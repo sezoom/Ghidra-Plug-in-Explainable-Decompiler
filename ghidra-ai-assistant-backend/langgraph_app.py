@@ -28,7 +28,11 @@ def analyze_node(state: State) -> dict:
     if state.task == "rename":
         prompt = f"""You are an expert reverse engineer.
 Rename the function and every variable in this Ghidra decompiled C code to meaningful, readable names.
-Return ONLY the JSON that matches the schema.
+
+Return JSON matching this structure exactly:
+- new_function_name: string
+- variable_renames: array of objects with keys old_name and new_name
+- explanation: string
 
 Current function name: {state.function_name}
 
@@ -45,11 +49,11 @@ Analyze the following Ghidra decompiled C code for memory safety risks:
 - unsafe pointer usage / arithmetic
 - null pointer dereferences
 - use-after-free
-- unsafe string functions (strcpy, strcat, gets, sprintf, etc.)
+- unsafe string functions
 - integer overflows in allocations
 - any other classic memory safety issues
 
-Return ONLY valid JSON matching this schema. If no issues, return empty issues list.
+Return JSON matching the schema exactly. If no issues, return an empty issues list.
 
 Decompiled code:
 {state.decompiled_code}

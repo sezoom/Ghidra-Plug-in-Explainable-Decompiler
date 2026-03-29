@@ -1,20 +1,24 @@
 from pydantic import BaseModel
-from typing import Dict, List
+from typing import List
 
 class RenameRequest(BaseModel):
     decompiled_code: str
     function_name: str
 
+class VariableRename(BaseModel):
+    old_name: str
+    new_name: str
+
 class RenameSuggestion(BaseModel):
     new_function_name: str
-    variable_renames: Dict[str, str]
+    variable_renames: List[VariableRename]
     explanation: str
 
 class MemorySafetyIssue(BaseModel):
     issue_type: str
     description: str
     location: str
-    severity: str          # high / medium / low
+    severity: str
     suggestion: str
 
 class MemorySafetyAnalysis(BaseModel):

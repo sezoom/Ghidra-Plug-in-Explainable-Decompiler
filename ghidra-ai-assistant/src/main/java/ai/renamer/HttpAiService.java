@@ -6,6 +6,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
+import ghidra.util.Msg;
+import java.nio.charset.StandardCharsets;
 
 public class HttpAiService implements AiService {
     private final String baseUrl;
@@ -28,17 +30,26 @@ public class HttpAiService implements AiService {
     private <T> T callBackend(String endpoint, String decompiledCode, String currentFunctionName, Class<T> clazz) {
         try {
             String jsonBody = gson.toJson(new RenameRequest(decompiledCode, currentFunctionName));
+// // Start debuging
+//
+//
+// Msg.showInfo(this, null, "Debug", "currentFunctionName: " + currentFunctionName);
+// Msg.showInfo(this, null, "Debug", "decompiled_code: " + decompiledCode);
+// Msg.showInfo(this, null, "Debug", "Endpoint: " + baseUrl + endpoint);
+// Msg.showInfo(this, null, "Debug", "JSON body: [" + jsonBody + "]");
+// Msg.showInfo(this, null, "Debug", "JSON length: " + jsonBody.length());
+//
+// // End Debuging
+HttpClient client = HttpClient.newBuilder()
+    .version(HttpClient.Version.HTTP_1_1)
+    .connectTimeout(Duration.ofSeconds(30))
+    .build();
 
-            HttpClient client = HttpClient.newBuilder()
-                    .connectTimeout(Duration.ofSeconds(30))
-                    .build();
-
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(baseUrl + endpoint))
-                    .header("Content-Type", "application/json")
-                    .timeout(Duration.ofSeconds(90))
-                    .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
-                    .build();
+HttpRequest request = HttpRequest.newBuilder()
+    .uri(URI.create(baseUrl + endpoint))
+    .header("Content-Type", "application/json")
+    .POST(HttpRequest.BodyPublishers.ofString(jsonBody, StandardCharsets.UTF_8))
+    .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
