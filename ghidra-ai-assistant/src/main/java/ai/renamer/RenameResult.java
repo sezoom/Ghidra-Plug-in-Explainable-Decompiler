@@ -1,13 +1,19 @@
 package ai.renamer;
 
-import java.util.Map;
+import com.google.gson.annotations.SerializedName;
+import java.util.List;
 
 public class RenameResult {
-    private String newFunctionName;
-    private Map<String, String> variableRenames;
-    private String explanation;
+    @SerializedName("function_rename")
+    private RenameItem functionRename;
 
-    public String getNewFunctionName() { return newFunctionName; }
-    public Map<String, String> getVariableRenames() { return variableRenames; }
-    public String getExplanation() { return explanation; }
+    @SerializedName("variable_renames")
+    private List<RenameItem> variableRenames;
+
+    @SerializedName("summary")
+    private String summary;
+
+    public RenameItem getFunctionRename() { return functionRename; }
+    public List<RenameItem> getVariableRenames() { return variableRenames; }
+    public String getSummary() { return summary; }
 }

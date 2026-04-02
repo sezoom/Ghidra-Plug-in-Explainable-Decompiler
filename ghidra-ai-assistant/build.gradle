@@ -6,12 +6,38 @@ def ghidraInstallDir = System.getenv("GHIDRA_INSTALL_DIR")
 if (ghidraInstallDir == null) {
     ghidraInstallDir = project.findProperty("GHIDRA_INSTALL_DIR")
 }
-if (ghidraInstallDir == null) {
+
+def localGhidraSourceDir = file("${rootDir}/../ghidra").canonicalFile
+def extensionSupportScript = null
+
+if (ghidraInstallDir != null) {
+    def configuredDir = file(ghidraInstallDir).canonicalFile
+    def installedScript = new File(configuredDir, "support/buildExtension.gradle")
+    def sourceTreeScript = new File(configuredDir, "Ghidra/RuntimeScripts/Common/support/buildExtension.gradle")
+
+    if (installedScript.exists()) {
+        extensionSupportScript = installedScript
+    }
+    else if (sourceTreeScript.exists()) {
+        extensionSupportScript = sourceTreeScript
+        ghidraInstallDir = configuredDir.absolutePath
+    }
+}
+
+if (extensionSupportScript == null) {
+    def localSourceTreeScript = new File(localGhidraSourceDir, "Ghidra/RuntimeScripts/Common/support/buildExtension.gradle")
+    if (localSourceTreeScript.exists()) {
+        extensionSupportScript = localSourceTreeScript
+        ghidraInstallDir = localGhidraSourceDir.absolutePath
+    }
+}
+
+if (extensionSupportScript == null) {
     throw new GradleException("""
-        GHIDRA_INSTALL_DIR is not set!
-        Please run:
-        export GHIDRA_INSTALL_DIR="/Applications/Ghidra.app/Contents/Resources/ghidra"
-        (or use -PGHIDRA_INSTALL_DIR=... when running gradle)
+        Could not locate Ghidra's buildExtension.gradle.
+        Set GHIDRA_INSTALL_DIR to either:
+          - a Ghidra installation directory containing support/buildExtension.gradle, or
+          - a Ghidra source checkout containing Ghidra/RuntimeScripts/Common/support/buildExtension.gradle.
     """)
 }
 
@@ -19,7 +45,7 @@ repositories {
     mavenCentral()
 }
 
-apply from: new File(ghidraInstallDir).getCanonicalPath() + "/support/buildExtension.gradle"
+apply from: extensionSupportScript
 
 group = 'ai.renamer'
 version = '1.0'

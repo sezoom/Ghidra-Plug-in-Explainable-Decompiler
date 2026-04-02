@@ -13,24 +13,33 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.post("/rename", response_model=RenameSuggestion)
 async def rename(req: RenameRequest):
-    result = langgraph_app.invoke({
-        "decompiled_code": req.decompiled_code,
-        "function_name": req.function_name,
-        "task": "rename"
-    })
+    result = langgraph_app.invoke(
+        {
+            "decompiled_code": req.decompiled_code,
+            "function_name": req.function_name,
+            "variables": [variable.model_dump() for variable in req.variables],
+            "task": "rename",
+        }
+    )
     return result["result"]
+
 
 @app.post("/memory_safety", response_model=MemorySafetyAnalysis)
 async def memory_safety(req: RenameRequest):
-    result = langgraph_app.invoke({
-        "decompiled_code": req.decompiled_code,
-        "function_name": req.function_name,
-        "task": "memory_safety"
-    })
+    result = langgraph_app.invoke(
+        {
+            "decompiled_code": req.decompiled_code,
+            "function_name": req.function_name,
+            "task": "memory_safety",
+        }
+    )
     return result["result"]
+
 
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="127.0.0.1", port=8000)

@@ -1,0 +1,10 @@
+.direnv/
+result
+ghidra/
+ghidra-ai-assistant/.gradle/
+ghidra-ai-assistant/.project
+ghidra-ai-assistant/.settings/
+ghidra-ai-assistant/build/
+ghidra-ai-assistant/dist/
+*.env
+*/__pycache__/
