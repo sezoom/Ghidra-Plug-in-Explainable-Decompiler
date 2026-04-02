@@ -6,8 +6,9 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
-import ghidra.util.Msg;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.List;
 
 public class HttpAiService implements AiService {
     private final String baseUrl;
@@ -18,18 +19,21 @@ public class HttpAiService implements AiService {
     }
 
     @Override
-    public RenameResult performRename(String decompiledCode, String currentFunctionName) {
-        return callBackend("/rename", decompiledCode, currentFunctionName, RenameResult.class);
+    public RenameResult performRename(String decompiledCode, String currentFunctionName,
+            List<VariableCandidate> variables) {
+        return callBackend("/rename", decompiledCode, currentFunctionName, variables, RenameResult.class);
     }
 
     @Override
     public MemorySafetyResult performMemorySafetyAnalysis(String decompiledCode, String currentFunctionName) {
-        return callBackend("/memory_safety", decompiledCode, currentFunctionName, MemorySafetyResult.class);
+        return callBackend("/memory_safety", decompiledCode, currentFunctionName,
+            Collections.emptyList(), MemorySafetyResult.class);
     }
 
-    private <T> T callBackend(String endpoint, String decompiledCode, String currentFunctionName, Class<T> clazz) {
+    private <T> T callBackend(String endpoint, String decompiledCode, String currentFunctionName,
+            List<VariableCandidate> variables, Class<T> clazz) {
         try {
-            String jsonBody = gson.toJson(new RenameRequest(decompiledCode, currentFunctionName));
+            String jsonBody = gson.toJson(new RenameRequest(decompiledCode, currentFunctionName, variables));
 // // Start debuging
 //
 //
@@ -66,9 +70,12 @@ HttpRequest request = HttpRequest.newBuilder()
     private static class RenameRequest {
         String decompiled_code;
         String function_name;
-        RenameRequest(String decompiled_code, String function_name) {
+        List<VariableCandidate> variables;
+
+        RenameRequest(String decompiled_code, String function_name, List<VariableCandidate> variables) {
             this.decompiled_code = decompiled_code;
             this.function_name = function_name;
+            this.variables = variables;
         }
     }
 }
