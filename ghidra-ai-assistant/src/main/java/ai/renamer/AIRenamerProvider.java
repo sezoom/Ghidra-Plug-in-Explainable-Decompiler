@@ -493,10 +493,6 @@ public class AIRenamerProvider extends ComponentProviderAdapter {
     }
 
     private String getSourceType(HighSymbol highSymbol) {
-        Variable variable = HighFunctionDBUtil.getFunctionVariable(highSymbol);
-        if (variable != null) {
-            return String.valueOf(variable.getSource());
-        }
         Symbol symbol = highSymbol.getSymbol();
         if (symbol != null) {
             return String.valueOf(symbol.getSource());
