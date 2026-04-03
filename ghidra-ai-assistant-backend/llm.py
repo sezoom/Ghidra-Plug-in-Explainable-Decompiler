@@ -38,7 +38,13 @@ def extract_k2_think_answer(text: str) -> str:
     else:
         return body
 
-
+def simple_k2_extract(text: str) -> str:
+    if not text:
+        return ""
+    text = text.strip()
+    if "</think>" in text:
+        text = text.split("</think>")[-1].strip()
+    return text
 
 def make_llm(model: Optional[str] = None, temperature: float = 0.1) -> ChatOpenAI:
     if "gemini" in model:
