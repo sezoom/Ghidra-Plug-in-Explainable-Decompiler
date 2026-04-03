@@ -4,7 +4,6 @@ from schemas import RenameRequest, RenameSuggestion, MemorySafetyAnalysis
 from langgraph_app import langgraph_app
 
 app = FastAPI(title="Ghidra AI Explainable-Decompiler Backend")
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],

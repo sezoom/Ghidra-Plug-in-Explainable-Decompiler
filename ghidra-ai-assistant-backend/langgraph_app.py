@@ -16,7 +16,7 @@ load_dotenv()
 #     model="gpt-4o-mini", temperature=0, api_key=os.getenv("OPENAI_API_KEY")
 # )
 
-llm = make_llm("k2-think",0.1)
+llm=make_llm(os.getenv("LLM1"),0.1)
 
 rename_structured = llm.with_structured_output(RenameSuggestion)
 safety_structured = llm.with_structured_output(MemorySafetyAnalysis)
@@ -67,6 +67,11 @@ Decompiled code:
 {state.decompiled_code}
 """
         suggestion = rename_structured.invoke([HumanMessage(content=prompt)])
+        # if "k2-think" in os.getenv("LLM1"):
+        #     print(suggestion)
+        #     print("+++++++++++++")
+        #     print(suggestion.model_dump())
+        #     analysis = extract_k2_think_answer(suggestion.model_dump())
         return {"result": suggestion.model_dump()}
 
     elif state.task == "memory_safety":
@@ -87,6 +92,7 @@ Decompiled code:
 Current function: {state.function_name}
 """
         analysis = safety_structured.invoke([HumanMessage(content=prompt)])
+
         return {"result": analysis.model_dump()}
 
     raise ValueError(f"Unknown task: {state.task}")
