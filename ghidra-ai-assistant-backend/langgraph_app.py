@@ -8,12 +8,15 @@ from langgraph.graph import END, START, StateGraph
 from pydantic import BaseModel, Field
 
 from schemas import MemorySafetyAnalysis, RenameSuggestion
+from llm import make_llm, extract_k2_think_answer
 
 load_dotenv()
 
-llm = ChatOpenAI(
-    model="gpt-4o-mini", temperature=0, api_key=os.getenv("OPENAI_API_KEY")
-)
+# llm = ChatOpenAI(
+#     model="gpt-4o-mini", temperature=0, api_key=os.getenv("OPENAI_API_KEY")
+# )
+
+llm = make_llm("k2-think",0.1)
 
 rename_structured = llm.with_structured_output(RenameSuggestion)
 safety_structured = llm.with_structured_output(MemorySafetyAnalysis)
