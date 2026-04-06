@@ -1,4 +1,4 @@
-package ai.renamer;
+package ai.explainable.plugin;
 
 import ghidra.app.CorePluginPackage;
 import ghidra.app.plugin.PluginCategoryNames;
@@ -11,15 +11,15 @@ import ghidra.framework.plugintool.util.PluginStatus;
     status = PluginStatus.RELEASED,
     packageName = CorePluginPackage.NAME,
     category = PluginCategoryNames.ANALYSIS,
-    shortDescription = "AI Explainable-Decompiler for decompiler-driven rename and memory safety analysis",
-    description = "Provides a decompiler-like window that can send the current function to an AI backend for rename suggestions and memory safety analysis."
+    shortDescription = "AI Explainable-Decompiler frontend",
+    description = "Modular frontend for AI-powered decompiler analyses such as rename suggestions and memory safety analysis."
 )
-public class AIRenamerPlugin extends ProgramPlugin {
-    private final AIRenamerProvider provider;
+public class AIExplainablePlugin extends ProgramPlugin {
+    private final AnalysisProvider provider;
 
-    public AIRenamerPlugin(PluginTool tool) {
+    public AIExplainablePlugin(PluginTool tool) {
         super(tool);
-        provider = new AIRenamerProvider(this, tool);
+        provider = new AnalysisProvider(this, tool);
         tool.addComponentProvider(provider, true);
     }
 }

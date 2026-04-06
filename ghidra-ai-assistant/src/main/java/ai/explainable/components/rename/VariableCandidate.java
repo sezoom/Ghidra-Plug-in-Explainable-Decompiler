@@ -1,32 +1,24 @@
-package ai.renamer;
+package ai.explainable.components.rename;
 
 import com.google.gson.annotations.SerializedName;
 
 public class VariableCandidate {
     @SerializedName("target_id")
     private final String targetId;
-
     @SerializedName("kind")
     private final String kind;
-
     @SerializedName("current_name")
     private final String currentName;
-
     @SerializedName("data_type")
     private final String dataType;
-
     @SerializedName("storage")
     private final String storage;
-
     @SerializedName("first_use")
     private final String firstUse;
-
     @SerializedName("source_type")
     private final String sourceType;
-
     @SerializedName("is_auto_name")
     private final boolean autoName;
-
     @SerializedName("token_count")
     private final int tokenCount;
 
