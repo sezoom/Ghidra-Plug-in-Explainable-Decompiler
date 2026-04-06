@@ -1,20 +1,16 @@
-package ai.renamer;
+package ai.explainable.components.memory;
 
 import com.google.gson.annotations.SerializedName;
 
 public class MemorySafetyIssue {
     @SerializedName("issue_type")
     private String issueType;
-
     @SerializedName("description")
     private String description;
-
     @SerializedName("location")
     private String location;
-
     @SerializedName("severity")
     private String severity;
-
     @SerializedName("suggestion")
     private String suggestion;
 

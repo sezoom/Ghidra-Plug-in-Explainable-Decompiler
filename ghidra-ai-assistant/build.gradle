@@ -47,7 +47,7 @@ repositories {
 
 apply from: extensionSupportScript
 
-group = 'ai.renamer'
+group = 'ai.explainable'
 version = '1.0'
 
 dependencies {
