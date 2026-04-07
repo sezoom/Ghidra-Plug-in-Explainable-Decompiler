@@ -37,7 +37,7 @@ public class RenameComponent implements AnalysisComponent<RenameResult> {
             context.getFunction().getName(),
             buildVariableCandidates(context)
         );
-        return client.post("/rename", request, RenameResult.class);
+        return client.analyze(getId(), request, RenameResult.class);
     }
 
     @Override

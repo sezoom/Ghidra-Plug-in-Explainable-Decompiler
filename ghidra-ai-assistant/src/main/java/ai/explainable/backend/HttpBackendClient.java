@@ -37,4 +37,9 @@ public class HttpBackendClient implements BackendClient {
         }
         return gson.fromJson(response.body(), responseType);
     }
+
+    @Override
+    public <TReq, TRes> TRes analyze(String componentId, TReq requestBody, Class<TRes> responseType) throws Exception {
+        return post("/analyze/" + componentId, requestBody, responseType);
+    }
 }
