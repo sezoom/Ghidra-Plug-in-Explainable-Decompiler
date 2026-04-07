@@ -3,6 +3,8 @@ package ai.explainable.plugin;
 import ai.explainable.backend.BackendClient;
 import ai.explainable.backend.HttpBackendClient;
 import ai.explainable.components.AnalysisComponent;
+import ai.explainable.components.crypto.CryptoAnalysisComponent;
+import ai.explainable.components.deobfuscation.DeobfuscationComponent;
 import ai.explainable.components.memory.MemorySafetyComponent;
 import ai.explainable.components.rename.RenameComponent;
 import ai.explainable.decompiler.DecompileHelper;
@@ -25,10 +27,15 @@ import ghidra.util.Msg;
 import ghidra.util.task.TaskLauncher;
 import ghidra.util.task.TaskMonitor;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -44,7 +51,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.MouseEvent;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -81,8 +90,26 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
         buildUi();
     }
 
+    private JLabel createLogoLabel() {
+        URL logoUrl = getClass().getResource("/images/k2think.png");
+        if (logoUrl == null) {
+            Msg.showWarn(this, mainPanel, "Logo Missing",
+                "Could not load /images/k2think.png from resources.");
+            return new JLabel();
+        }
+
+        ImageIcon icon = new ImageIcon(logoUrl);
+        Image scaled = icon.getImage().getScaledInstance(140, 40, Image.SCALE_SMOOTH);
+
+        JLabel label = new JLabel(new ImageIcon(scaled));
+        label.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 0));
+        return label;
+    }
+
     private void registerDefaultComponents() {
         registry.register(new RenameComponent());
+        registry.register(new CryptoAnalysisComponent());
+        registry.register(new DeobfuscationComponent());
         registry.register(new MemorySafetyComponent());
     }
 
@@ -102,12 +129,14 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
         resultArea.setLineWrap(true);
         resultArea.setWrapStyleWord(true);
 
-        JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-            new JScrollPane(codeArea), new JScrollPane(resultArea));
+        JSplitPane splitPane = new JSplitPane(
+            JSplitPane.VERTICAL_SPLIT,
+            new JScrollPane(codeArea),
+            new JScrollPane(resultArea)
+        );
         splitPane.setResizeWeight(0.70);
         mainPanel.add(splitPane, BorderLayout.CENTER);
 
-        JPanel toolbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
         loadButton = new JButton("Load Current Decompilation");
         componentCombo = new JComboBox<>(buildComponentModel());
         runButton = new JButton("Run Analysis");
@@ -118,11 +147,22 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
         runButton.addActionListener(e -> new TaskLauncher(new ComponentAnalysisTask(getSelectedComponent())));
         applyButton.addActionListener(e -> applyCurrentResult());
 
-        toolbar.add(loadButton);
-        toolbar.add(componentCombo);
-        toolbar.add(runButton);
-        toolbar.add(applyButton);
-        mainPanel.add(toolbar, BorderLayout.NORTH);
+        JPanel leftToolbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        leftToolbar.add(loadButton);
+        leftToolbar.add(componentCombo);
+        leftToolbar.add(runButton);
+        leftToolbar.add(applyButton);
+
+        JLabel logoLabel = createLogoLabel();
+
+        JPanel header = new JPanel();
+        header.setLayout(new BoxLayout(header, BoxLayout.X_AXIS));
+        header.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+        header.add(leftToolbar);
+        header.add(Box.createHorizontalGlue());
+        header.add(logoLabel);
+
+        mainPanel.add(header, BorderLayout.NORTH);
 
         showCodePreview("No active decompilation loaded.", Collections.emptyList());
         showResultText("Load a function from the current cursor location to begin.");
@@ -182,21 +222,26 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
     }
 
     private Map<String, AnalysisContext.VariableTarget> buildVariableTargets(DecompileResults decompileResults) {
-        if (decompileResults == null || decompileResults.getCCodeMarkup() == null || decompileResults.getHighFunction() == null) {
+        if (decompileResults == null || decompileResults.getCCodeMarkup() == null ||
+                decompileResults.getHighFunction() == null) {
             return Collections.emptyMap();
         }
+
         Map<String, AnalysisContext.VariableTarget> targets = new LinkedHashMap<>();
         List<ClangLine> lines = DecompilerUtils.toLines(decompileResults.getCCodeMarkup());
         HighFunction highFunction = decompileResults.getHighFunction();
+
         for (ClangLine line : lines) {
             for (ClangToken token : line.getAllTokens()) {
                 if (!(token instanceof ClangVariableToken)) {
                     continue;
                 }
+
                 HighSymbol highSymbol = token.getHighSymbol(highFunction);
                 if (!isTrackableVariable(highSymbol)) {
                     continue;
                 }
+
                 String targetId = buildTargetId(highSymbol);
                 AnalysisContext.VariableTarget target = targets.get(targetId);
                 if (target == null) {
@@ -217,7 +262,18 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
         String firstUse = highSymbol.getPCAddress() == null ? "entry" : highSymbol.getPCAddress().toString();
         String sourceType = getSourceType(highSymbol);
         boolean autoName = AnalysisContext.isAutoName(currentName);
-        return new AnalysisContext.VariableTarget(targetId, kind, currentName, dataType, storage, firstUse, sourceType, autoName, highSymbol);
+
+        return new AnalysisContext.VariableTarget(
+            targetId,
+            kind,
+            currentName,
+            dataType,
+            storage,
+            firstUse,
+            sourceType,
+            autoName,
+            highSymbol
+        );
     }
 
     private String getSourceType(HighSymbol highSymbol) {
@@ -292,6 +348,7 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
     @Override
     public void showCodePreview(String text, List<HighlightSpan> spans) {
         currentSpans = spans;
+
         StyledDocument document = codeArea.getStyledDocument();
         SimpleAttributeSet normal = new SimpleAttributeSet();
         StyleConstants.setFontFamily(normal, Font.MONOSPACED);
@@ -306,7 +363,12 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
             document.remove(0, document.getLength());
             document.insertString(0, text, normal);
             for (HighlightSpan span : spans) {
-                document.setCharacterAttributes(span.start(), span.end() - span.start(), highlight, false);
+                document.setCharacterAttributes(
+                    span.start(),
+                    span.end() - span.start(),
+                    highlight,
+                    false
+                );
             }
             codeArea.setCaretPosition(0);
         }
@@ -376,11 +438,14 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
         @Override
         public void run(TaskMonitor monitor) {
             if (component == null) {
-                SwingUtilities.invokeLater(() -> showResultText("Select an analysis component first."));
+                SwingUtilities.invokeLater(() ->
+                    showResultText("Select an analysis component first."));
                 return;
             }
+
             if (currentContext == null || currentContext.getDecompiledCode().isBlank()) {
-                SwingUtilities.invokeLater(() -> showResultText("Load a decompiled function before running AI analysis."));
+                SwingUtilities.invokeLater(() ->
+                    showResultText("Load a decompiled function before running AI analysis."));
                 return;
             }
 
@@ -389,7 +454,8 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
                 SwingUtilities.invokeLater(() -> renderUntyped(component, result));
             }
             catch (Exception ex) {
-                SwingUtilities.invokeLater(() -> showError("AI Explainable-Decompiler", "Error: " + ex.getMessage(), ex));
+                SwingUtilities.invokeLater(() ->
+                    showError("AI Explainable-Decompiler", "Error: " + ex.getMessage(), ex));
             }
         }
     }
