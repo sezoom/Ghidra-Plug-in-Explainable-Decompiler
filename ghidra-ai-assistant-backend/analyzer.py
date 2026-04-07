@@ -4,7 +4,6 @@ from typing import Dict, Any
 from pydantic import ValidationError
 
 from llm import make_llm, simple_k2_extract
-import components  # noqa: F401 - ensures component registration side effects run
 from components.base import COMPONENT_REGISTRY
 import os
 from dotenv import load_dotenv
