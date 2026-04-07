@@ -29,11 +29,24 @@ gradle clean buildExtension -PGHIDRA_INSTALL_DIR="/Applications/local/ghidra_11.
 
 ### Backend
 ```
-ghidra-ai-assistant-backend/          ← Python + LangGraph 
-├── requirements.txt
-├── schemas.py
-├── langgraph_app.py
-├── app.py
+ghidra-ai-assistant-backend/
+├── llm.py                   
+├── schemas.py                ← shared input models 
+├── analyzer.py               ← central dispatcher 
+├── app.py                    
+├── components/
+│   ├── __init__.py
+│   ├── base.py               ← abstract base + registry
+│   ├── rename/
+│   │   ├── __init__.py
+│   │   ├── schema.py         ← RenameSuggestion + RenameItem
+│   │   ├── prompt.py         ← build_rename_prompt 
+│   │   └── component.py      ← RenameComponent
+│   └── memory_safety/
+│       ├── __init__.py
+│       ├── schema.py         ← MemorySafetyAnalysis + MemorySafetyIssue
+│       ├── prompt.py         ← build_memory_safety_prompt 
+│       └── component.py      ← MemorySafetyComponent
 └── .env
 ```
 

@@ -1,9 +1,12 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from schemas import RenameRequest, RenameSuggestion, MemorySafetyAnalysis
-from langgraph_app import langgraph_app
+from schemas import AnalyzeRequest, RenameRequest, MemorySafetyRequest
+from analyzer import analyze
+from components.base import COMPONENT_REGISTRY
+import components  # noqa: F401 - ensure registry side effects run
 
 app = FastAPI(title="Ghidra AI Explainable-Decompiler Backend")
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -13,32 +16,40 @@ app.add_middleware(
 )
 
 
-@app.post("/rename", response_model=RenameSuggestion)
-async def rename(req: RenameRequest):
-    result = langgraph_app.invoke(
-        {
-            "decompiled_code": req.decompiled_code,
-            "function_name": req.function_name,
-            "variables": [variable.model_dump() for variable in req.variables],
-            "task": "rename",
-        }
-    )
-    return result["result"]
+
+@app.post("/analyze/{component_id}")
+async def analyze_component(component_id: str, req: dict):
+    """Preferred unified endpoint using a path component id and plain request body."""
+    if component_id not in COMPONENT_REGISTRY:
+        raise HTTPException(
+            status_code=404,
+            detail={
+                "error": f"Unknown component '{component_id}'",
+                "available_components": sorted(COMPONENT_REGISTRY.keys()),
+            },
+        )
+    try:
+        return analyze(component_id, req)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.post("/memory_safety", response_model=MemorySafetyAnalysis)
-async def memory_safety(req: RenameRequest):
-    result = langgraph_app.invoke(
-        {
-            "decompiled_code": req.decompiled_code,
-            "function_name": req.function_name,
-            "task": "memory_safety",
-        }
-    )
-    return result["result"]
+# @app.post("/rename")
+# async def rename(req: RenameRequest):
+#     try:
+#         return analyze("rename", req.model_dump())
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=str(e))
+#
+#
+# @app.post("/memory_safety")
+# async def memory_safety(req: MemorySafetyRequest):
+#     try:
+#         return analyze("memory_safety", req.model_dump())
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=str(e))
 
 
 if __name__ == "__main__":
     import uvicorn
-
     uvicorn.run(app, host="127.0.0.1", port=8000)

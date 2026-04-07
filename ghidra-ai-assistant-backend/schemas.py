@@ -1,5 +1,5 @@
+from typing import List, Optional
 from pydantic import BaseModel, Field
-from typing import List
 
 
 class VariableCandidate(BaseModel):
@@ -14,34 +14,35 @@ class VariableCandidate(BaseModel):
     token_count: int
 
 
+class AnalyzeRequest(BaseModel):
+    task: str
+    decompiled_code: str
+    function_name: str
+    variables: List[VariableCandidate] = Field(default_factory=list)
+
+
 class RenameRequest(BaseModel):
     decompiled_code: str
     function_name: str
     variables: List[VariableCandidate] = Field(default_factory=list)
 
 
-class RenameItem(BaseModel):
-    target_id: str
-    kind: str
-    old_name: str
-    new_name: str
-    explanation: str
+class MemorySafetyRequest(BaseModel):
+    decompiled_code: str
+    function_name: str
 
 
-class RenameSuggestion(BaseModel):
-    function_rename: RenameItem
-    variable_renames: List[RenameItem]
-    summary: str
+# Compatibility re-exports for callers that still import response models from schemas.
+from components.rename.schema import RenameItem, RenameSuggestion
+from components.memory_safety.schema import MemorySafetyIssue, MemorySafetyAnalysis
 
-
-class MemorySafetyIssue(BaseModel):
-    issue_type: str
-    description: str
-    location: str
-    severity: str
-    suggestion: str
-
-
-class MemorySafetyAnalysis(BaseModel):
-    issues: List[MemorySafetyIssue]
-    overall_assessment: str
+__all__ = [
+    "VariableCandidate",
+    "AnalyzeRequest",
+    "RenameRequest",
+    "MemorySafetyRequest",
+    "RenameItem",
+    "RenameSuggestion",
+    "MemorySafetyIssue",
+    "MemorySafetyAnalysis",
+]

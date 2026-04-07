@@ -24,7 +24,7 @@ public class MemorySafetyComponent implements AnalysisComponent<MemorySafetyResu
     @Override
     public MemorySafetyResult analyze(AnalysisContext context, BackendClient client) throws Exception {
         MemorySafetyRequest request = new MemorySafetyRequest(context.getDecompiledCode(), context.getFunction().getName());
-        return client.post("/memory_safety", request, MemorySafetyResult.class);
+        return client.analyze(getId(), request, MemorySafetyResult.class);
     }
 
     @Override
