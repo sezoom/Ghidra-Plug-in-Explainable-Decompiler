@@ -10,6 +10,7 @@ import ghidra.program.model.pcode.HighSymbol;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -48,6 +49,64 @@ public class AnalysisContext {
 
     public static String safeTrim(String value) {
         return value == null ? "" : value.trim();
+    }
+
+    public static String toTitleCaseLabel(String raw) {
+        String text = safeTrim(raw);
+        if (text.isEmpty()) {
+            return "Unknown";
+        }
+        text = text.replace('-', ' ').replace('_', ' ');
+        String[] parts = text.split("\\s+");
+        StringBuilder sb = new StringBuilder();
+        for (String part : parts) {
+            if (part.isEmpty()) {
+                continue;
+            }
+            if (!sb.isEmpty()) {
+                sb.append(' ');
+            }
+            String lower = part.toLowerCase(Locale.ROOT);
+            sb.append(Character.toUpperCase(lower.charAt(0)));
+            if (lower.length() > 1) {
+                sb.append(lower.substring(1));
+            }
+        }
+        return sb.toString();
+    }
+
+    public static String deriveCryptoSecurityImpact(String issueType, String severity) {
+        String normalized = safeTrim(issueType).toLowerCase(Locale.ROOT);
+        if (normalized.contains("hardcoded") && normalized.contains("secret")) {
+            return "Secrets embedded in binaries can be extracted and reused by attackers.";
+        }
+        if (normalized.contains("hardcoded") || normalized.contains("constant")) {
+            return "Static cryptographic material makes operations predictable and weakens confidentiality.";
+        }
+        if (normalized.contains("custom") && normalized.contains("crypto")) {
+            return "Custom cryptography is prone to design flaws that can undermine confidentiality and integrity.";
+        }
+        if (normalized.contains("iv") || normalized.contains("nonce")) {
+            return "Reused IVs or nonces can break confidentiality and invalidate security guarantees.";
+        }
+        if (normalized.contains("random")) {
+            return "Predictable randomness weakens keys, IVs, and nonces used by cryptographic operations.";
+        }
+        if (normalized.contains("key management") || normalized.contains("key")) {
+            return "Poor secret handling increases the chance of key extraction, reuse, or unsafe rotation.";
+        }
+        if (normalized.contains("overflow") || normalized.contains("buffer")) {
+            return "Unsafe buffer handling can lead to memory corruption or code execution during verification.";
+        }
+
+        String sev = safeTrim(severity).toLowerCase(Locale.ROOT);
+        if ("high".equals(sev)) {
+            return "This issue could directly compromise confidentiality, integrity, or safe operation.";
+        }
+        if ("medium".equals(sev)) {
+            return "This issue weakens the overall security posture and may enable exploitation in combination with other flaws.";
+        }
+        return "This issue indicates weaker security hygiene and should be addressed to reduce risk.";
     }
 
     public static class VariableTarget {

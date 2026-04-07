@@ -39,16 +39,23 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
@@ -60,9 +67,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+
 public class AnalysisProvider extends ComponentProviderAdapter implements AnalysisView {
     private static final Color HIGHLIGHT_BG = new Color(255, 243, 176);
     private static final Color HIGHLIGHT_FG = new Color(102, 60, 0);
+    private static final String RESULT_CARD_TEXT = "text";
+    private static final String RESULT_CARD_TABLE = "table";
 
     private final AIExplainablePlugin plugin;
     private final BackendClient backendClient;
@@ -71,6 +81,11 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
     private JPanel mainPanel;
     private PreviewTextPane codeArea;
     private JTextArea resultArea;
+    private JPanel resultCardPanel;
+    private CardLayout resultCardLayout;
+    private JTextArea tableSummaryArea;
+    private JTable resultTable;
+    private DefaultTableModel resultTableModel;
     private JButton loadButton;
     private JComboBox<ComponentItem> componentCombo;
     private JButton runButton;
@@ -123,16 +138,12 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
         DefaultCaret caret = (DefaultCaret) codeArea.getCaret();
         caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
 
-        resultArea = new JTextArea(12, 60);
-        resultArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
-        resultArea.setEditable(false);
-        resultArea.setLineWrap(true);
-        resultArea.setWrapStyleWord(true);
+        buildResultViews();
 
         JSplitPane splitPane = new JSplitPane(
             JSplitPane.VERTICAL_SPLIT,
             new JScrollPane(codeArea),
-            new JScrollPane(resultArea)
+            resultCardPanel
         );
         splitPane.setResizeWeight(0.70);
         mainPanel.add(splitPane, BorderLayout.CENTER);
@@ -166,6 +177,71 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
 
         showCodePreview("No active decompilation loaded.", Collections.emptyList());
         showResultText("Load a function from the current cursor location to begin.");
+    }
+
+    private void buildResultViews() {
+        resultArea = new JTextArea(12, 60);
+        resultArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+        resultArea.setEditable(false);
+        resultArea.setLineWrap(true);
+        resultArea.setWrapStyleWord(true);
+
+        tableSummaryArea = new JTextArea(4, 60);
+        tableSummaryArea.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
+        tableSummaryArea.setEditable(false);
+        tableSummaryArea.setLineWrap(true);
+        tableSummaryArea.setWrapStyleWord(true);
+        tableSummaryArea.setBorder(BorderFactory.createTitledBorder("Overall Assessment"));
+        tableSummaryArea.setBackground(resultArea.getBackground());
+
+        resultTableModel = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        resultTable = new JTable(resultTableModel);
+        resultTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        resultTable.setFillsViewportHeight(true);
+        resultTable.setRowHeight(28);
+        resultTable.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
+        resultTable.getTableHeader().setReorderingAllowed(false);
+        resultTable.setDefaultRenderer(Object.class, new MultiLineTableCellRenderer());
+        DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) resultTable.getTableHeader().getDefaultRenderer();
+        headerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+        JPanel tablePanel = new JPanel(new BorderLayout(0, 8));
+        tablePanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        tablePanel.add(new JScrollPane(tableSummaryArea), BorderLayout.NORTH);
+        tablePanel.add(new JScrollPane(resultTable), BorderLayout.CENTER);
+
+        resultCardLayout = new CardLayout();
+        resultCardPanel = new JPanel(resultCardLayout);
+        resultCardPanel.add(new JScrollPane(resultArea), RESULT_CARD_TEXT);
+        resultCardPanel.add(tablePanel, RESULT_CARD_TABLE);
+    }
+
+private void configureTableColumns() {
+    int[] preferredWidths = new int[] {50, 90, 140, 220, 420, 320, 320};
+    for (int i = 0; i < resultTable.getColumnModel().getColumnCount() && i < preferredWidths.length; i++) {
+        resultTable.getColumnModel().getColumn(i).setPreferredWidth(preferredWidths[i]);
+    }
+
+    if (resultTable.getColumnModel().getColumnCount() > 1) {
+        resultTable.getColumnModel().getColumn(1).setCellRenderer(new SeverityCellRenderer());
+    }
+}
+
+    private void refreshRowHeights() {
+        for (int row = 0; row < resultTable.getRowCount(); row++) {
+            int rowHeight = 28;
+            for (int column = 0; column < resultTable.getColumnCount(); column++) {
+                TableCellRenderer renderer = resultTable.getCellRenderer(row, column);
+                Component component = resultTable.prepareRenderer(renderer, row, column);
+                rowHeight = Math.max(rowHeight, component.getPreferredSize().height + 6);
+            }
+            resultTable.setRowHeight(row, rowHeight);
+        }
     }
 
     private DefaultComboBoxModel<ComponentItem> buildComponentModel() {
@@ -380,6 +456,24 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
     @Override
     public void showResultText(String text) {
         resultArea.setText(text);
+        resultCardLayout.show(resultCardPanel, RESULT_CARD_TEXT);
+    }
+
+    @Override
+    public void showResultTable(String summary, List<String> columns, List<List<String>> rows) {
+        tableSummaryArea.setText(summary == null ? "" : summary);
+
+        resultTableModel.setRowCount(0);
+        resultTableModel.setColumnCount(0);
+        for (String column : columns) {
+            resultTableModel.addColumn(column);
+        }
+        for (List<String> row : rows) {
+            resultTableModel.addRow(row.toArray(new Object[0]));
+        }
+        configureTableColumns();
+        refreshRowHeights();
+        resultCardLayout.show(resultCardPanel, RESULT_CARD_TABLE);
     }
 
     @Override
@@ -417,6 +511,32 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
             int offset = viewToModel2D(event.getPoint());
             HighlightSpan span = getHighlightAt(offset);
             return span == null ? null : span.tooltip();
+        }
+    }
+
+    private static final class MultiLineTableCellRenderer extends JTextArea implements TableCellRenderer {
+        private MultiLineTableCellRenderer() {
+            setLineWrap(true);
+            setWrapStyleWord(true);
+            setOpaque(true);
+            setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
+            setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                boolean hasFocus, int row, int column) {
+            setText(value == null ? "" : value.toString());
+            setSize(new Dimension(table.getColumnModel().getColumn(column).getWidth(), Short.MAX_VALUE));
+            if (isSelected) {
+                setBackground(table.getSelectionBackground());
+                setForeground(table.getSelectionForeground());
+            }
+            else {
+                setBackground(table.getBackground());
+                setForeground(table.getForeground());
+            }
+            return this;
         }
     }
 

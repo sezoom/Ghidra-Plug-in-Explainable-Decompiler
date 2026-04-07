@@ -35,7 +35,7 @@ def analyze(task: str, payload: Dict[str, Any]) -> Dict[str, Any]:
     return component.post_process(response.model_dump())
 
 
-def _invoke_k2_with_retry(prompt: str, schema_model, retries: int = 3, delay: float = 1.0) -> dict:
+def _invoke_k2_with_retry(prompt: str, schema_model, retries: int = 5, delay: float = 1.0) -> dict:
     last_error = None
     for attempt in range(retries):
         try:

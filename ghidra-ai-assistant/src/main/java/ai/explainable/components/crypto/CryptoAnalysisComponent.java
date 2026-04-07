@@ -5,7 +5,22 @@ import ai.explainable.components.AnalysisComponent;
 import ai.explainable.plugin.AnalysisContext;
 import ai.explainable.plugin.AnalysisView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public class CryptoAnalysisComponent implements AnalysisComponent<CryptoAnalysisResult> {
+    private static final List<String> TABLE_COLUMNS = Arrays.asList(
+        "ID",
+        "Severity",
+        "Category",
+        "Function / Location",
+        "Technical Finding",
+        "Security Impact",
+        "Mitigation"
+    );
+
     @Override
     public String getId() {
         return "crypto";
@@ -30,40 +45,49 @@ public class CryptoAnalysisComponent implements AnalysisComponent<CryptoAnalysis
 
     @Override
     public void renderResult(AnalysisContext context, CryptoAnalysisResult result, AnalysisView view) {
-        view.showCodePreview(context.getDecompiledCode(), java.util.Collections.emptyList());
-        view.showResultText(format(result));
+        view.showCodePreview(context.getDecompiledCode(), Collections.emptyList());
+        view.showResultTable(
+            buildSummary(result),
+            TABLE_COLUMNS,
+            buildRows(result)
+        );
         view.setApplyEnabled(false);
     }
 
-    private String format(CryptoAnalysisResult cryptoResult) {
+    private String buildSummary(CryptoAnalysisResult cryptoResult) {
         if (cryptoResult == null) {
             return "No crypto analysis result returned.";
         }
+        String summary = AnalysisContext.safeTrim(cryptoResult.getOverallAssessment());
+        return summary.isEmpty() ? "No overall assessment provided." : summary;
+    }
 
-        StringBuilder sb = new StringBuilder();
-        sb.append("Overall Assessment:\n")
-          .append(AnalysisContext.safeTrim(cryptoResult.getOverallAssessment()))
-          .append("\n\nIssues:\n");
-
-        if (cryptoResult.getIssues() == null || cryptoResult.getIssues().isEmpty()) {
-            sb.append("No cryptographic issues detected.");
-            return sb.toString();
+    private List<List<String>> buildRows(CryptoAnalysisResult cryptoResult) {
+        if (cryptoResult == null || cryptoResult.getIssues() == null || cryptoResult.getIssues().isEmpty()) {
+            return Collections.emptyList();
         }
 
+        List<List<String>> rows = new ArrayList<>();
+        int index = 1;
         for (CryptoAnalysisIssue issue : cryptoResult.getIssues()) {
-            sb.append("[")
-              .append(issue.getSeverity() != null ? issue.getSeverity().toUpperCase() : "UNKNOWN")
-              .append("] ")
-              .append(issue.getIssueType())
-              .append(" @ ")
-              .append(issue.getLocation())
-              .append("\n")
-              .append(issue.getDescription())
-              .append("\nSuggestion: ")
-              .append(issue.getSuggestion())
-              .append("\n\n");
-        }
+            String severity = AnalysisContext.toTitleCaseLabel(issue.getSeverity());
+            String category = AnalysisContext.toTitleCaseLabel(issue.getIssueType());
+            String location = AnalysisContext.safeTrim(issue.getLocation());
+            String finding = AnalysisContext.safeTrim(issue.getDescription());
+            String impact = AnalysisContext.deriveCryptoSecurityImpact(issue.getIssueType(), issue.getSeverity());
+            String mitigation = AnalysisContext.safeTrim(issue.getSuggestion());
 
-        return sb.toString();
+            rows.add(Arrays.asList(
+                "C" + index,
+                severity,
+                category,
+                location,
+                finding,
+                impact,
+                mitigation
+            ));
+            index++;
+        }
+        return rows;
     }
 }
