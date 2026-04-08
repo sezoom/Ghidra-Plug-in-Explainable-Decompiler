@@ -26,6 +26,9 @@ import ghidra.program.util.ProgramLocation;
 import ghidra.util.Msg;
 import ghidra.util.task.TaskLauncher;
 import ghidra.util.task.TaskMonitor;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -41,36 +44,28 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
-import javax.swing.JTextPane;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultCaret;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Highlighter;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-
 public class AnalysisProvider extends ComponentProviderAdapter implements AnalysisView {
     private static final Color HIGHLIGHT_BG = new Color(255, 243, 176);
-    private static final Color HIGHLIGHT_FG = new Color(102, 60, 0);
     private static final String RESULT_CARD_TEXT = "text";
     private static final String RESULT_CARD_TABLE = "table";
 
@@ -79,7 +74,7 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
     private final ComponentRegistry registry = new ComponentRegistry();
 
     private JPanel mainPanel;
-    private PreviewTextPane codeArea;
+    private PreviewCodeArea codeArea;
     private JTextArea resultArea;
     private JPanel resultCardPanel;
     private CardLayout resultCardLayout;
@@ -131,18 +126,31 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
     private void buildUi() {
         mainPanel = new JPanel(new BorderLayout(0, 8));
 
-        codeArea = new PreviewTextPane();
-        codeArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+        codeArea = new PreviewCodeArea();
+        codeArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_C);
+        codeArea.setCodeFoldingEnabled(true);
+        codeArea.setAntiAliasingEnabled(true);
+        codeArea.setBracketMatchingEnabled(true);
+        codeArea.setAnimateBracketMatching(false);
+        codeArea.setHighlightCurrentLine(true);
+        codeArea.setFadeCurrentLineHighlight(true);
+        codeArea.setCurrentLineHighlightColor(new Color(245, 248, 255));
         codeArea.setEditable(false);
+        codeArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
         codeArea.setToolTipText(" ");
-        DefaultCaret caret = (DefaultCaret) codeArea.getCaret();
-        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
+        codeArea.setMarkOccurrences(false);
+        codeArea.setWhitespaceVisible(false);
+        codeArea.setLineWrap(false);
+
+        RTextScrollPane codeScrollPane = new RTextScrollPane(codeArea);
+        codeScrollPane.setLineNumbersEnabled(true);
+        codeScrollPane.setFoldIndicatorEnabled(true);
 
         buildResultViews();
 
         JSplitPane splitPane = new JSplitPane(
             JSplitPane.VERTICAL_SPLIT,
-            new JScrollPane(codeArea),
+            codeScrollPane,
             resultCardPanel
         );
         splitPane.setResizeWeight(0.70);
@@ -221,16 +229,16 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
         resultCardPanel.add(tablePanel, RESULT_CARD_TABLE);
     }
 
-private void configureTableColumns() {
-    int[] preferredWidths = new int[] {50, 90, 140, 220, 420, 320, 320};
-    for (int i = 0; i < resultTable.getColumnModel().getColumnCount() && i < preferredWidths.length; i++) {
-        resultTable.getColumnModel().getColumn(i).setPreferredWidth(preferredWidths[i]);
-    }
+    private void configureTableColumns() {
+        int[] preferredWidths = new int[] {50, 90, 140, 220, 420, 320, 320};
+        for (int i = 0; i < resultTable.getColumnModel().getColumnCount() && i < preferredWidths.length; i++) {
+            resultTable.getColumnModel().getColumn(i).setPreferredWidth(preferredWidths[i]);
+        }
 
-    if (resultTable.getColumnModel().getColumnCount() > 1) {
-        resultTable.getColumnModel().getColumn(1).setCellRenderer(new SeverityCellRenderer());
+        if (resultTable.getColumnModel().getColumnCount() > 1) {
+            resultTable.getColumnModel().getColumn(1).setCellRenderer(new SeverityCellRenderer());
+        }
     }
-}
 
     private void refreshRowHeights() {
         for (int row = 0; row < resultTable.getRowCount(); row++) {
@@ -423,33 +431,25 @@ private void configureTableColumns() {
 
     @Override
     public void showCodePreview(String text, List<HighlightSpan> spans) {
-        currentSpans = spans;
+        currentSpans = spans == null ? Collections.emptyList() : spans;
+        codeArea.setText(text == null ? "" : text);
+        codeArea.setCaretPosition(0);
 
-        StyledDocument document = codeArea.getStyledDocument();
-        SimpleAttributeSet normal = new SimpleAttributeSet();
-        StyleConstants.setFontFamily(normal, Font.MONOSPACED);
-        StyleConstants.setFontSize(normal, 12);
+        Highlighter highlighter = codeArea.getHighlighter();
+        highlighter.removeAllHighlights();
 
-        SimpleAttributeSet highlight = new SimpleAttributeSet(normal);
-        StyleConstants.setBackground(highlight, HIGHLIGHT_BG);
-        StyleConstants.setForeground(highlight, HIGHLIGHT_FG);
-        StyleConstants.setBold(highlight, true);
-
-        try {
-            document.remove(0, document.getLength());
-            document.insertString(0, text, normal);
-            for (HighlightSpan span : spans) {
-                document.setCharacterAttributes(
-                    span.start(),
-                    span.end() - span.start(),
-                    highlight,
-                    false
-                );
-            }
-            codeArea.setCaretPosition(0);
+        if (text == null || currentSpans.isEmpty()) {
+            return;
         }
-        catch (BadLocationException ex) {
-            throw new IllegalStateException("Failed to update preview text", ex);
+
+        Highlighter.HighlightPainter painter = new DefaultHighlighter.DefaultHighlightPainter(HIGHLIGHT_BG);
+        for (HighlightSpan span : currentSpans) {
+            try {
+                highlighter.addHighlight(span.start(), span.end(), painter);
+            }
+            catch (Exception ignored) {
+                // Ignore malformed spans to avoid breaking the preview.
+            }
         }
     }
 
@@ -505,7 +505,7 @@ private void configureTableColumns() {
         return null;
     }
 
-    private final class PreviewTextPane extends JTextPane {
+    private final class PreviewCodeArea extends RSyntaxTextArea {
         @Override
         public String getToolTipText(MouseEvent event) {
             int offset = viewToModel2D(event.getPoint());
@@ -524,18 +524,26 @@ private void configureTableColumns() {
         }
 
         @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-                boolean hasFocus, int row, int column) {
+        public Component getTableCellRendererComponent(
+                JTable table,
+                Object value,
+                boolean isSelected,
+                boolean hasFocus,
+                int row,
+                int column) {
+
             setText(value == null ? "" : value.toString());
-            setSize(new Dimension(table.getColumnModel().getColumn(column).getWidth(), Short.MAX_VALUE));
+            setSize(table.getColumnModel().getColumn(column).getWidth(), Short.MAX_VALUE);
+
             if (isSelected) {
                 setBackground(table.getSelectionBackground());
                 setForeground(table.getSelectionForeground());
             }
             else {
-                setBackground(table.getBackground());
-                setForeground(table.getForeground());
+                setBackground(Color.WHITE);
+                setForeground(Color.BLACK);
             }
+
             return this;
         }
     }
@@ -558,14 +566,11 @@ private void configureTableColumns() {
         @Override
         public void run(TaskMonitor monitor) {
             if (component == null) {
-                SwingUtilities.invokeLater(() ->
-                    showResultText("Select an analysis component first."));
+                SwingUtilities.invokeLater(() -> showResultText("Select an analysis component first."));
                 return;
             }
-
             if (currentContext == null || currentContext.getDecompiledCode().isBlank()) {
-                SwingUtilities.invokeLater(() ->
-                    showResultText("Load a decompiled function before running AI analysis."));
+                SwingUtilities.invokeLater(() -> showResultText("Load a decompiled function before running AI analysis."));
                 return;
             }
 
@@ -574,8 +579,7 @@ private void configureTableColumns() {
                 SwingUtilities.invokeLater(() -> renderUntyped(component, result));
             }
             catch (Exception ex) {
-                SwingUtilities.invokeLater(() ->
-                    showError("AI Explainable-Decompiler", "Error: " + ex.getMessage(), ex));
+                SwingUtilities.invokeLater(() -> showError("AI Explainable-Decompiler", "Error: " + ex.getMessage(), ex));
             }
         }
     }
