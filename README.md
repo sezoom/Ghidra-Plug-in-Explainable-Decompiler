@@ -32,6 +32,7 @@ The project is split into two main parts:
 - **Backend (Python / FastAPI)**  
   Receives analysis requests, dispatches them to the correct component, interacts with the LLM, validates structured output, and returns results to the frontend.
 
+![GhidraPlugin.drawio.png](images/GhidraPlugin.drawio.png)
 
 ### Frontend structure
 
