@@ -37,10 +37,16 @@ class CryptoAnalysisRequest(BaseModel):
     function_name: str
 
 
+class DeobfuscationRequest(BaseModel):
+    decompiled_code: str
+    function_name: str
+
+
 # Compatibility re-exports for callers that still import response models from schemas.
 from components.rename.schema import RenameItem, RenameSuggestion
 from components.memory_safety.schema import MemorySafetyIssue, MemorySafetyAnalysis
 from components.crypto.schema import CryptoAnalysisIssue, CryptoAnalysisResult
+from components.deobfuscation.schema import DeobfuscationResult
 
 __all__ = [
     "VariableCandidate",
@@ -48,10 +54,12 @@ __all__ = [
     "RenameRequest",
     "MemorySafetyRequest",
     "CryptoAnalysisRequest",
+    "DeobfuscationRequest",
     "RenameItem",
     "RenameSuggestion",
     "MemorySafetyIssue",
     "MemorySafetyAnalysis",
     "CryptoAnalysisIssue",
     "CryptoAnalysisResult",
+    "DeobfuscationResult",
 ]

@@ -6,5 +6,33 @@ public class DeobfuscationResult {
     @SerializedName("summary")
     private String summary;
 
-    public String getSummary() { return summary; }
+    @SerializedName(value = "clean_code", alternate = {
+        "deobfuscated_code",
+        "simplified_code",
+        "rewritten_code",
+        "output_code"
+    })
+    private String cleanCode;
+
+    @SerializedName(value = "changes_summary", alternate = {
+        "transformation_summary",
+        "notes"
+    })
+    private String changesSummary;
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public String getCleanCode() {
+        return cleanCode;
+    }
+
+    public String getChangesSummary() {
+        return changesSummary;
+    }
+
+    public boolean hasCleanCode() {
+        return cleanCode != null && !cleanCode.trim().isEmpty();
+    }
 }
