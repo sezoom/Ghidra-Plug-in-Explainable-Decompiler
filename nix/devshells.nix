@@ -20,13 +20,25 @@
               jdk25_headless
               gradle_9
               (python313.withPackages (ps: [
-                ps.langgraph
-                ps.langchain-openai
+                ps.fastapi
+                ps.google-ai-generativelanguage
+                ps.google-api-core
+                ps.google-auth
+                ps.googleapis-common-protos
+                ps.langchain
                 ps.langchain-core
-                ps.uvicorn
+                ps.langchain-google-genai
+                ps.langchain-openai
+                ps.langchain-openai
+                ps.langchain-text-splitters
+                ps.langgraph
+                ps.langgraph-checkpoint
+                ps.langgraph-prebuilt
+                ps.langgraph-sdk
+                ps.langsmith
                 ps.pydantic
                 ps.python-dotenv
-                ps.fastapi
+                ps.uvicorn
               ]))
 
             ]
