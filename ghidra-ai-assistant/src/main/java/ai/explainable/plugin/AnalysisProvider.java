@@ -3,6 +3,8 @@ package ai.explainable.plugin;
 import ai.explainable.backend.BackendClient;
 import ai.explainable.backend.HttpBackendClient;
 import ai.explainable.components.AnalysisComponent;
+import ai.explainable.components.crypto.CryptoAnalysisComponent;
+import ai.explainable.components.deobfuscation.DeobfuscationComponent;
 import ai.explainable.components.memory.MemorySafetyComponent;
 import ai.explainable.components.rename.RenameComponent;
 import ai.explainable.decompiler.DecompileHelper;
@@ -24,28 +26,39 @@ import ghidra.program.util.ProgramLocation;
 import ghidra.util.Msg;
 import ghidra.util.task.TaskLauncher;
 import ghidra.util.task.TaskMonitor;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import org.fife.ui.rtextarea.RTextScrollPane;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
-import javax.swing.JTextPane;
 import javax.swing.SwingUtilities;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultCaret;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Highlighter;
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
+import java.net.URL;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -53,15 +66,21 @@ import java.util.Map;
 
 public class AnalysisProvider extends ComponentProviderAdapter implements AnalysisView {
     private static final Color HIGHLIGHT_BG = new Color(255, 243, 176);
-    private static final Color HIGHLIGHT_FG = new Color(102, 60, 0);
+    private static final String RESULT_CARD_TEXT = "text";
+    private static final String RESULT_CARD_TABLE = "table";
 
     private final AIExplainablePlugin plugin;
     private final BackendClient backendClient;
     private final ComponentRegistry registry = new ComponentRegistry();
 
     private JPanel mainPanel;
-    private PreviewTextPane codeArea;
+    private PreviewCodeArea codeArea;
     private JTextArea resultArea;
+    private JPanel resultCardPanel;
+    private CardLayout resultCardLayout;
+    private JTextArea tableSummaryArea;
+    private JTable resultTable;
+    private DefaultTableModel resultTableModel;
     private JButton loadButton;
     private JComboBox<ComponentItem> componentCombo;
     private JButton runButton;
@@ -81,33 +100,62 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
         buildUi();
     }
 
+    private JLabel createLogoLabel() {
+        URL logoUrl = getClass().getResource("/images/k2think.png");
+        if (logoUrl == null) {
+            Msg.showWarn(this, mainPanel, "Logo Missing",
+                "Could not load /images/k2think.png from resources.");
+            return new JLabel();
+        }
+
+        ImageIcon icon = new ImageIcon(logoUrl);
+        Image scaled = icon.getImage().getScaledInstance(140, 40, Image.SCALE_SMOOTH);
+
+        JLabel label = new JLabel(new ImageIcon(scaled));
+        label.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 0));
+        return label;
+    }
+
     private void registerDefaultComponents() {
         registry.register(new RenameComponent());
+        registry.register(new CryptoAnalysisComponent());
+        registry.register(new DeobfuscationComponent());
         registry.register(new MemorySafetyComponent());
     }
 
     private void buildUi() {
         mainPanel = new JPanel(new BorderLayout(0, 8));
 
-        codeArea = new PreviewTextPane();
-        codeArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+        codeArea = new PreviewCodeArea();
+        codeArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_C);
+        codeArea.setCodeFoldingEnabled(true);
+        codeArea.setAntiAliasingEnabled(true);
+        codeArea.setBracketMatchingEnabled(true);
+        codeArea.setAnimateBracketMatching(false);
+        codeArea.setHighlightCurrentLine(true);
+        codeArea.setFadeCurrentLineHighlight(true);
+        codeArea.setCurrentLineHighlightColor(new Color(245, 248, 255));
         codeArea.setEditable(false);
+        codeArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
         codeArea.setToolTipText(" ");
-        DefaultCaret caret = (DefaultCaret) codeArea.getCaret();
-        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
+        codeArea.setMarkOccurrences(false);
+        codeArea.setWhitespaceVisible(false);
+        codeArea.setLineWrap(false);
 
-        resultArea = new JTextArea(12, 60);
-        resultArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
-        resultArea.setEditable(false);
-        resultArea.setLineWrap(true);
-        resultArea.setWrapStyleWord(true);
+        RTextScrollPane codeScrollPane = new RTextScrollPane(codeArea);
+        codeScrollPane.setLineNumbersEnabled(true);
+        codeScrollPane.setFoldIndicatorEnabled(true);
 
-        JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-            new JScrollPane(codeArea), new JScrollPane(resultArea));
+        buildResultViews();
+
+        JSplitPane splitPane = new JSplitPane(
+            JSplitPane.VERTICAL_SPLIT,
+            codeScrollPane,
+            resultCardPanel
+        );
         splitPane.setResizeWeight(0.70);
         mainPanel.add(splitPane, BorderLayout.CENTER);
 
-        JPanel toolbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
         loadButton = new JButton("Load Current Decompilation");
         componentCombo = new JComboBox<>(buildComponentModel());
         runButton = new JButton("Run Analysis");
@@ -118,14 +166,90 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
         runButton.addActionListener(e -> new TaskLauncher(new ComponentAnalysisTask(getSelectedComponent())));
         applyButton.addActionListener(e -> applyCurrentResult());
 
-        toolbar.add(loadButton);
-        toolbar.add(componentCombo);
-        toolbar.add(runButton);
-        toolbar.add(applyButton);
-        mainPanel.add(toolbar, BorderLayout.NORTH);
+        JPanel leftToolbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        leftToolbar.add(loadButton);
+        leftToolbar.add(componentCombo);
+        leftToolbar.add(runButton);
+        leftToolbar.add(applyButton);
+
+        JLabel logoLabel = createLogoLabel();
+
+        JPanel header = new JPanel();
+        header.setLayout(new BoxLayout(header, BoxLayout.X_AXIS));
+        header.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+        header.add(leftToolbar);
+        header.add(Box.createHorizontalGlue());
+        header.add(logoLabel);
+
+        mainPanel.add(header, BorderLayout.NORTH);
 
         showCodePreview("No active decompilation loaded.", Collections.emptyList());
         showResultText("Load a function from the current cursor location to begin.");
+    }
+
+    private void buildResultViews() {
+        resultArea = new JTextArea(12, 60);
+        resultArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+        resultArea.setEditable(false);
+        resultArea.setLineWrap(true);
+        resultArea.setWrapStyleWord(true);
+
+        tableSummaryArea = new JTextArea(4, 60);
+        tableSummaryArea.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
+        tableSummaryArea.setEditable(false);
+        tableSummaryArea.setLineWrap(true);
+        tableSummaryArea.setWrapStyleWord(true);
+        tableSummaryArea.setBorder(BorderFactory.createTitledBorder("Overall Assessment"));
+        tableSummaryArea.setBackground(resultArea.getBackground());
+
+        resultTableModel = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        resultTable = new JTable(resultTableModel);
+        resultTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        resultTable.setFillsViewportHeight(true);
+        resultTable.setRowHeight(28);
+        resultTable.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
+        resultTable.getTableHeader().setReorderingAllowed(false);
+        resultTable.setDefaultRenderer(Object.class, new MultiLineTableCellRenderer());
+        DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) resultTable.getTableHeader().getDefaultRenderer();
+        headerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+        JPanel tablePanel = new JPanel(new BorderLayout(0, 8));
+        tablePanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        tablePanel.add(new JScrollPane(tableSummaryArea), BorderLayout.NORTH);
+        tablePanel.add(new JScrollPane(resultTable), BorderLayout.CENTER);
+
+        resultCardLayout = new CardLayout();
+        resultCardPanel = new JPanel(resultCardLayout);
+        resultCardPanel.add(new JScrollPane(resultArea), RESULT_CARD_TEXT);
+        resultCardPanel.add(tablePanel, RESULT_CARD_TABLE);
+    }
+
+    private void configureTableColumns() {
+        int[] preferredWidths = new int[] {50, 90, 140, 220, 420, 320, 320};
+        for (int i = 0; i < resultTable.getColumnModel().getColumnCount() && i < preferredWidths.length; i++) {
+            resultTable.getColumnModel().getColumn(i).setPreferredWidth(preferredWidths[i]);
+        }
+
+        if (resultTable.getColumnModel().getColumnCount() > 1) {
+            resultTable.getColumnModel().getColumn(1).setCellRenderer(new SeverityCellRenderer());
+        }
+    }
+
+    private void refreshRowHeights() {
+        for (int row = 0; row < resultTable.getRowCount(); row++) {
+            int rowHeight = 28;
+            for (int column = 0; column < resultTable.getColumnCount(); column++) {
+                TableCellRenderer renderer = resultTable.getCellRenderer(row, column);
+                Component component = resultTable.prepareRenderer(renderer, row, column);
+                rowHeight = Math.max(rowHeight, component.getPreferredSize().height + 6);
+            }
+            resultTable.setRowHeight(row, rowHeight);
+        }
     }
 
     private DefaultComboBoxModel<ComponentItem> buildComponentModel() {
@@ -182,21 +306,26 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
     }
 
     private Map<String, AnalysisContext.VariableTarget> buildVariableTargets(DecompileResults decompileResults) {
-        if (decompileResults == null || decompileResults.getCCodeMarkup() == null || decompileResults.getHighFunction() == null) {
+        if (decompileResults == null || decompileResults.getCCodeMarkup() == null ||
+                decompileResults.getHighFunction() == null) {
             return Collections.emptyMap();
         }
+
         Map<String, AnalysisContext.VariableTarget> targets = new LinkedHashMap<>();
         List<ClangLine> lines = DecompilerUtils.toLines(decompileResults.getCCodeMarkup());
         HighFunction highFunction = decompileResults.getHighFunction();
+
         for (ClangLine line : lines) {
             for (ClangToken token : line.getAllTokens()) {
                 if (!(token instanceof ClangVariableToken)) {
                     continue;
                 }
+
                 HighSymbol highSymbol = token.getHighSymbol(highFunction);
                 if (!isTrackableVariable(highSymbol)) {
                     continue;
                 }
+
                 String targetId = buildTargetId(highSymbol);
                 AnalysisContext.VariableTarget target = targets.get(targetId);
                 if (target == null) {
@@ -217,7 +346,18 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
         String firstUse = highSymbol.getPCAddress() == null ? "entry" : highSymbol.getPCAddress().toString();
         String sourceType = getSourceType(highSymbol);
         boolean autoName = AnalysisContext.isAutoName(currentName);
-        return new AnalysisContext.VariableTarget(targetId, kind, currentName, dataType, storage, firstUse, sourceType, autoName, highSymbol);
+
+        return new AnalysisContext.VariableTarget(
+            targetId,
+            kind,
+            currentName,
+            dataType,
+            storage,
+            firstUse,
+            sourceType,
+            autoName,
+            highSymbol
+        );
     }
 
     private String getSourceType(HighSymbol highSymbol) {
@@ -291,33 +431,49 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
 
     @Override
     public void showCodePreview(String text, List<HighlightSpan> spans) {
-        currentSpans = spans;
-        StyledDocument document = codeArea.getStyledDocument();
-        SimpleAttributeSet normal = new SimpleAttributeSet();
-        StyleConstants.setFontFamily(normal, Font.MONOSPACED);
-        StyleConstants.setFontSize(normal, 12);
+        currentSpans = spans == null ? Collections.emptyList() : spans;
+        codeArea.setText(text == null ? "" : text);
+        codeArea.setCaretPosition(0);
 
-        SimpleAttributeSet highlight = new SimpleAttributeSet(normal);
-        StyleConstants.setBackground(highlight, HIGHLIGHT_BG);
-        StyleConstants.setForeground(highlight, HIGHLIGHT_FG);
-        StyleConstants.setBold(highlight, true);
+        Highlighter highlighter = codeArea.getHighlighter();
+        highlighter.removeAllHighlights();
 
-        try {
-            document.remove(0, document.getLength());
-            document.insertString(0, text, normal);
-            for (HighlightSpan span : spans) {
-                document.setCharacterAttributes(span.start(), span.end() - span.start(), highlight, false);
-            }
-            codeArea.setCaretPosition(0);
+        if (text == null || currentSpans.isEmpty()) {
+            return;
         }
-        catch (BadLocationException ex) {
-            throw new IllegalStateException("Failed to update preview text", ex);
+
+        Highlighter.HighlightPainter painter = new DefaultHighlighter.DefaultHighlightPainter(HIGHLIGHT_BG);
+        for (HighlightSpan span : currentSpans) {
+            try {
+                highlighter.addHighlight(span.start(), span.end(), painter);
+            }
+            catch (Exception ignored) {
+                // Ignore malformed spans to avoid breaking the preview.
+            }
         }
     }
 
     @Override
     public void showResultText(String text) {
         resultArea.setText(text);
+        resultCardLayout.show(resultCardPanel, RESULT_CARD_TEXT);
+    }
+
+    @Override
+    public void showResultTable(String summary, List<String> columns, List<List<String>> rows) {
+        tableSummaryArea.setText(summary == null ? "" : summary);
+
+        resultTableModel.setRowCount(0);
+        resultTableModel.setColumnCount(0);
+        for (String column : columns) {
+            resultTableModel.addColumn(column);
+        }
+        for (List<String> row : rows) {
+            resultTableModel.addRow(row.toArray(new Object[0]));
+        }
+        configureTableColumns();
+        refreshRowHeights();
+        resultCardLayout.show(resultCardPanel, RESULT_CARD_TABLE);
     }
 
     @Override
@@ -349,12 +505,46 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
         return null;
     }
 
-    private final class PreviewTextPane extends JTextPane {
+    private final class PreviewCodeArea extends RSyntaxTextArea {
         @Override
         public String getToolTipText(MouseEvent event) {
             int offset = viewToModel2D(event.getPoint());
             HighlightSpan span = getHighlightAt(offset);
             return span == null ? null : span.tooltip();
+        }
+    }
+
+    private static final class MultiLineTableCellRenderer extends JTextArea implements TableCellRenderer {
+        private MultiLineTableCellRenderer() {
+            setLineWrap(true);
+            setWrapStyleWord(true);
+            setOpaque(true);
+            setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
+            setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(
+                JTable table,
+                Object value,
+                boolean isSelected,
+                boolean hasFocus,
+                int row,
+                int column) {
+
+            setText(value == null ? "" : value.toString());
+            setSize(table.getColumnModel().getColumn(column).getWidth(), Short.MAX_VALUE);
+
+            if (isSelected) {
+                setBackground(table.getSelectionBackground());
+                setForeground(table.getSelectionForeground());
+            }
+            else {
+                setBackground(Color.WHITE);
+                setForeground(Color.BLACK);
+            }
+
+            return this;
         }
     }
 

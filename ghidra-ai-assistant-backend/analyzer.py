@@ -4,7 +4,6 @@ from typing import Dict, Any
 from pydantic import ValidationError
 
 from llm import make_llm, simple_k2_extract
-import components  # noqa: F401 - ensures component registration side effects run
 from components.base import COMPONENT_REGISTRY
 import os
 from dotenv import load_dotenv
@@ -36,7 +35,7 @@ def analyze(task: str, payload: Dict[str, Any]) -> Dict[str, Any]:
     return component.post_process(response.model_dump())
 
 
-def _invoke_k2_with_retry(prompt: str, schema_model, retries: int = 3, delay: float = 1.0) -> dict:
+def _invoke_k2_with_retry(prompt: str, schema_model, retries: int = 5, delay: float = 1.0) -> dict:
     last_error = None
     for attempt in range(retries):
         try:

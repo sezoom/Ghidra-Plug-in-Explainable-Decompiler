@@ -5,6 +5,7 @@ import java.util.List;
 public interface AnalysisView {
     void showCodePreview(String text, List<HighlightSpan> spans);
     void showResultText(String text);
+    void showResultTable(String summary, List<String> columns, List<List<String>> rows);
     void setApplyEnabled(boolean enabled);
     boolean confirm(String title, String message);
     void showInfo(String title, String message);

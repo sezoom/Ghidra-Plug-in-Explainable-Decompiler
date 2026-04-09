@@ -16,10 +16,9 @@ app.add_middleware(
 )
 
 
-
 @app.post("/analyze/{component_id}")
 async def analyze_component(component_id: str, req: dict):
-    """Preferred unified endpoint using a path component id and plain request body."""
+    """Preferred unified endpoint."""
     if component_id not in COMPONENT_REGISTRY:
         raise HTTPException(
             status_code=404,
@@ -33,21 +32,6 @@ async def analyze_component(component_id: str, req: dict):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-
-# @app.post("/rename")
-# async def rename(req: RenameRequest):
-#     try:
-#         return analyze("rename", req.model_dump())
-#     except Exception as e:
-#         raise HTTPException(status_code=500, detail=str(e))
-#
-#
-# @app.post("/memory_safety")
-# async def memory_safety(req: MemorySafetyRequest):
-#     try:
-#         return analyze("memory_safety", req.model_dump())
-#     except Exception as e:
-#         raise HTTPException(status_code=500, detail=str(e))
 
 
 if __name__ == "__main__":
