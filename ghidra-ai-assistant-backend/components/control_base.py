@@ -132,7 +132,7 @@ def run_verification(
 # ── Formatter ─────────────────────────────────────────────────────────────────
 
 
-def format_report(report: ControlReport) -> str:
+def format_report(report: ControlReport, attempts: int = 1) -> str:
     # Overall verdict
     if report.false_rate == 0.0:
         verdict = "✔ PASS — all claims grounded in source"
@@ -184,6 +184,11 @@ def format_report(report: ControlReport) -> str:
     if errors:
         lines.append("")
         lines.extend(errors)
+
+    # attempts line inside the block
+    if attempts > 1:
+        lines.append("")
+        lines.append(f"  ↻ Self-corrected in {attempts} attempts")
 
     lines.append("\n──────────────────────────────────────────────────────────")
 

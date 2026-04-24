@@ -1,8 +1,12 @@
-from components.control_base import format_report, load_source_json, run_verification
+from components.control_base import (
+    ControlReport,
+    format_report,
+    load_source_json,
+    run_verification,
+)
 
 
-def verify(llm_result: dict, source_json_path: str) -> str:
-
+def run_report(llm_result: dict, source_json_path: str) -> ControlReport:
     source_json = load_source_json(source_json_path)
 
     functions: list[str] = []
@@ -22,11 +26,12 @@ def verify(llm_result: dict, source_json_path: str) -> str:
         if old_name:
             local_variables.append(old_name)
 
-    claims = {
-        "functions": functions,
-        "local_variables": local_variables,
-        "calls": calls,
-    }
+    return run_verification(
+        {"functions": functions, "local_variables": local_variables, "calls": calls},
+        source_json,
+    )
 
-    report = run_verification(claims, source_json)
-    return format_report(report)
+
+def verify(llm_result: dict, source_json_path: str) -> str:
+    """Returns formatted string — kept for backward compatibility."""
+    return format_report(run_report(llm_result, source_json_path))

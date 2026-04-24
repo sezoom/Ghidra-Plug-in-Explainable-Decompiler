@@ -259,7 +259,14 @@ public class RenameComponent implements AnalysisComponent<RenameResult> {
             result.getControlOutput() != null &&
             !result.getControlOutput().isBlank()
         ) {
-            sb.append("\n").append(result.getControlOutput()).append("\n");
+            sb.append("\n").append(result.getControlOutput());
+            if (result.getControlAttempts() > 1) {
+                sb
+                    .append("\n  (corrected in ")
+                    .append(result.getControlAttempts())
+                    .append(" attempts)");
+            }
+            sb.append("\n");
         }
         // ─
         return sb.toString();

@@ -441,7 +441,7 @@ POST /analyze/<component_id>
 ```
 
 ---
-# Control Layer
+# Control Layer + Self-Correction Loop
 
 ## Step 1: Decompiled Code Snapshot
 Within Ghidra, once the plugin is open, selecting `Load Current Decompilation` automatically creates a snapshot of the currently decompiled code. This snapshot is stored in JSON format and includes key elements such as the function name, local variables, and call references. The structure is as follows:
@@ -497,6 +497,25 @@ Total tested: 5  |  False rate: 20.0%
   Functions:       —
   Local variables: PTR____stack_chk_guard_100004010
   Calls:           —
+```
+
+## Step 3: Self-Correction Loop
+
+When the Control Layer detects unverified claims in the LLM output (i.e. functions, local variables, or calls that do not exist in the original decompiled code), the system automatically triggers a self-correction loop. The unverified claims are injected back into the prompt as explicit feedback, and the LLM is asked to revise its answer using only names present in the source. This process repeats up to 3 times until the false rate reaches 0% or the attempt limit is reached. The final Control Layer report indicates whether a correction was needed with a `↻ Self-corrected in N attempts` line in the Ghidra UI.
+
+Example output:
+
+```txt
+[ Control Layer ]
+
+...
+
+Total tested: 5  |  False rate: 0.0%
+
+  ↻ Self-corrected in 2 attempts
+
+──────────────────────────────────────────────────────────
+
 ```
 
 ## Adding the Control Layer to a New Component

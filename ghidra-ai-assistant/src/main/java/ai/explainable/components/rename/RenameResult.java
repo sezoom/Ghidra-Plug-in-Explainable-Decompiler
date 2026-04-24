@@ -17,6 +17,13 @@ public class RenameResult {
     @SerializedName("control_output") // ← new
     private String controlOutput;
 
+    @SerializedName("control_attempts")
+    private int controlAttempts;
+
+    public int getControlAttempts() {
+        return controlAttempts;
+    }
+
     public RenameItem getFunctionRename() {
         return functionRename;
     }

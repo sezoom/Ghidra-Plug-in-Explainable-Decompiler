@@ -14,5 +14,5 @@ class MemorySafetyComponent(BaseComponent):
     def build_prompt(self, state: dict) -> str:
         return build_memory_safety_prompt(state)
 
-    def run_control(self, result: dict, source_json_path: str) -> str:  # ← new
-        return control.verify(result, source_json_path)
+    def run_control_report(self, result: dict, source_json_path: str):
+        return control.run_report(result, source_json_path)

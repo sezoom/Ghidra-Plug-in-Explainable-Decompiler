@@ -3,6 +3,8 @@ from typing import Any, Dict, Type
 
 from pydantic import BaseModel
 
+from components.control_base import ControlReport
+
 
 class BaseComponent(ABC):
     name: str
@@ -18,11 +20,11 @@ class BaseComponent(ABC):
         """Optional: clean result after LLM call."""
         return result
 
-    def run_control(
+    def run_control_report(
         self,
         result: Dict[str, Any],
         source_json_path: str,
-    ) -> str | None:
+    ) -> "ControlReport | None":
         """Override in component to activate the control layer."""
         return None
 

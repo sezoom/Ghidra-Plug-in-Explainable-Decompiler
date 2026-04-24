@@ -3,8 +3,7 @@ import json
 
 def build_rename_prompt(state: dict) -> str:
     variable_inventory = json.dumps(state.get("variables", []), indent=2)
-
-    return f"""You are an expert reverse engineer.
+    prompt = f"""You are an expert reverse engineer.
 Rename the function and only the unclear variables in this Ghidra decompiled C code.
 Return concrete suggestions that are useful in a reverse-engineering workflow.
 
@@ -36,3 +35,11 @@ Variable inventory:
 Decompiled code:
 {state["decompiled_code"]}
 """
+
+    # ── correction feedback (injected by the control loop) ───────────────
+    correction_note = state.get("correction_note")
+    if correction_note:
+        prompt += f"\n\n⚠ Correction required:\n{correction_note}"
+    # ─────────────────────────────────────────────────────────────────────
+
+    return prompt
