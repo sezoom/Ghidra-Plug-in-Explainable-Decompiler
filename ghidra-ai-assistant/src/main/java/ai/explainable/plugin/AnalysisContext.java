@@ -6,7 +6,6 @@ import ghidra.program.model.listing.Function;
 import ghidra.program.model.listing.Program;
 import ghidra.program.model.pcode.HighFunction;
 import ghidra.program.model.pcode.HighSymbol;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -15,8 +14,10 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 public class AnalysisContext {
+
     private static final Pattern AUTO_NAME_PATTERN = Pattern.compile(
-        "^(param_\\d+|local_[0-9a-fA-F]+|local_\\d+|[A-Za-z]{1,4}Var\\d+|[A-Za-z]{1,4}Stack_[0-9a-fA-F]+|uStack_[0-9a-fA-F]+|auStack_[0-9a-fA-F]+|extraout_.+|unaff_.+|in_.+|DAT_[0-9a-fA-F]+|UNK_[0-9a-fA-F]+)$");
+        "^(param_\\d+|local_[0-9a-fA-F]+|local_\\d+|[A-Za-z]{1,4}Var\\d+|[A-Za-z]{1,4}Stack_[0-9a-fA-F]+|uStack_[0-9a-fA-F]+|auStack_[0-9a-fA-F]+|extraout_.+|unaff_.+|in_.+|DAT_[0-9a-fA-F]+|UNK_[0-9a-fA-F]+)$"
+    );
 
     private final Program program;
     private final Function function;
@@ -24,24 +25,57 @@ public class AnalysisContext {
     private final DecompileResults decompileResults;
     private final HighFunction highFunction;
     private final Map<String, VariableTarget> variableTargetsById;
+    private String snapshotPath;
 
-    public AnalysisContext(Program program, Function function, String decompiledCode,
-            DecompileResults decompileResults, HighFunction highFunction,
-            Map<String, VariableTarget> variableTargetsById) {
+    public AnalysisContext(
+        Program program,
+        Function function,
+        String decompiledCode,
+        DecompileResults decompileResults,
+        HighFunction highFunction,
+        Map<String, VariableTarget> variableTargetsById
+    ) {
         this.program = program;
         this.function = function;
         this.decompiledCode = decompiledCode;
         this.decompileResults = decompileResults;
         this.highFunction = highFunction;
-        this.variableTargetsById = Collections.unmodifiableMap(variableTargetsById);
+        this.variableTargetsById = Collections.unmodifiableMap(
+            variableTargetsById
+        );
     }
 
-    public Program getProgram() { return program; }
-    public Function getFunction() { return function; }
-    public String getDecompiledCode() { return decompiledCode; }
-    public DecompileResults getDecompileResults() { return decompileResults; }
-    public HighFunction getHighFunction() { return highFunction; }
-    public Map<String, VariableTarget> getVariableTargetsById() { return variableTargetsById; }
+    public Program getProgram() {
+        return program;
+    }
+
+    public Function getFunction() {
+        return function;
+    }
+
+    public String getDecompiledCode() {
+        return decompiledCode;
+    }
+
+    public DecompileResults getDecompileResults() {
+        return decompileResults;
+    }
+
+    public HighFunction getHighFunction() {
+        return highFunction;
+    }
+
+    public Map<String, VariableTarget> getVariableTargetsById() {
+        return variableTargetsById;
+    }
+
+    public String getSnapshotPath() {
+        return snapshotPath;
+    } // ← new
+
+    public void setSnapshotPath(String path) {
+        this.snapshotPath = path;
+    }
 
     public static boolean isAutoName(String name) {
         return AUTO_NAME_PATTERN.matcher(safeTrim(name)).matches();
@@ -75,12 +109,17 @@ public class AnalysisContext {
         return sb.toString();
     }
 
-    public static String deriveCryptoSecurityImpact(String issueType, String severity) {
+    public static String deriveCryptoSecurityImpact(
+        String issueType,
+        String severity
+    ) {
         String normalized = safeTrim(issueType).toLowerCase(Locale.ROOT);
         if (normalized.contains("hardcoded") && normalized.contains("secret")) {
             return "Secrets embedded in binaries can be extracted and reused by attackers.";
         }
-        if (normalized.contains("hardcoded") || normalized.contains("constant")) {
+        if (
+            normalized.contains("hardcoded") || normalized.contains("constant")
+        ) {
             return "Static cryptographic material makes operations predictable and weakens confidentiality.";
         }
         if (normalized.contains("custom") && normalized.contains("crypto")) {
@@ -92,7 +131,9 @@ public class AnalysisContext {
         if (normalized.contains("random")) {
             return "Predictable randomness weakens keys, IVs, and nonces used by cryptographic operations.";
         }
-        if (normalized.contains("key management") || normalized.contains("key")) {
+        if (
+            normalized.contains("key management") || normalized.contains("key")
+        ) {
             return "Poor secret handling increases the chance of key extraction, reuse, or unsafe rotation.";
         }
         if (normalized.contains("overflow") || normalized.contains("buffer")) {
@@ -110,6 +151,7 @@ public class AnalysisContext {
     }
 
     public static class VariableTarget {
+
         private final String targetId;
         private final String kind;
         private final String currentName;
@@ -121,9 +163,17 @@ public class AnalysisContext {
         private final HighSymbol highSymbol;
         private final List<ClangToken> tokens = new ArrayList<>();
 
-        public VariableTarget(String targetId, String kind, String currentName, String dataType,
-                String storage, String firstUse, String sourceType, boolean autoName,
-                HighSymbol highSymbol) {
+        public VariableTarget(
+            String targetId,
+            String kind,
+            String currentName,
+            String dataType,
+            String storage,
+            String firstUse,
+            String sourceType,
+            boolean autoName,
+            HighSymbol highSymbol
+        ) {
             this.targetId = targetId;
             this.kind = kind;
             this.currentName = currentName;
@@ -135,15 +185,44 @@ public class AnalysisContext {
             this.highSymbol = highSymbol;
         }
 
-        public String getTargetId() { return targetId; }
-        public String getKind() { return kind; }
-        public String getCurrentName() { return currentName; }
-        public String getDataType() { return dataType; }
-        public String getStorage() { return storage; }
-        public String getFirstUse() { return firstUse; }
-        public String getSourceType() { return sourceType; }
-        public boolean isAutoName() { return autoName; }
-        public HighSymbol getHighSymbol() { return highSymbol; }
-        public List<ClangToken> getTokens() { return tokens; }
+        public String getTargetId() {
+            return targetId;
+        }
+
+        public String getKind() {
+            return kind;
+        }
+
+        public String getCurrentName() {
+            return currentName;
+        }
+
+        public String getDataType() {
+            return dataType;
+        }
+
+        public String getStorage() {
+            return storage;
+        }
+
+        public String getFirstUse() {
+            return firstUse;
+        }
+
+        public String getSourceType() {
+            return sourceType;
+        }
+
+        public boolean isAutoName() {
+            return autoName;
+        }
+
+        public HighSymbol getHighSymbol() {
+            return highSymbol;
+        }
+
+        public List<ClangToken> getTokens() {
+            return tokens;
+        }
     }
 }

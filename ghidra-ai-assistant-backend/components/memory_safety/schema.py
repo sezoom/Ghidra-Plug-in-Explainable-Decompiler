@@ -1,5 +1,6 @@
-from pydantic import BaseModel
 from typing import List
+
+from pydantic import BaseModel
 
 
 class MemorySafetyIssue(BaseModel):
@@ -8,6 +9,9 @@ class MemorySafetyIssue(BaseModel):
     location: str
     severity: str
     suggestion: str
+    functions_involved: list[str]
+    local_variables_involved: list[str]
+    calls_involved: list[str]
 
 
 class MemorySafetyAnalysis(BaseModel):

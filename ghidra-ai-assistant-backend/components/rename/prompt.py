@@ -8,7 +8,7 @@ def build_rename_prompt(state: dict) -> str:
 Rename the function and only the unclear variables in this Ghidra decompiled C code.
 Return concrete suggestions that are useful in a reverse-engineering workflow.
 
-Return data matching this structure exactly:
+Return JSON format with data matching this structure exactly:
 - function_rename: object with target_id, kind, old_name, new_name, explanation
 - variable_renames: array of objects with target_id, kind, old_name, new_name, explanation
 - summary: string

@@ -19,7 +19,10 @@ Return ONLY one valid JSON object matching this structure exactly:
       "description": "string",
       "location": "string",
       "severity": "high/medium/low",
-      "suggestion": "string"
+      "suggestion": "string",
+      "functions_involved": ["string"],
+      "local_variables_involved": ["string"],
+      "calls_involved": ["string"]
     }}
   ],
   "overall_assessment": "string"

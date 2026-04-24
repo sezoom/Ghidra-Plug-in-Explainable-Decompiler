@@ -441,3 +441,96 @@ POST /analyze/<component_id>
 ```
 
 ---
+# Control Layer
+
+## Step 1: Decompiled Code Snapshot
+Within Ghidra, once the plugin is open, selecting `Load Current Decompilation` automatically creates a snapshot of the currently decompiled code. This snapshot is stored in JSON format and includes key elements such as the function name, local variables, and call references. The structure is as follows:
+
+```json
+{
+  "function_name": "",
+  "address": "",
+  "signature": "",
+  "return_type": "",
+  "parameters": [],
+  "local_variables": [
+    {
+      "name": "",
+      "type": "",
+      "storage": "",
+      "size": 0
+    }
+  ],
+  "calls": [
+    {
+      "callee": "",
+      "address": ""
+    }
+  ],
+  "decompiled_code": ""
+}
+````
+
+The output directory path for this file can be configured in [`extension.properties`](ghidra-ai-assistant/extension.properties).
+
+## Step 2: Control Layer Inner Workings
+
+The control layer validates whether the functions, variables, and calls referenced in the LLM output are present in the original decompiled code.
+
+Each component follows a consistent workflow: the JSON snapshot is loaded, a component-specific processing step is applied, and a corresponding report is generated within the Ghidra interface.
+
+Example output:
+
+```txt
+[ Control Layer ]
+
+Verifies that functions and variables mentioned by the LLM exist in the original decompiled code.
+
+Verdict: ⚠ PARTIAL — some claims unverified
+  ✔ Functions          tested: 1, false: 0
+  ✘ Local variables    tested: 4, false: 1
+  ✔ Calls              tested: 0, false: 0
+
+Total tested: 5  |  False rate: 20.0%
+
+✘ Unverified claims:
+  Functions:       —
+  Local variables: PTR____stack_chk_guard_100004010
+  Calls:           —
+```
+
+## Adding the Control Layer to a New Component
+
+> **Reference implementation:** see `components/memory_safety/` (backend) and `ai.explainable.components.memory.MemorySafetyComponent` / `MemorySafetyResult` (frontend) as the canonical example to follow.
+
+### Backend
+
+**1. `components/<name>/control.py`** — create this file. Implement a `verify(llm_result: dict, source_json_path: str) -> str` function that extracts the relevant fields from the LLM result into three lists (`functions`, `local_variables`, `calls`), then calls `run_verification()` and `format_report()` from `control_base.py` and returns the formatted string. See `components/memory_safety/control.py` for a complete example.
+
+**2. `components/<name>/component.py`** — import your `control` module and add `run_control()`:
+```python
+from components.<name> import control
+
+def run_control(self, result: dict, source_json_path: str) -> str:
+    return control.verify(result, source_json_path)
+```
+No other backend files need to be modified. `analyzer.py` automatically calls `run_control()` and injects the result as `control_output` in the response if `source_json_path` is set.
+
+### Frontend
+
+**1. `<Name>Result.java`** — add the `control_output` field so Gson can deserialize it. See `MemorySafetyResult.java` for reference:
+```java
+@SerializedName("control_output")
+private String controlOutput;
+
+public String getControlOutput() { return controlOutput; }
+```
+
+**2. `<Name>Component.java`** — append the control output at the end of your `format()` method, just before returning the string. See `MemorySafetyComponent.java` for reference:
+```java
+if (result.getControlOutput() != null && !result.getControlOutput().isBlank()) {
+    sb.append("\n").append(result.getControlOutput()).append("\n");
+}
+```
+
+Gson silently ignores `control_output` if the backend does not send it, so components without a `control.py` are unaffected.

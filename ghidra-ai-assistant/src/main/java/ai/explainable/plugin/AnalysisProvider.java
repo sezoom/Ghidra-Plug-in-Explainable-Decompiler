@@ -8,6 +8,7 @@ import ai.explainable.components.deobfuscation.DeobfuscationComponent;
 import ai.explainable.components.memory.MemorySafetyComponent;
 import ai.explainable.components.rename.RenameComponent;
 import ai.explainable.decompiler.DecompileHelper;
+import com.google.gson.JsonObject;
 import docking.widgets.OptionDialog;
 import ghidra.app.decompiler.ClangLine;
 import ghidra.app.decompiler.ClangToken;
@@ -26,10 +27,20 @@ import ghidra.program.util.ProgramLocation;
 import ghidra.util.Msg;
 import ghidra.util.task.TaskLauncher;
 import ghidra.util.task.TaskMonitor;
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
-import org.fife.ui.rtextarea.RTextScrollPane;
-
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.event.MouseEvent;
+import java.net.URL;
+import java.nio.file.Path;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -50,21 +61,15 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.Image;
-import java.awt.event.MouseEvent;
-import java.net.URL;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import org.fife.ui.rtextarea.RTextScrollPane;
 
-public class AnalysisProvider extends ComponentProviderAdapter implements AnalysisView {
+public class AnalysisProvider
+    extends ComponentProviderAdapter
+    implements AnalysisView
+{
+
     private static final Color HIGHLIGHT_BG = new Color(255, 243, 176);
     private static final String RESULT_CARD_TEXT = "text";
     private static final String RESULT_CARD_TABLE = "table";
@@ -72,6 +77,7 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
     private final AIExplainablePlugin plugin;
     private final BackendClient backendClient;
     private final ComponentRegistry registry = new ComponentRegistry();
+    private final String snapshotDir;
 
     private JPanel mainPanel;
     private PreviewCodeArea codeArea;
@@ -85,15 +91,26 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
     private JComboBox<ComponentItem> componentCombo;
     private JButton runButton;
     private JButton applyButton;
+    private Path currentSnapshotPath;
 
     private AnalysisContext currentContext;
     private AnalysisComponent<?> lastComponent;
     private Object lastResult;
     private List<HighlightSpan> currentSpans = Collections.emptyList();
 
-    public AnalysisProvider(AIExplainablePlugin plugin, PluginTool tool) {
-        super(tool, "AI Explainable-Decompiler", plugin.getName(), Program.class);
+    public AnalysisProvider(
+        AIExplainablePlugin plugin,
+        PluginTool tool,
+        String snapshotDir
+    ) {
+        super(
+            tool,
+            "AI Explainable-Decompiler",
+            plugin.getName(),
+            Program.class
+        );
         this.plugin = plugin;
+        this.snapshotDir = snapshotDir;
         this.backendClient = new HttpBackendClient("http://127.0.0.1:8000");
         registerDefaultComponents();
         setTitle("AI Explainable-Decompiler");
@@ -103,13 +120,19 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
     private JLabel createLogoLabel() {
         URL logoUrl = getClass().getResource("/images/k2think.png");
         if (logoUrl == null) {
-            Msg.showWarn(this, mainPanel, "Logo Missing",
-                "Could not load /images/k2think.png from resources.");
+            Msg.showWarn(
+                this,
+                mainPanel,
+                "Logo Missing",
+                "Could not load /images/k2think.png from resources."
+            );
             return new JLabel();
         }
 
         ImageIcon icon = new ImageIcon(logoUrl);
-        Image scaled = icon.getImage().getScaledInstance(140, 40, Image.SCALE_SMOOTH);
+        Image scaled = icon
+            .getImage()
+            .getScaledInstance(140, 40, Image.SCALE_SMOOTH);
 
         JLabel label = new JLabel(new ImageIcon(scaled));
         label.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 0));
@@ -163,7 +186,9 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
         applyButton.setEnabled(false);
 
         loadButton.addActionListener(e -> loadCurrent());
-        runButton.addActionListener(e -> new TaskLauncher(new ComponentAnalysisTask(getSelectedComponent())));
+        runButton.addActionListener(e ->
+            new TaskLauncher(new ComponentAnalysisTask(getSelectedComponent()))
+        );
         applyButton.addActionListener(e -> applyCurrentResult());
 
         JPanel leftToolbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -183,8 +208,13 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
 
         mainPanel.add(header, BorderLayout.NORTH);
 
-        showCodePreview("No active decompilation loaded.", Collections.emptyList());
-        showResultText("Load a function from the current cursor location to begin.");
+        showCodePreview(
+            "No active decompilation loaded.",
+            Collections.emptyList()
+        );
+        showResultText(
+            "Load a function from the current cursor location to begin."
+        );
     }
 
     private void buildResultViews() {
@@ -199,7 +229,9 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
         tableSummaryArea.setEditable(false);
         tableSummaryArea.setLineWrap(true);
         tableSummaryArea.setWrapStyleWord(true);
-        tableSummaryArea.setBorder(BorderFactory.createTitledBorder("Overall Assessment"));
+        tableSummaryArea.setBorder(
+            BorderFactory.createTitledBorder("Overall Assessment")
+        );
         tableSummaryArea.setBackground(resultArea.getBackground());
 
         resultTableModel = new DefaultTableModel() {
@@ -214,8 +246,14 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
         resultTable.setRowHeight(28);
         resultTable.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
         resultTable.getTableHeader().setReorderingAllowed(false);
-        resultTable.setDefaultRenderer(Object.class, new MultiLineTableCellRenderer());
-        DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) resultTable.getTableHeader().getDefaultRenderer();
+        resultTable.setDefaultRenderer(
+            Object.class,
+            new MultiLineTableCellRenderer()
+        );
+        DefaultTableCellRenderer headerRenderer =
+            (DefaultTableCellRenderer) resultTable
+                .getTableHeader()
+                .getDefaultRenderer();
         headerRenderer.setHorizontalAlignment(JLabel.CENTER);
 
         JPanel tablePanel = new JPanel(new BorderLayout(0, 8));
@@ -230,30 +268,56 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
     }
 
     private void configureTableColumns() {
-        int[] preferredWidths = new int[] {50, 90, 140, 220, 420, 320, 320};
-        for (int i = 0; i < resultTable.getColumnModel().getColumnCount() && i < preferredWidths.length; i++) {
-            resultTable.getColumnModel().getColumn(i).setPreferredWidth(preferredWidths[i]);
+        int[] preferredWidths = new int[] { 50, 90, 140, 220, 420, 320, 320 };
+        for (
+            int i = 0;
+            i < resultTable.getColumnModel().getColumnCount() &&
+            i < preferredWidths.length;
+            i++
+        ) {
+            resultTable
+                .getColumnModel()
+                .getColumn(i)
+                .setPreferredWidth(preferredWidths[i]);
         }
 
         if (resultTable.getColumnModel().getColumnCount() > 1) {
-            resultTable.getColumnModel().getColumn(1).setCellRenderer(new SeverityCellRenderer());
+            resultTable
+                .getColumnModel()
+                .getColumn(1)
+                .setCellRenderer(new SeverityCellRenderer());
         }
     }
 
     private void refreshRowHeights() {
         for (int row = 0; row < resultTable.getRowCount(); row++) {
             int rowHeight = 28;
-            for (int column = 0; column < resultTable.getColumnCount(); column++) {
-                TableCellRenderer renderer = resultTable.getCellRenderer(row, column);
-                Component component = resultTable.prepareRenderer(renderer, row, column);
-                rowHeight = Math.max(rowHeight, component.getPreferredSize().height + 6);
+            for (
+                int column = 0;
+                column < resultTable.getColumnCount();
+                column++
+            ) {
+                TableCellRenderer renderer = resultTable.getCellRenderer(
+                    row,
+                    column
+                );
+                Component component = resultTable.prepareRenderer(
+                    renderer,
+                    row,
+                    column
+                );
+                rowHeight = Math.max(
+                    rowHeight,
+                    component.getPreferredSize().height + 6
+                );
             }
             resultTable.setRowHeight(row, rowHeight);
         }
     }
 
     private DefaultComboBoxModel<ComponentItem> buildComponentModel() {
-        DefaultComboBoxModel<ComponentItem> model = new DefaultComboBoxModel<>();
+        DefaultComboBoxModel<ComponentItem> model =
+            new DefaultComboBoxModel<>();
         for (AnalysisComponent<?> component : registry.all()) {
             model.addElement(new ComponentItem(component));
         }
@@ -276,43 +340,106 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
         ProgramLocation location = plugin.getProgramLocation();
         if (program == null || location == null) {
             currentContext = null;
-            showCodePreview("No active program location.", Collections.emptyList());
-            showResultText("Load a function from the current cursor location to begin.");
+            showCodePreview(
+                "No active program location.",
+                Collections.emptyList()
+            );
+            showResultText(
+                "Load a function from the current cursor location to begin."
+            );
             return;
         }
 
-        Function function = program.getFunctionManager().getFunctionContaining(location.getAddress());
+        Function function = program
+            .getFunctionManager()
+            .getFunctionContaining(location.getAddress());
         if (function == null) {
             currentContext = null;
-            showCodePreview("No function at current location.", Collections.emptyList());
-            showResultText("Move the cursor into a function and load the current decompilation.");
+            showCodePreview(
+                "No function at current location.",
+                Collections.emptyList()
+            );
+            showResultText(
+                "Move the cursor into a function and load the current decompilation."
+            );
             return;
         }
 
-        DecompileResults results = DecompileHelper.decompile(function, program, TaskMonitor.DUMMY);
-        if (!results.decompileCompleted() || results.getDecompiledFunction() == null) {
+        DecompileResults results = DecompileHelper.decompile(
+            function,
+            program,
+            TaskMonitor.DUMMY
+        );
+        if (
+            !results.decompileCompleted() ||
+            results.getDecompiledFunction() == null
+        ) {
             currentContext = null;
-            showCodePreview("Decompile failed: " + results.getErrorMessage(), Collections.emptyList());
-            showResultText("Decompiler did not return C for the current function.");
+            showCodePreview(
+                "Decompile failed: " + results.getErrorMessage(),
+                Collections.emptyList()
+            );
+            showResultText(
+                "Decompiler did not return C for the current function."
+            );
             return;
         }
 
         String decompiledCode = results.getDecompiledFunction().getC();
         HighFunction highFunction = results.getHighFunction();
-        Map<String, AnalysisContext.VariableTarget> targets = buildVariableTargets(results);
-        currentContext = new AnalysisContext(program, function, decompiledCode, results, highFunction, targets);
+        Map<String, AnalysisContext.VariableTarget> targets =
+            buildVariableTargets(results);
+        currentContext = new AnalysisContext(
+            program,
+            function,
+            decompiledCode,
+            results,
+            highFunction,
+            targets
+        );
         showCodePreview(decompiledCode, Collections.emptyList());
         showResultText(buildLoadMessage(function, targets));
+
+        // ── snapshot ──────────────────────────────────────────────────────────────
+        try {
+            JsonObject snapshot = DecompileHelper.buildSnapshot(
+                program,
+                function,
+                TaskMonitor.DUMMY
+            );
+            currentSnapshotPath = DecompileHelper.saveSnapshot(
+                snapshot,
+                snapshotDir
+            );
+            currentContext.setSnapshotPath(currentSnapshotPath.toString());
+        } catch (Exception ex) {
+            currentSnapshotPath = null;
+            Msg.showWarn(
+                this,
+                mainPanel,
+                "Snapshot Warning",
+                "Snapshot could not be saved: " + ex.getMessage()
+            );
+        }
+        // ─────────────────────────────────────────────────────────────────────────
     }
 
-    private Map<String, AnalysisContext.VariableTarget> buildVariableTargets(DecompileResults decompileResults) {
-        if (decompileResults == null || decompileResults.getCCodeMarkup() == null ||
-                decompileResults.getHighFunction() == null) {
+    private Map<String, AnalysisContext.VariableTarget> buildVariableTargets(
+        DecompileResults decompileResults
+    ) {
+        if (
+            decompileResults == null ||
+            decompileResults.getCCodeMarkup() == null ||
+            decompileResults.getHighFunction() == null
+        ) {
             return Collections.emptyMap();
         }
 
-        Map<String, AnalysisContext.VariableTarget> targets = new LinkedHashMap<>();
-        List<ClangLine> lines = DecompilerUtils.toLines(decompileResults.getCCodeMarkup());
+        Map<String, AnalysisContext.VariableTarget> targets =
+            new LinkedHashMap<>();
+        List<ClangLine> lines = DecompilerUtils.toLines(
+            decompileResults.getCCodeMarkup()
+        );
         HighFunction highFunction = decompileResults.getHighFunction();
 
         for (ClangLine line : lines) {
@@ -338,12 +465,21 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
         return targets;
     }
 
-    private AnalysisContext.VariableTarget createVariableTarget(String targetId, HighSymbol highSymbol) {
+    private AnalysisContext.VariableTarget createVariableTarget(
+        String targetId,
+        HighSymbol highSymbol
+    ) {
         String kind = getTargetKind(highSymbol);
         String currentName = AnalysisContext.safeTrim(highSymbol.getName());
-        String dataType = highSymbol.getDataType() == null ? "" : highSymbol.getDataType().getName();
+        String dataType =
+            highSymbol.getDataType() == null
+                ? ""
+                : highSymbol.getDataType().getName();
         String storage = String.valueOf(highSymbol.getStorage());
-        String firstUse = highSymbol.getPCAddress() == null ? "entry" : highSymbol.getPCAddress().toString();
+        String firstUse =
+            highSymbol.getPCAddress() == null
+                ? "entry"
+                : highSymbol.getPCAddress().toString();
         String sourceType = getSourceType(highSymbol);
         boolean autoName = AnalysisContext.isAutoName(currentName);
 
@@ -383,9 +519,15 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
             return "parameter:" + highSymbol.getCategoryIndex();
         }
         if (highSymbol.isGlobal()) {
-            return "global:" + highSymbol.getStorage().getFirstVarnode().getAddress();
+            return (
+                "global:" +
+                highSymbol.getStorage().getFirstVarnode().getAddress()
+            );
         }
-        String pcAddress = highSymbol.getPCAddress() == null ? "entry" : highSymbol.getPCAddress().toString();
+        String pcAddress =
+            highSymbol.getPCAddress() == null
+                ? "entry"
+                : highSymbol.getPCAddress().toString();
         return "local:" + highSymbol.getStorage() + "@" + pcAddress;
     }
 
@@ -405,13 +547,28 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
         setApplyEnabled(false);
     }
 
-    private String buildLoadMessage(Function function, Map<String, AnalysisContext.VariableTarget> targets) {
-        return "Loaded `" + function.getName() + "`.\n\nTracked variables for AI analysis: " + targets.size();
+    private String buildLoadMessage(
+        Function function,
+        Map<String, AnalysisContext.VariableTarget> targets
+    ) {
+        return (
+            "Loaded `" +
+            function.getName() +
+            "`.\n\nTracked variables for AI analysis: " +
+            targets.size()
+        );
     }
 
     private void applyCurrentResult() {
-        if (currentContext == null || lastComponent == null || lastResult == null) {
-            showInfo("AI Explainable-Decompiler", "No applicable result to apply.");
+        if (
+            currentContext == null ||
+            lastComponent == null ||
+            lastResult == null
+        ) {
+            showInfo(
+                "AI Explainable-Decompiler",
+                "No applicable result to apply."
+            );
             return;
         }
         applyTyped(lastComponent, lastResult);
@@ -423,9 +580,12 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
         AnalysisComponent<R> typedComponent = (AnalysisComponent<R>) component;
         try {
             typedComponent.apply(currentContext, (R) result, this);
-        }
-        catch (Exception ex) {
-            showError("AI Explainable-Decompiler", "Failed to apply result: " + ex.getMessage(), ex);
+        } catch (Exception ex) {
+            showError(
+                "AI Explainable-Decompiler",
+                "Failed to apply result: " + ex.getMessage(),
+                ex
+            );
         }
     }
 
@@ -442,12 +602,12 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
             return;
         }
 
-        Highlighter.HighlightPainter painter = new DefaultHighlighter.DefaultHighlightPainter(HIGHLIGHT_BG);
+        Highlighter.HighlightPainter painter =
+            new DefaultHighlighter.DefaultHighlightPainter(HIGHLIGHT_BG);
         for (HighlightSpan span : currentSpans) {
             try {
                 highlighter.addHighlight(span.start(), span.end(), painter);
-            }
-            catch (Exception ignored) {
+            } catch (Exception ignored) {
                 // Ignore malformed spans to avoid breaking the preview.
             }
         }
@@ -460,7 +620,11 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
     }
 
     @Override
-    public void showResultTable(String summary, List<String> columns, List<List<String>> rows) {
+    public void showResultTable(
+        String summary,
+        List<String> columns,
+        List<List<String>> rows
+    ) {
         tableSummaryArea.setText(summary == null ? "" : summary);
 
         resultTableModel.setRowCount(0);
@@ -483,7 +647,10 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
 
     @Override
     public boolean confirm(String title, String message) {
-        return OptionDialog.showYesNoDialog(mainPanel, title, message) == OptionDialog.OPTION_ONE;
+        return (
+            OptionDialog.showYesNoDialog(mainPanel, title, message) ==
+            OptionDialog.OPTION_ONE
+        );
     }
 
     @Override
@@ -506,6 +673,7 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
     }
 
     private final class PreviewCodeArea extends RSyntaxTextArea {
+
         @Override
         public String getToolTipText(MouseEvent event) {
             int offset = viewToModel2D(event.getPoint());
@@ -514,7 +682,11 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
         }
     }
 
-    private static final class MultiLineTableCellRenderer extends JTextArea implements TableCellRenderer {
+    private static final class MultiLineTableCellRenderer
+        extends JTextArea
+        implements TableCellRenderer
+    {
+
         private MultiLineTableCellRenderer() {
             setLineWrap(true);
             setWrapStyleWord(true);
@@ -525,21 +697,23 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
 
         @Override
         public Component getTableCellRendererComponent(
-                JTable table,
-                Object value,
-                boolean isSelected,
-                boolean hasFocus,
-                int row,
-                int column) {
-
+            JTable table,
+            Object value,
+            boolean isSelected,
+            boolean hasFocus,
+            int row,
+            int column
+        ) {
             setText(value == null ? "" : value.toString());
-            setSize(table.getColumnModel().getColumn(column).getWidth(), Short.MAX_VALUE);
+            setSize(
+                table.getColumnModel().getColumn(column).getWidth(),
+                Short.MAX_VALUE
+            );
 
             if (isSelected) {
                 setBackground(table.getSelectionBackground());
                 setForeground(table.getSelectionForeground());
-            }
-            else {
+            } else {
                 setBackground(Color.WHITE);
                 setForeground(Color.BLACK);
             }
@@ -556,6 +730,7 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
     }
 
     private final class ComponentAnalysisTask extends ghidra.util.task.Task {
+
         private final AnalysisComponent<?> component;
 
         private ComponentAnalysisTask(AnalysisComponent<?> component) {
@@ -566,32 +741,54 @@ public class AnalysisProvider extends ComponentProviderAdapter implements Analys
         @Override
         public void run(TaskMonitor monitor) {
             if (component == null) {
-                SwingUtilities.invokeLater(() -> showResultText("Select an analysis component first."));
+                SwingUtilities.invokeLater(() ->
+                    showResultText("Select an analysis component first.")
+                );
                 return;
             }
-            if (currentContext == null || currentContext.getDecompiledCode().isBlank()) {
-                SwingUtilities.invokeLater(() -> showResultText("Load a decompiled function before running AI analysis."));
+            if (
+                currentContext == null ||
+                currentContext.getDecompiledCode().isBlank()
+            ) {
+                SwingUtilities.invokeLater(() ->
+                    showResultText(
+                        "Load a decompiled function before running AI analysis."
+                    )
+                );
                 return;
             }
 
             try {
                 Object result = analyzeUntyped(component, currentContext);
-                SwingUtilities.invokeLater(() -> renderUntyped(component, result));
-            }
-            catch (Exception ex) {
-                SwingUtilities.invokeLater(() -> showError("AI Explainable-Decompiler", "Error: " + ex.getMessage(), ex));
+                SwingUtilities.invokeLater(() ->
+                    renderUntyped(component, result)
+                );
+            } catch (Exception ex) {
+                SwingUtilities.invokeLater(() ->
+                    showError(
+                        "AI Explainable-Decompiler",
+                        "Error: " + ex.getMessage(),
+                        ex
+                    )
+                );
             }
         }
     }
 
     @SuppressWarnings("unchecked")
-    private <R> R analyzeUntyped(AnalysisComponent<?> component, AnalysisContext context) throws Exception {
+    private <R> R analyzeUntyped(
+        AnalysisComponent<?> component,
+        AnalysisContext context
+    ) throws Exception {
         AnalysisComponent<R> typed = (AnalysisComponent<R>) component;
         return typed.analyze(context, backendClient);
     }
 
     @SuppressWarnings("unchecked")
-    private <R> void renderUntyped(AnalysisComponent<?> component, Object result) {
+    private <R> void renderUntyped(
+        AnalysisComponent<?> component,
+        Object result
+    ) {
         AnalysisComponent<R> typed = (AnalysisComponent<R>) component;
         R typedResult = (R) result;
         lastComponent = typed;
