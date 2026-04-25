@@ -4,10 +4,12 @@ import ai.explainable.backend.BackendClient;
 import ai.explainable.components.AnalysisComponent;
 import ai.explainable.plugin.AnalysisContext;
 import ai.explainable.plugin.AnalysisView;
-
 import java.util.Collections;
 
-public class DeobfuscationComponent implements AnalysisComponent<DeobfuscationResult> {
+public class DeobfuscationComponent
+    implements AnalysisComponent<DeobfuscationResult>
+{
+
     @Override
     public String getId() {
         return "deobfuscation";
@@ -24,16 +26,29 @@ public class DeobfuscationComponent implements AnalysisComponent<DeobfuscationRe
     }
 
     @Override
-    public DeobfuscationResult analyze(AnalysisContext context, BackendClient client) throws Exception {
-        DeobfuscationRequest request =
-            new DeobfuscationRequest(context.getDecompiledCode(), context.getFunction().getName());
+    public DeobfuscationResult analyze(
+        AnalysisContext context,
+        BackendClient client
+    ) throws Exception {
+        DeobfuscationRequest request = new DeobfuscationRequest(
+            context.getDecompiledCode(),
+            context.getFunction().getName(),
+            context.getSnapshotPath()
+        );
         return client.analyze(getId(), request, DeobfuscationResult.class);
     }
 
     @Override
-    public void renderResult(AnalysisContext context, DeobfuscationResult result, AnalysisView view) {
+    public void renderResult(
+        AnalysisContext context,
+        DeobfuscationResult result,
+        AnalysisView view
+    ) {
         if (result == null) {
-            view.showCodePreview(context.getDecompiledCode(), Collections.emptyList());
+            view.showCodePreview(
+                context.getDecompiledCode(),
+                Collections.emptyList()
+            );
             view.showResultText("No deobfuscation result returned.");
             view.setApplyEnabled(false);
             return;
@@ -50,27 +65,46 @@ public class DeobfuscationComponent implements AnalysisComponent<DeobfuscationRe
 
     private String format(DeobfuscationResult result) {
         StringBuilder sb = new StringBuilder();
-        sb.append("Goal:\n")
-          .append("- Simplify Ghidra decompiled code into a human-friendly, clean programming style.\n")
-          .append("- Deobfuscate obfuscated constructs into a clearer, human-friendly form.\n\n");
+        sb
+            .append("Goal:\n")
+            .append(
+                "- Simplify Ghidra decompiled code into a human-friendly, clean programming style.\n"
+            )
+            .append(
+                "- Deobfuscate obfuscated constructs into a clearer, human-friendly form.\n\n"
+            );
 
         if (result.hasCleanCode()) {
-            sb.append("Output:\n")
-              .append("Cleaned/deobfuscated code is shown in the preview panel above.\n\n");
-        }
-        else {
-            sb.append("Output:\n")
-              .append("No rewritten code was returned, so the original decompiled code remains in the preview panel.\n\n");
+            sb
+                .append("Output:\n")
+                .append(
+                    "Cleaned/deobfuscated code is shown in the preview panel above.\n\n"
+                );
+        } else {
+            sb
+                .append("Output:\n")
+                .append(
+                    "No rewritten code was returned, so the original decompiled code remains in the preview panel.\n\n"
+                );
         }
 
-        sb.append("Summary:\n")
-          .append(AnalysisContext.safeTrim(result.getSummary()));
+        sb
+            .append("Summary:\n")
+            .append(AnalysisContext.safeTrim(result.getSummary()));
 
         String changes = AnalysisContext.safeTrim(result.getChangesSummary());
         if (!changes.isEmpty()) {
-            sb.append("\n\nTransformation Notes:\n")
-              .append(changes);
+            sb.append("\n\nTransformation Notes:\n").append(changes);
         }
+
+        // ── Append control layer output if present ──────────────────────
+        if (
+            result.getControlOutput() != null &&
+            !result.getControlOutput().isBlank()
+        ) {
+            sb.append("\n").append(result.getControlOutput()).append("\n");
+        }
+        // ────────────────────────────────────────────────────────────────
 
         return sb.toString();
     }

@@ -1,5 +1,10 @@
 from typing import List, Optional
 
+# Compatibility re-exports for callers that still import response models from schemas.
+from components.crypto.schema import CryptoAnalysisIssue, CryptoAnalysisResult
+from components.deobfuscation.schema import DeobfuscationResult
+from components.memory_safety.schema import MemorySafetyAnalysis, MemorySafetyIssue
+from components.rename.schema import RenameItem, RenameSuggestion
 from pydantic import BaseModel, Field
 
 
@@ -35,36 +40,30 @@ class MemorySafetyRequest(BaseModel):
     source_json_path: str | None = None
 
 
-#  class CryptoAnalysisRequest(BaseModel):
-#     decompiled_code: str
-#     function_name: str
-#     source_json_path: str | None = None
+class CryptoAnalysisRequest(BaseModel):
+    decompiled_code: str
+    function_name: str
+    source_json_path: str | None = None
 
 
-# class DeobfuscationRequest(BaseModel):
-#     decompiled_code: str
-#     function_name: str
-#     source_json_path: str | None = None
+class DeobfuscationRequest(BaseModel):
+    decompiled_code: str
+    function_name: str
+    source_json_path: str | None = None
 
-# Compatibility re-exports for callers that still import response models from schemas.
-from components.memory_safety.schema import MemorySafetyAnalysis, MemorySafetyIssue
-from components.rename.schema import RenameItem, RenameSuggestion
-
-# from components.crypto.schema import CryptoAnalysisIssue, CryptoAnalysisResult
-# from components.deobfuscation.schema import DeobfuscationResult
 
 __all__ = [
     "VariableCandidate",
     "AnalyzeRequest",
     "RenameRequest",
     "MemorySafetyRequest",
-    # "CryptoAnalysisRequest",
-    # "DeobfuscationRequest",
+    "CryptoAnalysisRequest",
+    "DeobfuscationRequest",
     "RenameItem",
     "RenameSuggestion",
     "MemorySafetyIssue",
     "MemorySafetyAnalysis",
-    # "CryptoAnalysisIssue",
-    # "CryptoAnalysisResult",
-    # "DeobfuscationResult",
+    "CryptoAnalysisIssue",
+    "CryptoAnalysisResult",
+    "DeobfuscationResult",
 ]

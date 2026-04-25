@@ -1,9 +1,15 @@
-from fastapi import FastAPI, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
-from schemas import AnalyzeRequest, RenameRequest, MemorySafetyRequest
+import components  # noqa: F401 - ensure registry side effects run
 from analyzer import analyze
 from components.base import COMPONENT_REGISTRY
-import components  # noqa: F401 - ensure registry side effects run
+from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from schemas import (
+    AnalyzeRequest,
+    CryptoAnalysisRequest,
+    DeobfuscationRequest,
+    MemorySafetyRequest,
+    RenameRequest,
+)
 
 app = FastAPI(title="Ghidra AI Explainable-Decompiler Backend")
 
@@ -33,7 +39,7 @@ async def analyze_component(component_id: str, req: dict):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="127.0.0.1", port=8000)

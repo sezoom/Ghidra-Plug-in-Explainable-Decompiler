@@ -56,32 +56,30 @@ def _correction_loop(
     source_json_path: str,
     max_attempts: int = 3,
 ) -> dict:
-    """
-    Verify LLM output against source JSON.
-    If unverified claims exist, feed them back to the LLM and retry.
-    Attach the final control report to the result.
-    """
     for attempt in range(1, max_attempts + 1):
-        # run control layer
         report = component.run_control_report(result, source_json_path)
-
         if report is None:
-            # component has no control — attach nothing, return as-is
             return result
 
         if report.false_rate == 0.0 or attempt == max_attempts:
             result["control_output"] = format_report(report, attempt)
             return result
 
-        # FAIL — build correction prompt and retry
         print(
-            f"[control] attempt {attempt}/{max_attempts} "
-            f"false_rate={report.false_rate:.1%} — retrying with correction prompt"
+            f"[control] attempt {attempt}/{max_attempts} false_rate={report.false_rate:.1%} — retrying"
         )
-        corrected_payload = _inject_correction(request_payload, report)
-        result = _invoke_llm(component, corrected_payload)
 
-    return result  # unreachable but satisfies type checker
+        try:
+            corrected_payload = _inject_correction(request_payload, report)
+            result = _invoke_llm(component, corrected_payload)
+        except Exception as e:
+            print(
+                f"[control] correction attempt {attempt} failed: {e} — returning last valid result"
+            )
+            result["control_output"] = format_report(report, attempt)
+            return result
+
+    return result
 
 
 def _inject_correction(request_payload: dict, report) -> dict:

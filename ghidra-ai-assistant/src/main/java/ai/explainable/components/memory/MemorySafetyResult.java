@@ -14,13 +14,6 @@ public class MemorySafetyResult {
     @SerializedName("control_output")
     private String controlOutput;
 
-    @SerializedName("control_attempts")
-    private int controlAttempts;
-
-    public int getControlAttempts() {
-        return controlAttempts;
-    }
-
     public List<MemorySafetyIssue> getIssues() {
         return issues;
     }

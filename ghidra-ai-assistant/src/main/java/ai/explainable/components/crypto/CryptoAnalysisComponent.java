@@ -4,13 +4,15 @@ import ai.explainable.backend.BackendClient;
 import ai.explainable.components.AnalysisComponent;
 import ai.explainable.plugin.AnalysisContext;
 import ai.explainable.plugin.AnalysisView;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class CryptoAnalysisComponent implements AnalysisComponent<CryptoAnalysisResult> {
+public class CryptoAnalysisComponent
+    implements AnalysisComponent<CryptoAnalysisResult>
+{
+
     private static final List<String> TABLE_COLUMNS = Arrays.asList(
         "ID",
         "Severity",
@@ -37,15 +39,28 @@ public class CryptoAnalysisComponent implements AnalysisComponent<CryptoAnalysis
     }
 
     @Override
-    public CryptoAnalysisResult analyze(AnalysisContext context, BackendClient client) throws Exception {
-        CryptoAnalysisRequest request =
-            new CryptoAnalysisRequest(context.getDecompiledCode(), context.getFunction().getName());
+    public CryptoAnalysisResult analyze(
+        AnalysisContext context,
+        BackendClient client
+    ) throws Exception {
+        CryptoAnalysisRequest request = new CryptoAnalysisRequest(
+            context.getDecompiledCode(),
+            context.getFunction().getName(),
+            context.getSnapshotPath()
+        );
         return client.analyze(getId(), request, CryptoAnalysisResult.class);
     }
 
     @Override
-    public void renderResult(AnalysisContext context, CryptoAnalysisResult result, AnalysisView view) {
-        view.showCodePreview(context.getDecompiledCode(), Collections.emptyList());
+    public void renderResult(
+        AnalysisContext context,
+        CryptoAnalysisResult result,
+        AnalysisView view
+    ) {
+        view.showCodePreview(
+            context.getDecompiledCode(),
+            Collections.emptyList()
+        );
         view.showResultTable(
             buildSummary(result),
             TABLE_COLUMNS,
@@ -58,34 +73,66 @@ public class CryptoAnalysisComponent implements AnalysisComponent<CryptoAnalysis
         if (cryptoResult == null) {
             return "No crypto analysis result returned.";
         }
-        String summary = AnalysisContext.safeTrim(cryptoResult.getOverallAssessment());
-        return summary.isEmpty() ? "No overall assessment provided." : summary;
+        StringBuilder sb = new StringBuilder();
+        String summary = AnalysisContext.safeTrim(
+            cryptoResult.getOverallAssessment()
+        );
+        sb.append(
+            summary.isEmpty() ? "No overall assessment provided." : summary
+        );
+
+        // ── Append control layer output if present ───────────────────────
+        if (
+            cryptoResult.getControlOutput() != null &&
+            !cryptoResult.getControlOutput().isBlank()
+        ) {
+            sb
+                .append("\n")
+                .append(cryptoResult.getControlOutput())
+                .append("\n");
+        }
+        // ─────────────────────────────────────────────────────────────────
+
+        return sb.toString();
     }
 
     private List<List<String>> buildRows(CryptoAnalysisResult cryptoResult) {
-        if (cryptoResult == null || cryptoResult.getIssues() == null || cryptoResult.getIssues().isEmpty()) {
+        if (
+            cryptoResult == null ||
+            cryptoResult.getIssues() == null ||
+            cryptoResult.getIssues().isEmpty()
+        ) {
             return Collections.emptyList();
         }
 
         List<List<String>> rows = new ArrayList<>();
         int index = 1;
         for (CryptoAnalysisIssue issue : cryptoResult.getIssues()) {
-            String severity = AnalysisContext.toTitleCaseLabel(issue.getSeverity());
-            String category = AnalysisContext.toTitleCaseLabel(issue.getIssueType());
+            String severity = AnalysisContext.toTitleCaseLabel(
+                issue.getSeverity()
+            );
+            String category = AnalysisContext.toTitleCaseLabel(
+                issue.getIssueType()
+            );
             String location = AnalysisContext.safeTrim(issue.getLocation());
             String finding = AnalysisContext.safeTrim(issue.getDescription());
-            String impact = AnalysisContext.deriveCryptoSecurityImpact(issue.getIssueType(), issue.getSeverity());
+            String impact = AnalysisContext.deriveCryptoSecurityImpact(
+                issue.getIssueType(),
+                issue.getSeverity()
+            );
             String mitigation = AnalysisContext.safeTrim(issue.getSuggestion());
 
-            rows.add(Arrays.asList(
-                "C" + index,
-                severity,
-                category,
-                location,
-                finding,
-                impact,
-                mitigation
-            ));
+            rows.add(
+                Arrays.asList(
+                    "C" + index,
+                    severity,
+                    category,
+                    location,
+                    finding,
+                    impact,
+                    mitigation
+                )
+            );
             index++;
         }
         return rows;

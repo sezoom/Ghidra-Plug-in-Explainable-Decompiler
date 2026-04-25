@@ -93,16 +93,12 @@ public class MemorySafetyComponent
             safetyResult.getControlOutput() != null &&
             !safetyResult.getControlOutput().isBlank()
         ) {
-            sb.append("\n").append(safetyResult.getControlOutput());
-            if (safetyResult.getControlAttempts() > 1) {
-                sb
-                    .append("\n  (corrected in ")
-                    .append(safetyResult.getControlAttempts())
-                    .append(" attempts)");
-            }
-            sb.append("\n");
+            sb
+                .append("\n")
+                .append(safetyResult.getControlOutput())
+                .append("\n");
         }
-        // ─────────────────────────────────────────────────────────────────────
+        // ────────────────────────────────────────────────────────────────
 
         return sb.toString();
     }
