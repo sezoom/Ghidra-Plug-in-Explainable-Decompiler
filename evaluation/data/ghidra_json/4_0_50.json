@@ -1,0 +1,87 @@
+{
+  "meta": {
+    "binary": "4_0_50",
+    "arch": "AARCH64_64",
+    "base_addr": "0x100000000",
+    "hash": "sha256:fd02767581abdfe2c3777372de2a56a54c49fb14f18e714426f08d954313e60f",
+    "ghidra_version": "12.0.4"
+  },
+  "functions": [
+    {
+      "name": "entry",
+      "addr": "0x100000460",
+      "exists": true,
+      "signature": {
+        "ret": "undefined",
+        "params": []
+      },
+      "locals": [],
+      "calls": [
+        {
+          "name": "entry",
+          "addr": "0x100000460"
+        },
+        {
+          "name": "_make_label",
+          "addr": "0x1000004c8"
+        },
+        {
+          "name": "_free",
+          "addr": "0x100000530"
+        },
+        {
+          "name": "_printf",
+          "addr": "0x100000548"
+        }
+      ],
+      "strings_used": [
+        "label\u003d%s\\n"
+      ],
+      "constants_used": [
+        {
+          "hex": "0x0",
+          "decimal": 0
+        }
+      ],
+      "globals_used": [
+        "LAB_100000490",
+        "LAB_100000484",
+        "LAB_1000004b8"
+      ],
+      "returns": [
+        {
+          "value": "pvVar1 \u003d\u003d (void *)0x0",
+          "conditional": false
+        }
+      ],
+      "decompiled_c": "\nbool entry(void)\n\n{\n  void *pvVar1;\n  \n  pvVar1 \u003d (void *)_make_label();\n  if (pvVar1 !\u003d (void *)0x0) {\n    _free(pvVar1);\n    _printf(\"label\u003d%s\\n\");\n  }\n  return pvVar1 \u003d\u003d (void *)0x0;\n}\n\n"
+    }
+  ],
+  "symbols": [
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x100000460"
+    },
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x100000460"
+    },
+    {
+      "name": "_make_label",
+      "kind": "function",
+      "addr": "0x1000004c8"
+    },
+    {
+      "name": "_free",
+      "kind": "function",
+      "addr": "0x100000530"
+    },
+    {
+      "name": "_printf",
+      "kind": "function",
+      "addr": "0x100000548"
+    }
+  ]
+}

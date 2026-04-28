@@ -1,0 +1,225 @@
+{
+  "meta": {
+    "binary": "18_200_300",
+    "arch": "AARCH64_64",
+    "base_addr": "0x100000000",
+    "hash": "sha256:891906d2bd539847dc9b6cd400bd504485716a4622242f0c0dc67da17eb0727c",
+    "ghidra_version": "12.0.4"
+  },
+  "functions": [
+    {
+      "name": "entry",
+      "addr": "0x1000004b0",
+      "exists": true,
+      "signature": {
+        "ret": "undefined",
+        "params": []
+      },
+      "locals": [
+        {
+          "name": "iVar1",
+          "type": "int"
+        },
+        {
+          "name": "auStack_fc0",
+          "type": "undefined1 [160]"
+        },
+        {
+          "name": "local_f20",
+          "type": "undefined8"
+        },
+        {
+          "name": "uStack_f18",
+          "type": "undefined8"
+        },
+        {
+          "name": "local_f10",
+          "type": "undefined8"
+        },
+        {
+          "name": "uStack_f08",
+          "type": "undefined8"
+        },
+        {
+          "name": "auStack_ef8",
+          "type": "undefined1 [512]"
+        },
+        {
+          "name": "auStack_cf8",
+          "type": "undefined1 [3280]"
+        },
+        {
+          "name": "local_28",
+          "type": "long"
+        }
+      ],
+      "calls": [
+        {
+          "name": "entry",
+          "addr": "0x1000004b0"
+        },
+        {
+          "name": "_memcpy",
+          "addr": "0x100001160"
+        },
+        {
+          "name": "_init_state",
+          "addr": "0x1000005d4"
+        },
+        {
+          "name": "_mutate_input",
+          "addr": "0x10000063c"
+        },
+        {
+          "name": "_parse_config_blob",
+          "addr": "0x1000006b0"
+        },
+        {
+          "name": "_parse_cookie_header",
+          "addr": "0x100000748"
+        },
+        {
+          "name": "_authorize",
+          "addr": "0x10000086c"
+        },
+        {
+          "name": "_print_pairs",
+          "addr": "0x1000009ec"
+        },
+        {
+          "name": "_render_summary",
+          "addr": "0x100000a70"
+        },
+        {
+          "name": "_unsafe_banner",
+          "addr": "0x100000b84"
+        },
+        {
+          "name": "_printf",
+          "addr": "0x10000116c"
+        },
+        {
+          "name": "___stack_chk_fail",
+          "addr": "0x100001118"
+        }
+      ],
+      "strings_used": [
+        "user \u003d alice\\nrole \u003d admin\\ntheme \u003d dark\\nmac \u003d 11223344\\n",
+        "lang\u003den; session\u003dalpha-user; path\u003d/; secure\u003dyes",
+        "operator-with-very-long-name",
+        "%s\\n",
+        "banner\u003d%s\\n"
+      ],
+      "constants_used": [
+        {
+          "hex": "0xa0",
+          "decimal": 160
+        },
+        {
+          "hex": "0x200",
+          "decimal": 512
+        },
+        {
+          "hex": "0xcd0",
+          "decimal": 3280
+        },
+        {
+          "hex": "0xab4130",
+          "decimal": 11223344
+        },
+        {
+          "hex": "0x200",
+          "decimal": 512
+        },
+        {
+          "hex": "0xa0",
+          "decimal": 160
+        }
+      ],
+      "globals_used": [
+        "PTR____stack_chk_guard_100004028",
+        "___stack_chk_guard",
+        "LAB_1000005c0",
+        "LAB_1000005bc"
+      ],
+      "returns": [
+        {
+          "value": "*/ ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004028 - local_28,iVar1)",
+          "conditional": false
+        },
+        {
+          "value": "0",
+          "conditional": false
+        }
+      ],
+      "decompiled_c": "\nundefined8 entry(void)\n\n{\n  int iVar1;\n  undefined1 auStack_fc0 [160];\n  undefined8 local_f20;\n  undefined8 uStack_f18;\n  undefined8 local_f10;\n  undefined8 uStack_f08;\n  undefined1 auStack_ef8 [512];\n  undefined1 auStack_cf8 [3280];\n  long local_28;\n  \n  local_28 \u003d *(long *)PTR____stack_chk_guard_100004028;\n  _memcpy(auStack_ef8,\"user \u003d alice\\nrole \u003d admin\\ntheme \u003d dark\\nmac \u003d 11223344\\n\",0x200);\n  uStack_f18 \u003d 0;\n  local_f20 \u003d 0;\n  uStack_f08 \u003d 0;\n  local_f10 \u003d 0;\n  _init_state();\n  _mutate_input(auStack_ef8);\n  _parse_config_blob(auStack_cf8,auStack_ef8);\n  _parse_cookie_header(auStack_cf8,\"lang\u003den; session\u003dalpha-user; path\u003d/; secure\u003dyes\");\n  _authorize(auStack_cf8);\n  _print_pairs(auStack_cf8);\n  _render_summary(auStack_cf8,auStack_fc0,0xa0);\n  _unsafe_banner(\u0026local_f20,\"operator-with-very-long-name\");\n  _printf(\"%s\\n\");\n  iVar1 \u003d _printf(\"banner\u003d%s\\n\");\n  if (*(long *)PTR____stack_chk_guard_100004028 - local_28 !\u003d 0) {\n                    /* WARNING: Subroutine does not return */\n    ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004028 - local_28,iVar1);\n  }\n  return 0;\n}\n\n"
+    }
+  ],
+  "symbols": [
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x1000004b0"
+    },
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x1000004b0"
+    },
+    {
+      "name": "_memcpy",
+      "kind": "function",
+      "addr": "0x100001160"
+    },
+    {
+      "name": "_init_state",
+      "kind": "function",
+      "addr": "0x1000005d4"
+    },
+    {
+      "name": "_mutate_input",
+      "kind": "function",
+      "addr": "0x10000063c"
+    },
+    {
+      "name": "_parse_config_blob",
+      "kind": "function",
+      "addr": "0x1000006b0"
+    },
+    {
+      "name": "_parse_cookie_header",
+      "kind": "function",
+      "addr": "0x100000748"
+    },
+    {
+      "name": "_authorize",
+      "kind": "function",
+      "addr": "0x10000086c"
+    },
+    {
+      "name": "_print_pairs",
+      "kind": "function",
+      "addr": "0x1000009ec"
+    },
+    {
+      "name": "_render_summary",
+      "kind": "function",
+      "addr": "0x100000a70"
+    },
+    {
+      "name": "_unsafe_banner",
+      "kind": "function",
+      "addr": "0x100000b84"
+    },
+    {
+      "name": "_printf",
+      "kind": "function",
+      "addr": "0x10000116c"
+    },
+    {
+      "name": "___stack_chk_fail",
+      "kind": "function",
+      "addr": "0x100001118"
+    }
+  ]
+}

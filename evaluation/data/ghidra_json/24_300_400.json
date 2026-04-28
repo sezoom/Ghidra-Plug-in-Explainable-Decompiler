@@ -1,0 +1,574 @@
+{
+  "meta": {
+    "binary": "24_300_400",
+    "arch": "AARCH64_64",
+    "base_addr": "0x100000000",
+    "hash": "sha256:0b752158af79fe3bf95b476dbe07c83ee5855a722b82ba47b197fd8c6a4fc6f8",
+    "ghidra_version": "12.0.4"
+  },
+  "functions": [
+    {
+      "name": "entry",
+      "addr": "0x1000004f8",
+      "exists": true,
+      "signature": {
+        "ret": "undefined",
+        "params": []
+      },
+      "locals": [
+        {
+          "name": "auStack_88",
+          "type": "undefined1 [112]"
+        },
+        {
+          "name": "local_18",
+          "type": "long"
+        }
+      ],
+      "calls": [
+        {
+          "name": "entry",
+          "addr": "0x1000004f8"
+        },
+        {
+          "name": "_fill_packet",
+          "addr": "0x100000a00"
+        },
+        {
+          "name": "_permute",
+          "addr": "0x100000a8c"
+        },
+        {
+          "name": "_smash_note",
+          "addr": "0x100000b38"
+        },
+        {
+          "name": "_metric_0",
+          "addr": "0x100000b80"
+        },
+        {
+          "name": "_printf",
+          "addr": "0x10000236c"
+        },
+        {
+          "name": "_metric_1",
+          "addr": "0x100000c40"
+        },
+        {
+          "name": "_metric_2",
+          "addr": "0x100000d00"
+        },
+        {
+          "name": "_metric_3",
+          "addr": "0x100000dc0"
+        },
+        {
+          "name": "_metric_4",
+          "addr": "0x100000e80"
+        },
+        {
+          "name": "_metric_5",
+          "addr": "0x100000f40"
+        },
+        {
+          "name": "_metric_6",
+          "addr": "0x100001000"
+        },
+        {
+          "name": "_metric_7",
+          "addr": "0x1000010c0"
+        },
+        {
+          "name": "_metric_8",
+          "addr": "0x100001180"
+        },
+        {
+          "name": "_metric_9",
+          "addr": "0x100001240"
+        },
+        {
+          "name": "_metric_10",
+          "addr": "0x100001300"
+        },
+        {
+          "name": "_metric_11",
+          "addr": "0x1000013c0"
+        },
+        {
+          "name": "_metric_12",
+          "addr": "0x100001480"
+        },
+        {
+          "name": "_metric_13",
+          "addr": "0x100001540"
+        },
+        {
+          "name": "_metric_14",
+          "addr": "0x100001600"
+        },
+        {
+          "name": "_metric_15",
+          "addr": "0x1000016c0"
+        },
+        {
+          "name": "_metric_16",
+          "addr": "0x100001780"
+        },
+        {
+          "name": "_metric_17",
+          "addr": "0x100001840"
+        },
+        {
+          "name": "_metric_18",
+          "addr": "0x100001900"
+        },
+        {
+          "name": "_metric_19",
+          "addr": "0x1000019c0"
+        },
+        {
+          "name": "_metric_20",
+          "addr": "0x100001a80"
+        },
+        {
+          "name": "_metric_21",
+          "addr": "0x100001b40"
+        },
+        {
+          "name": "_metric_22",
+          "addr": "0x100001c00"
+        },
+        {
+          "name": "_metric_23",
+          "addr": "0x100001cc0"
+        },
+        {
+          "name": "_metric_24",
+          "addr": "0x100001d80"
+        },
+        {
+          "name": "_metric_25",
+          "addr": "0x100001e40"
+        },
+        {
+          "name": "_metric_26",
+          "addr": "0x100001f00"
+        },
+        {
+          "name": "_metric_27",
+          "addr": "0x100001fc0"
+        },
+        {
+          "name": "_metric_28",
+          "addr": "0x100002080"
+        },
+        {
+          "name": "_metric_29",
+          "addr": "0x100002140"
+        },
+        {
+          "name": "_clone_packet",
+          "addr": "0x100002200"
+        },
+        {
+          "name": "_print_packet",
+          "addr": "0x100002260"
+        },
+        {
+          "name": "_free",
+          "addr": "0x100002354"
+        },
+        {
+          "name": "___stack_chk_fail",
+          "addr": "0x10000233c"
+        }
+      ],
+      "strings_used": [
+        "metric0\u003d%08x\\n",
+        "metric1\u003d%08x\\n",
+        "metric2\u003d%08x\\n",
+        "metric3\u003d%08x\\n",
+        "metric4\u003d%08x\\n",
+        "metric5\u003d%08x\\n",
+        "metric6\u003d%08x\\n",
+        "metric7\u003d%08x\\n",
+        "metric8\u003d%08x\\n",
+        "metric9\u003d%08x\\n",
+        "metric10\u003d%08x\\n",
+        "metric11\u003d%08x\\n",
+        "metric12\u003d%08x\\n",
+        "metric13\u003d%08x\\n",
+        "metric14\u003d%08x\\n",
+        "metric15\u003d%08x\\n",
+        "metric16\u003d%08x\\n",
+        "metric17\u003d%08x\\n",
+        "metric18\u003d%08x\\n",
+        "metric19\u003d%08x\\n",
+        "metric20\u003d%08x\\n",
+        "metric21\u003d%08x\\n",
+        "metric22\u003d%08x\\n",
+        "metric23\u003d%08x\\n",
+        "metric24\u003d%08x\\n",
+        "metric25\u003d%08x\\n",
+        "metric26\u003d%08x\\n",
+        "metric27\u003d%08x\\n",
+        "metric28\u003d%08x\\n",
+        "metric29\u003d%08x\\n"
+      ],
+      "constants_used": [
+        {
+          "hex": "0x70",
+          "decimal": 112
+        },
+        {
+          "hex": "0x11223344",
+          "decimal": 287454020
+        },
+        {
+          "hex": "0x8",
+          "decimal": 8
+        },
+        {
+          "hex": "0x2",
+          "decimal": 2
+        },
+        {
+          "hex": "0x3",
+          "decimal": 3
+        },
+        {
+          "hex": "0x4",
+          "decimal": 4
+        },
+        {
+          "hex": "0x5",
+          "decimal": 5
+        },
+        {
+          "hex": "0x6",
+          "decimal": 6
+        },
+        {
+          "hex": "0x7",
+          "decimal": 7
+        },
+        {
+          "hex": "0x9",
+          "decimal": 9
+        },
+        {
+          "hex": "0xa",
+          "decimal": 10
+        },
+        {
+          "hex": "0xb",
+          "decimal": 11
+        },
+        {
+          "hex": "0xc",
+          "decimal": 12
+        },
+        {
+          "hex": "0xd",
+          "decimal": 13
+        },
+        {
+          "hex": "0xe",
+          "decimal": 14
+        },
+        {
+          "hex": "0xf",
+          "decimal": 15
+        },
+        {
+          "hex": "0x10",
+          "decimal": 16
+        },
+        {
+          "hex": "0x11",
+          "decimal": 17
+        },
+        {
+          "hex": "0x12",
+          "decimal": 18
+        },
+        {
+          "hex": "0x13",
+          "decimal": 19
+        },
+        {
+          "hex": "0x14",
+          "decimal": 20
+        },
+        {
+          "hex": "0x15",
+          "decimal": 21
+        },
+        {
+          "hex": "0x16",
+          "decimal": 22
+        },
+        {
+          "hex": "0x17",
+          "decimal": 23
+        },
+        {
+          "hex": "0x18",
+          "decimal": 24
+        },
+        {
+          "hex": "0x19",
+          "decimal": 25
+        },
+        {
+          "hex": "0x1a",
+          "decimal": 26
+        },
+        {
+          "hex": "0x1b",
+          "decimal": 27
+        },
+        {
+          "hex": "0x1c",
+          "decimal": 28
+        },
+        {
+          "hex": "0x1d",
+          "decimal": 29
+        },
+        {
+          "hex": "0x1e",
+          "decimal": 30
+        },
+        {
+          "hex": "0x0",
+          "decimal": 0
+        }
+      ],
+      "globals_used": [
+        "PTR____stack_chk_guard_100004018",
+        "___stack_chk_guard",
+        "_phrases",
+        "LAB_100000568",
+        "LAB_100000554",
+        "LAB_1000009d0",
+        "LAB_1000009bc",
+        "LAB_1000009f0",
+        "LAB_1000009ec"
+      ],
+      "returns": [
+        {
+          "value": "*/ ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004018 - local_18)",
+          "conditional": false
+        },
+        {
+          "value": "0",
+          "conditional": false
+        }
+      ],
+      "decompiled_c": "\nundefined8 entry(int param_1,long param_2)\n\n{\n  void *pvVar1;\n  undefined1 auStack_88 [112];\n  long local_18;\n  \n  local_18 \u003d *(long *)PTR____stack_chk_guard_100004018;\n  _fill_packet(auStack_88,0x11223344,_phrases);\n  _permute(auStack_88);\n  if (1 \u003c param_1) {\n    _smash_note(auStack_88,*(undefined8 *)(param_2 + 8));\n  }\n  _metric_0(auStack_88,1);\n  _printf(\"metric0\u003d%08x\\n\");\n  _metric_1(auStack_88,2);\n  _printf(\"metric1\u003d%08x\\n\");\n  _metric_2(auStack_88,3);\n  _printf(\"metric2\u003d%08x\\n\");\n  _metric_3(auStack_88,4);\n  _printf(\"metric3\u003d%08x\\n\");\n  _metric_4(auStack_88,5);\n  _printf(\"metric4\u003d%08x\\n\");\n  _metric_5(auStack_88,6);\n  _printf(\"metric5\u003d%08x\\n\");\n  _metric_6(auStack_88,7);\n  _printf(\"metric6\u003d%08x\\n\");\n  _metric_7(auStack_88,8);\n  _printf(\"metric7\u003d%08x\\n\");\n  _metric_8(auStack_88,9);\n  _printf(\"metric8\u003d%08x\\n\");\n  _metric_9(auStack_88,10);\n  _printf(\"metric9\u003d%08x\\n\");\n  _metric_10(auStack_88,0xb);\n  _printf(\"metric10\u003d%08x\\n\");\n  _metric_11(auStack_88,0xc);\n  _printf(\"metric11\u003d%08x\\n\");\n  _metric_12(auStack_88,0xd);\n  _printf(\"metric12\u003d%08x\\n\");\n  _metric_13(auStack_88,0xe);\n  _printf(\"metric13\u003d%08x\\n\");\n  _metric_14(auStack_88,0xf);\n  _printf(\"metric14\u003d%08x\\n\");\n  _metric_15(auStack_88,0x10);\n  _printf(\"metric15\u003d%08x\\n\");\n  _metric_16(auStack_88,0x11);\n  _printf(\"metric16\u003d%08x\\n\");\n  _metric_17(auStack_88,0x12);\n  _printf(\"metric17\u003d%08x\\n\");\n  _metric_18(auStack_88,0x13);\n  _printf(\"metric18\u003d%08x\\n\");\n  _metric_19(auStack_88,0x14);\n  _printf(\"metric19\u003d%08x\\n\");\n  _metric_20(auStack_88,0x15);\n  _printf(\"metric20\u003d%08x\\n\");\n  _metric_21(auStack_88,0x16);\n  _printf(\"metric21\u003d%08x\\n\");\n  _metric_22(auStack_88,0x17);\n  _printf(\"metric22\u003d%08x\\n\");\n  _metric_23(auStack_88,0x18);\n  _printf(\"metric23\u003d%08x\\n\");\n  _metric_24(auStack_88,0x19);\n  _printf(\"metric24\u003d%08x\\n\");\n  _metric_25(auStack_88,0x1a);\n  _printf(\"metric25\u003d%08x\\n\");\n  _metric_26(auStack_88,0x1b);\n  _printf(\"metric26\u003d%08x\\n\");\n  _metric_27(auStack_88,0x1c);\n  _printf(\"metric27\u003d%08x\\n\");\n  _metric_28(auStack_88,0x1d);\n  _printf(\"metric28\u003d%08x\\n\");\n  _metric_29(auStack_88,0x1e);\n  _printf(\"metric29\u003d%08x\\n\");\n  pvVar1 \u003d (void *)_clone_packet(auStack_88);\n  if (pvVar1 !\u003d (void *)0x0) {\n    _print_packet(pvVar1);\n    _free(pvVar1);\n  }\n  if (*(long *)PTR____stack_chk_guard_100004018 - local_18 !\u003d 0) {\n                    /* WARNING: Subroutine does not return */\n    ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004018 - local_18);\n  }\n  return 0;\n}\n\n"
+    }
+  ],
+  "symbols": [
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x1000004f8"
+    },
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x1000004f8"
+    },
+    {
+      "name": "_fill_packet",
+      "kind": "function",
+      "addr": "0x100000a00"
+    },
+    {
+      "name": "_permute",
+      "kind": "function",
+      "addr": "0x100000a8c"
+    },
+    {
+      "name": "_smash_note",
+      "kind": "function",
+      "addr": "0x100000b38"
+    },
+    {
+      "name": "_metric_0",
+      "kind": "function",
+      "addr": "0x100000b80"
+    },
+    {
+      "name": "_printf",
+      "kind": "function",
+      "addr": "0x10000236c"
+    },
+    {
+      "name": "_metric_1",
+      "kind": "function",
+      "addr": "0x100000c40"
+    },
+    {
+      "name": "_metric_2",
+      "kind": "function",
+      "addr": "0x100000d00"
+    },
+    {
+      "name": "_metric_3",
+      "kind": "function",
+      "addr": "0x100000dc0"
+    },
+    {
+      "name": "_metric_4",
+      "kind": "function",
+      "addr": "0x100000e80"
+    },
+    {
+      "name": "_metric_5",
+      "kind": "function",
+      "addr": "0x100000f40"
+    },
+    {
+      "name": "_metric_6",
+      "kind": "function",
+      "addr": "0x100001000"
+    },
+    {
+      "name": "_metric_7",
+      "kind": "function",
+      "addr": "0x1000010c0"
+    },
+    {
+      "name": "_metric_8",
+      "kind": "function",
+      "addr": "0x100001180"
+    },
+    {
+      "name": "_metric_9",
+      "kind": "function",
+      "addr": "0x100001240"
+    },
+    {
+      "name": "_metric_10",
+      "kind": "function",
+      "addr": "0x100001300"
+    },
+    {
+      "name": "_metric_11",
+      "kind": "function",
+      "addr": "0x1000013c0"
+    },
+    {
+      "name": "_metric_12",
+      "kind": "function",
+      "addr": "0x100001480"
+    },
+    {
+      "name": "_metric_13",
+      "kind": "function",
+      "addr": "0x100001540"
+    },
+    {
+      "name": "_metric_14",
+      "kind": "function",
+      "addr": "0x100001600"
+    },
+    {
+      "name": "_metric_15",
+      "kind": "function",
+      "addr": "0x1000016c0"
+    },
+    {
+      "name": "_metric_16",
+      "kind": "function",
+      "addr": "0x100001780"
+    },
+    {
+      "name": "_metric_17",
+      "kind": "function",
+      "addr": "0x100001840"
+    },
+    {
+      "name": "_metric_18",
+      "kind": "function",
+      "addr": "0x100001900"
+    },
+    {
+      "name": "_metric_19",
+      "kind": "function",
+      "addr": "0x1000019c0"
+    },
+    {
+      "name": "_metric_20",
+      "kind": "function",
+      "addr": "0x100001a80"
+    },
+    {
+      "name": "_metric_21",
+      "kind": "function",
+      "addr": "0x100001b40"
+    },
+    {
+      "name": "_metric_22",
+      "kind": "function",
+      "addr": "0x100001c00"
+    },
+    {
+      "name": "_metric_23",
+      "kind": "function",
+      "addr": "0x100001cc0"
+    },
+    {
+      "name": "_metric_24",
+      "kind": "function",
+      "addr": "0x100001d80"
+    },
+    {
+      "name": "_metric_25",
+      "kind": "function",
+      "addr": "0x100001e40"
+    },
+    {
+      "name": "_metric_26",
+      "kind": "function",
+      "addr": "0x100001f00"
+    },
+    {
+      "name": "_metric_27",
+      "kind": "function",
+      "addr": "0x100001fc0"
+    },
+    {
+      "name": "_metric_28",
+      "kind": "function",
+      "addr": "0x100002080"
+    },
+    {
+      "name": "_metric_29",
+      "kind": "function",
+      "addr": "0x100002140"
+    },
+    {
+      "name": "_clone_packet",
+      "kind": "function",
+      "addr": "0x100002200"
+    },
+    {
+      "name": "_print_packet",
+      "kind": "function",
+      "addr": "0x100002260"
+    },
+    {
+      "name": "_free",
+      "kind": "function",
+      "addr": "0x100002354"
+    },
+    {
+      "name": "___stack_chk_fail",
+      "kind": "function",
+      "addr": "0x10000233c"
+    }
+  ]
+}

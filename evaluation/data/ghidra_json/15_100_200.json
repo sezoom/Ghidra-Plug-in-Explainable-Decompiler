@@ -1,0 +1,256 @@
+{
+  "meta": {
+    "binary": "15_100_200",
+    "arch": "AARCH64_64",
+    "base_addr": "0x100000000",
+    "hash": "sha256:5e37083006107236b035752d5c1362248b75a4dddbcb46e743c2fcd86b8f8692",
+    "ghidra_version": "12.0.4"
+  },
+  "functions": [
+    {
+      "name": "entry",
+      "addr": "0x100000460",
+      "exists": true,
+      "signature": {
+        "ret": "undefined",
+        "params": []
+      },
+      "locals": [
+        {
+          "name": "bVar1",
+          "type": "bool"
+        },
+        {
+          "name": "uVar2",
+          "type": "uint"
+        },
+        {
+          "name": "uVar3",
+          "type": "ulong"
+        },
+        {
+          "name": "local_378",
+          "type": "ulong"
+        },
+        {
+          "name": "local_370",
+          "type": "ulong"
+        },
+        {
+          "name": "auStack_350",
+          "type": "undefined1 [48]"
+        },
+        {
+          "name": "auStack_320",
+          "type": "undefined1 [76]"
+        },
+        {
+          "name": "auStack_2d4",
+          "type": "undefined1 [76]"
+        },
+        {
+          "name": "auStack_288",
+          "type": "undefined1 [608]"
+        },
+        {
+          "name": "local_28",
+          "type": "long"
+        }
+      ],
+      "calls": [
+        {
+          "name": "entry",
+          "addr": "0x100000460"
+        },
+        {
+          "name": "_load_slot",
+          "addr": "0x1000006a0"
+        },
+        {
+          "name": "___snprintf_chk",
+          "addr": "0x100000bb0"
+        },
+        {
+          "name": "_slot_init",
+          "addr": "0x100000718"
+        },
+        {
+          "name": "_print_slot",
+          "addr": "0x100000784"
+        },
+        {
+          "name": "_count_active",
+          "addr": "0x100000830"
+        },
+        {
+          "name": "_printf",
+          "addr": "0x100000bf8"
+        },
+        {
+          "name": "_save_slots",
+          "addr": "0x1000008b4"
+        },
+        {
+          "name": "_fprintf",
+          "addr": "0x100000be0"
+        },
+        {
+          "name": "___stack_chk_fail",
+          "addr": "0x100000bbc"
+        }
+      ],
+      "strings_used": [
+        "/tmp/keys.bin",
+        "00112233445566778899aabbccddeeff",
+        "bootstrap",
+        "a1a2a3a4a5a6a7a8a9aaabacadaeaf00",
+        "transport",
+        "feedfacecafebeef1234567890abcdef",
+        "archive",
+        "empty-%zu",
+        "active\u003d%zu\\n",
+        "save failed: %d\\n"
+      ],
+      "constants_used": [
+        {
+          "hex": "0x30",
+          "decimal": 48
+        },
+        {
+          "hex": "0x4c",
+          "decimal": 76
+        },
+        {
+          "hex": "0x260",
+          "decimal": 608
+        },
+        {
+          "hex": "0x2",
+          "decimal": 2
+        },
+        {
+          "hex": "0x8",
+          "decimal": 8
+        },
+        {
+          "hex": "0x11",
+          "decimal": 17
+        },
+        {
+          "hex": "0x22",
+          "decimal": 34
+        },
+        {
+          "hex": "0x33",
+          "decimal": 51
+        },
+        {
+          "hex": "0x3",
+          "decimal": 3
+        },
+        {
+          "hex": "0xa",
+          "decimal": 10
+        },
+        {
+          "hex": "0x30",
+          "decimal": 48
+        },
+        {
+          "hex": "0x4c",
+          "decimal": 76
+        }
+      ],
+      "globals_used": [
+        "PTR____stack_chk_guard_100004020",
+        "___stack_chk_guard",
+        "LAB_1000004ac",
+        "LAB_10000049c",
+        "LAB_1000004bc",
+        "LAB_100000530",
+        "LAB_10000059c",
+        "LAB_100000540",
+        "LAB_10000058c",
+        "LAB_1000005a4",
+        "LAB_1000005e4",
+        "LAB_1000005b4",
+        "LAB_1000005d4",
+        "LAB_10000065c",
+        "LAB_10000062c",
+        "PTR____stderrp_100004028",
+        "___stderrp",
+        "LAB_100000664",
+        "LAB_10000068c",
+        "LAB_100000688"
+      ],
+      "returns": [
+        {
+          "value": "bVar1",
+          "conditional": false
+        },
+        {
+          "value": "*/ ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004020 - local_28,uVar3)",
+          "conditional": false
+        }
+      ],
+      "decompiled_c": "\nbool entry(int param_1,long param_2)\n\n{\n  bool bVar1;\n  uint uVar2;\n  ulong uVar3;\n  char *local_388;\n  ulong local_378;\n  ulong local_370;\n  undefined1 auStack_350 [48];\n  undefined1 auStack_320 [76];\n  undefined1 auStack_2d4 [76];\n  undefined1 auStack_288 [608];\n  long local_28;\n  \n  local_28 \u003d *(long *)PTR____stack_chk_guard_100004020;\n  if (param_1 \u003c 2) {\n    local_388 \u003d \"/tmp/keys.bin\";\n  }\n  else {\n    local_388 \u003d *(char **)(param_2 + 8);\n  }\n  _load_slot(auStack_320,\"00112233445566778899aabbccddeeff\",\"bootstrap\",0x11);\n  _load_slot(auStack_2d4,\"a1a2a3a4a5a6a7a8a9aaabacadaeaf00\",\"transport\",0x22);\n  _load_slot(auStack_288,\"feedfacecafebeef1234567890abcdef\",\"archive\",0x33);\n  for (local_370 \u003d 3; local_370 \u003c 10; local_370 \u003d local_370 + 1) {\n    ___snprintf_chk(auStack_350,0x30,0,0x30,\"empty-%zu\");\n    _slot_init(auStack_320 + local_370 * 0x4c,auStack_350);\n  }\n  for (local_378 \u003d 0; local_378 \u003c 10; local_378 \u003d local_378 + 1) {\n    _print_slot(auStack_320 + local_378 * 0x4c,local_378);\n  }\n  _count_active(local_378 - 10);\n  _printf(\"active\u003d%zu\\n\");\n  uVar3 \u003d _save_slots(local_388,auStack_320,10);\n  bVar1 \u003d (int)uVar3 !\u003d 0;\n  if (bVar1) {\n    uVar2 \u003d _fprintf(*(FILE **)PTR____stderrp_100004028,\"save failed: %d\\n\");\n    uVar3 \u003d (ulong)uVar2;\n  }\n  if (*(long *)PTR____stack_chk_guard_100004020 - local_28 \u003d\u003d 0) {\n    return bVar1;\n  }\n                    /* WARNING: Subroutine does not return */\n  ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004020 - local_28,uVar3);\n}\n\n"
+    }
+  ],
+  "symbols": [
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x100000460"
+    },
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x100000460"
+    },
+    {
+      "name": "_load_slot",
+      "kind": "function",
+      "addr": "0x1000006a0"
+    },
+    {
+      "name": "___snprintf_chk",
+      "kind": "function",
+      "addr": "0x100000bb0"
+    },
+    {
+      "name": "_slot_init",
+      "kind": "function",
+      "addr": "0x100000718"
+    },
+    {
+      "name": "_print_slot",
+      "kind": "function",
+      "addr": "0x100000784"
+    },
+    {
+      "name": "_count_active",
+      "kind": "function",
+      "addr": "0x100000830"
+    },
+    {
+      "name": "_printf",
+      "kind": "function",
+      "addr": "0x100000bf8"
+    },
+    {
+      "name": "_save_slots",
+      "kind": "function",
+      "addr": "0x1000008b4"
+    },
+    {
+      "name": "_fprintf",
+      "kind": "function",
+      "addr": "0x100000be0"
+    },
+    {
+      "name": "___stack_chk_fail",
+      "kind": "function",
+      "addr": "0x100000bbc"
+    }
+  ]
+}

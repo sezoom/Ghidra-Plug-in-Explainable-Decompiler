@@ -1,0 +1,147 @@
+{
+  "meta": {
+    "binary": "9_50_100",
+    "arch": "AARCH64_64",
+    "base_addr": "0x100000000",
+    "hash": "sha256:bcb1629721ba142cba48e6a14687491f42ac385dce2e8034a95947c6682b0c93",
+    "ghidra_version": "12.0.4"
+  },
+  "functions": [
+    {
+      "name": "entry",
+      "addr": "0x100000460",
+      "exists": true,
+      "signature": {
+        "ret": "undefined",
+        "params": []
+      },
+      "locals": [
+        {
+          "name": "auStack_88",
+          "type": "undefined1 [48]"
+        },
+        {
+          "name": "auStack_50",
+          "type": "undefined1 [48]"
+        },
+        {
+          "name": "local_18",
+          "type": "long"
+        }
+      ],
+      "calls": [
+        {
+          "name": "entry",
+          "addr": "0x100000460"
+        },
+        {
+          "name": "_memset",
+          "addr": "0x10000075c"
+        },
+        {
+          "name": "_fill_session",
+          "addr": "0x100000550"
+        },
+        {
+          "name": "_dump_session",
+          "addr": "0x1000005f4"
+        },
+        {
+          "name": "_free",
+          "addr": "0x100000744"
+        },
+        {
+          "name": "___stack_chk_fail",
+          "addr": "0x10000072c"
+        }
+      ],
+      "strings_used": [
+        "operator",
+        "replica"
+      ],
+      "constants_used": [
+        {
+          "hex": "0x30",
+          "decimal": 48
+        },
+        {
+          "hex": "0x2",
+          "decimal": 2
+        },
+        {
+          "hex": "0x8",
+          "decimal": 8
+        },
+        {
+          "hex": "0x70",
+          "decimal": 112
+        },
+        {
+          "hex": "0x1e",
+          "decimal": 30
+        },
+        {
+          "hex": "0x78",
+          "decimal": 120
+        }
+      ],
+      "globals_used": [
+        "PTR____stack_chk_guard_100004010",
+        "___stack_chk_guard",
+        "LAB_1000004a8",
+        "LAB_100000498",
+        "LAB_1000004b8",
+        "LAB_100000540",
+        "LAB_10000053c"
+      ],
+      "returns": [
+        {
+          "value": "*/ ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004010 - local_18)",
+          "conditional": false
+        },
+        {
+          "value": "0",
+          "conditional": false
+        }
+      ],
+      "decompiled_c": "\nundefined8 entry(int param_1,long param_2)\n\n{\n  char *local_a8;\n  undefined1 auStack_88 [48];\n  void *local_58;\n  undefined1 auStack_50 [48];\n  void *local_20;\n  long local_18;\n  \n  local_18 \u003d *(long *)PTR____stack_chk_guard_100004010;\n  if (param_1 \u003c 2) {\n    local_a8 \u003d \"operator\";\n  }\n  else {\n    local_a8 \u003d *(char **)(param_2 + 8);\n  }\n  _memset(auStack_88,0,0x70);\n  _fill_session(auStack_88,local_a8,0x1e);\n  _fill_session(auStack_50,\"replica\",0x78);\n  _dump_session(auStack_88);\n  _dump_session(auStack_50);\n  _free(local_58);\n  _free(local_20);\n  if (*(long *)PTR____stack_chk_guard_100004010 - local_18 !\u003d 0) {\n                    /* WARNING: Subroutine does not return */\n    ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004010 - local_18);\n  }\n  return 0;\n}\n\n"
+    }
+  ],
+  "symbols": [
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x100000460"
+    },
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x100000460"
+    },
+    {
+      "name": "_memset",
+      "kind": "function",
+      "addr": "0x10000075c"
+    },
+    {
+      "name": "_fill_session",
+      "kind": "function",
+      "addr": "0x100000550"
+    },
+    {
+      "name": "_dump_session",
+      "kind": "function",
+      "addr": "0x1000005f4"
+    },
+    {
+      "name": "_free",
+      "kind": "function",
+      "addr": "0x100000744"
+    },
+    {
+      "name": "___stack_chk_fail",
+      "kind": "function",
+      "addr": "0x10000072c"
+    }
+  ]
+}

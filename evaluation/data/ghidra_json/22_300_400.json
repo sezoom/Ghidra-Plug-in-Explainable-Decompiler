@@ -1,0 +1,435 @@
+{
+  "meta": {
+    "binary": "22_300_400",
+    "arch": "AARCH64_64",
+    "base_addr": "0x100000000",
+    "hash": "sha256:0a9198fc7d1efae579298a7984c4de4c0699d35a29a9be0728afb3c8271317cc",
+    "ghidra_version": "12.0.4"
+  },
+  "functions": [
+    {
+      "name": "entry",
+      "addr": "0x100000548",
+      "exists": true,
+      "signature": {
+        "ret": "undefined",
+        "params": []
+      },
+      "locals": [
+        {
+          "name": "uVar1",
+          "type": "ulong"
+        },
+        {
+          "name": "uVar2",
+          "type": "undefined8"
+        },
+        {
+          "name": "local_170",
+          "type": "ulong"
+        },
+        {
+          "name": "local_160",
+          "type": "undefined8"
+        },
+        {
+          "name": "local_158",
+          "type": "long"
+        },
+        {
+          "name": "local_150",
+          "type": "int"
+        },
+        {
+          "name": "local_14c",
+          "type": "undefined4"
+        },
+        {
+          "name": "auStack_c8",
+          "type": "undefined1 [128]"
+        },
+        {
+          "name": "auStack_48",
+          "type": "undefined1 [32]"
+        },
+        {
+          "name": "local_28",
+          "type": "long"
+        }
+      ],
+      "calls": [
+        {
+          "name": "entry",
+          "addr": "0x100000548"
+        },
+        {
+          "name": "_memcpy",
+          "addr": "0x100001bf4"
+        },
+        {
+          "name": "_parse_csv",
+          "addr": "0x1000009d0"
+        },
+        {
+          "name": "_normalize",
+          "addr": "0x100000a7c"
+        },
+        {
+          "name": "_make_node",
+          "addr": "0x100000b5c"
+        },
+        {
+          "name": "_append_node",
+          "addr": "0x100000ae8"
+        },
+        {
+          "name": "_print_list",
+          "addr": "0x100000be8"
+        },
+        {
+          "name": "_walk_0",
+          "addr": "0x100000c54"
+        },
+        {
+          "name": "_printf",
+          "addr": "0x100001c00"
+        },
+        {
+          "name": "_walk_1",
+          "addr": "0x100000d10"
+        },
+        {
+          "name": "_walk_2",
+          "addr": "0x100000dcc"
+        },
+        {
+          "name": "_walk_3",
+          "addr": "0x100000e88"
+        },
+        {
+          "name": "_walk_4",
+          "addr": "0x100000f44"
+        },
+        {
+          "name": "_walk_5",
+          "addr": "0x100001000"
+        },
+        {
+          "name": "_walk_6",
+          "addr": "0x1000010bc"
+        },
+        {
+          "name": "_walk_7",
+          "addr": "0x100001178"
+        },
+        {
+          "name": "_walk_8",
+          "addr": "0x100001234"
+        },
+        {
+          "name": "_walk_9",
+          "addr": "0x1000012f0"
+        },
+        {
+          "name": "_walk_10",
+          "addr": "0x1000013ac"
+        },
+        {
+          "name": "_walk_11",
+          "addr": "0x100001468"
+        },
+        {
+          "name": "_walk_12",
+          "addr": "0x100001524"
+        },
+        {
+          "name": "_walk_13",
+          "addr": "0x1000015e0"
+        },
+        {
+          "name": "_walk_14",
+          "addr": "0x10000169c"
+        },
+        {
+          "name": "_walk_15",
+          "addr": "0x100001758"
+        },
+        {
+          "name": "_walk_16",
+          "addr": "0x100001814"
+        },
+        {
+          "name": "_walk_17",
+          "addr": "0x1000018d0"
+        },
+        {
+          "name": "_risky_concat",
+          "addr": "0x10000198c"
+        },
+        {
+          "name": "_find_token",
+          "addr": "0x1000019ec"
+        },
+        {
+          "name": "_free_list",
+          "addr": "0x100001a70"
+        },
+        {
+          "name": "___stack_chk_fail",
+          "addr": "0x100001bac"
+        }
+      ],
+      "strings_used": [
+        "client,server,record,nonce,frame,mac",
+        "walk0\u003d%u\\n",
+        "re",
+        "walk1\u003d%u\\n",
+        "walk2\u003d%u\\n",
+        "walk3\u003d%u\\n",
+        "walk4\u003d%u\\n",
+        "walk5\u003d%u\\n",
+        "walk6\u003d%u\\n",
+        "walk7\u003d%u\\n",
+        "walk8\u003d%u\\n",
+        "walk9\u003d%u\\n",
+        "walk10\u003d%u\\n",
+        "walk11\u003d%u\\n",
+        "walk12\u003d%u\\n",
+        "walk13\u003d%u\\n",
+        "walk14\u003d%u\\n",
+        "walk15\u003d%u\\n",
+        "walk16\u003d%u\\n",
+        "walk17\u003d%u\\n",
+        "none",
+        "joined\u003d%s idx\u003d%d\\n"
+      ],
+      "constants_used": [
+        {
+          "hex": "0x10",
+          "decimal": 16
+        },
+        {
+          "hex": "0x80",
+          "decimal": 128
+        },
+        {
+          "hex": "0x20",
+          "decimal": 32
+        },
+        {
+          "hex": "0x80",
+          "decimal": 128
+        },
+        {
+          "hex": "0x10",
+          "decimal": 16
+        },
+        {
+          "hex": "0x8",
+          "decimal": 8
+        },
+        {
+          "hex": "0x63",
+          "decimal": 99
+        },
+        {
+          "hex": "0x2",
+          "decimal": 2
+        },
+        {
+          "hex": "0x20",
+          "decimal": 32
+        }
+      ],
+      "globals_used": [
+        "PTR____stack_chk_guard_100004010",
+        "___stack_chk_guard",
+        "LAB_1000005ac",
+        "LAB_10000060c",
+        "LAB_1000005c0",
+        "LAB_1000005fc",
+        "LAB_10000063c",
+        "LAB_10000061c",
+        "LAB_1000008ec",
+        "LAB_1000008e0",
+        "LAB_1000008fc",
+        "LAB_100000920",
+        "LAB_100000914",
+        "LAB_100000930",
+        "LAB_10000095c",
+        "LAB_100000950",
+        "LAB_10000096c",
+        "LAB_1000009bc",
+        "LAB_1000009b8"
+      ],
+      "returns": [
+        {
+          "value": "*/ ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004010 - local_28)",
+          "conditional": false
+        },
+        {
+          "value": "0",
+          "conditional": false
+        }
+      ],
+      "decompiled_c": "\nundefined8 entry(int param_1,long param_2)\n\n{\n  ulong uVar1;\n  undefined8 uVar2;\n  char *local_1a8;\n  char *local_1a0;\n  char *local_190;\n  ulong local_170;\n  undefined8 local_160;\n  long local_158;\n  int local_150;\n  undefined4 local_14c;\n  char *local_148 [16];\n  undefined1 auStack_c8 [128];\n  undefined1 auStack_48 [32];\n  long local_28;\n  \n  local_28 \u003d *(long *)PTR____stack_chk_guard_100004010;\n  local_14c \u003d 0;\n  local_160 \u003d 0;\n  local_158 \u003d param_2;\n  local_150 \u003d param_1;\n  _memcpy(auStack_c8,\"client,server,record,nonce,frame,mac\",0x80);\n  uVar1 \u003d _parse_csv(auStack_c8,local_148,0x10);\n  for (local_170 \u003d 0; local_170 \u003c uVar1; local_170 \u003d local_170 + 1) {\n    _normalize(local_148[local_170]);\n    uVar2 \u003d _make_node(local_148[local_170],(int)local_170 + 1);\n    _append_node(\u0026local_160,uVar2);\n  }\n  if (1 \u003c local_150) {\n    uVar2 \u003d _make_node(*(undefined8 *)(local_158 + 8),99);\n    _append_node(\u0026local_160,uVar2);\n  }\n  _print_list(local_160);\n  _walk_0(local_160);\n  _printf(\"walk0\u003d%u\\n\");\n  _walk_1(local_160,\"re\");\n  _printf(\"walk1\u003d%u\\n\");\n  _walk_2(local_160,\"re\");\n  _printf(\"walk2\u003d%u\\n\");\n  _walk_3(local_160,\"re\");\n  _printf(\"walk3\u003d%u\\n\");\n  _walk_4(local_160,\"re\");\n  _printf(\"walk4\u003d%u\\n\");\n  _walk_5(local_160,\"re\");\n  _printf(\"walk5\u003d%u\\n\");\n  _walk_6(local_160,\"re\");\n  _printf(\"walk6\u003d%u\\n\");\n  _walk_7(local_160,\"re\");\n  _printf(\"walk7\u003d%u\\n\");\n  _walk_8(local_160,\"re\");\n  _printf(\"walk8\u003d%u\\n\");\n  _walk_9(local_160,\"re\");\n  _printf(\"walk9\u003d%u\\n\");\n  _walk_10(local_160,\"re\");\n  _printf(\"walk10\u003d%u\\n\");\n  _walk_11(local_160,\"re\");\n  _printf(\"walk11\u003d%u\\n\");\n  _walk_12(local_160,\"re\");\n  _printf(\"walk12\u003d%u\\n\");\n  _walk_13(local_160,\"re\");\n  _printf(\"walk13\u003d%u\\n\");\n  _walk_14(local_160,\"re\");\n  _printf(\"walk14\u003d%u\\n\");\n  _walk_15(local_160,\"re\");\n  _printf(\"walk15\u003d%u\\n\");\n  _walk_16(local_160,\"re\");\n  _printf(\"walk16\u003d%u\\n\");\n  _walk_17(local_160,\"re\");\n  _printf(\"walk17\u003d%u\\n\");\n  if (uVar1 \u003d\u003d 0) {\n    local_190 \u003d \"none\";\n  }\n  else {\n    local_190 \u003d local_148[0];\n  }\n  if (uVar1 \u003c 2) {\n    local_1a0 \u003d \"none\";\n  }\n  else {\n    local_1a0 \u003d local_148[1];\n  }\n  _risky_concat(auStack_48,0x20,local_190,local_1a0);\n  if (uVar1 \u003d\u003d 0) {\n    local_1a8 \u003d \"none\";\n  }\n  else {\n    local_1a8 \u003d local_148[0];\n  }\n  _find_token(local_1a8);\n  _printf(\"joined\u003d%s idx\u003d%d\\n\");\n  _free_list(local_160);\n  if (*(long *)PTR____stack_chk_guard_100004010 - local_28 !\u003d 0) {\n                    /* WARNING: Subroutine does not return */\n    ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004010 - local_28);\n  }\n  return 0;\n}\n\n"
+    }
+  ],
+  "symbols": [
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x100000548"
+    },
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x100000548"
+    },
+    {
+      "name": "_memcpy",
+      "kind": "function",
+      "addr": "0x100001bf4"
+    },
+    {
+      "name": "_parse_csv",
+      "kind": "function",
+      "addr": "0x1000009d0"
+    },
+    {
+      "name": "_normalize",
+      "kind": "function",
+      "addr": "0x100000a7c"
+    },
+    {
+      "name": "_make_node",
+      "kind": "function",
+      "addr": "0x100000b5c"
+    },
+    {
+      "name": "_append_node",
+      "kind": "function",
+      "addr": "0x100000ae8"
+    },
+    {
+      "name": "_print_list",
+      "kind": "function",
+      "addr": "0x100000be8"
+    },
+    {
+      "name": "_walk_0",
+      "kind": "function",
+      "addr": "0x100000c54"
+    },
+    {
+      "name": "_printf",
+      "kind": "function",
+      "addr": "0x100001c00"
+    },
+    {
+      "name": "_walk_1",
+      "kind": "function",
+      "addr": "0x100000d10"
+    },
+    {
+      "name": "_walk_2",
+      "kind": "function",
+      "addr": "0x100000dcc"
+    },
+    {
+      "name": "_walk_3",
+      "kind": "function",
+      "addr": "0x100000e88"
+    },
+    {
+      "name": "_walk_4",
+      "kind": "function",
+      "addr": "0x100000f44"
+    },
+    {
+      "name": "_walk_5",
+      "kind": "function",
+      "addr": "0x100001000"
+    },
+    {
+      "name": "_walk_6",
+      "kind": "function",
+      "addr": "0x1000010bc"
+    },
+    {
+      "name": "_walk_7",
+      "kind": "function",
+      "addr": "0x100001178"
+    },
+    {
+      "name": "_walk_8",
+      "kind": "function",
+      "addr": "0x100001234"
+    },
+    {
+      "name": "_walk_9",
+      "kind": "function",
+      "addr": "0x1000012f0"
+    },
+    {
+      "name": "_walk_10",
+      "kind": "function",
+      "addr": "0x1000013ac"
+    },
+    {
+      "name": "_walk_11",
+      "kind": "function",
+      "addr": "0x100001468"
+    },
+    {
+      "name": "_walk_12",
+      "kind": "function",
+      "addr": "0x100001524"
+    },
+    {
+      "name": "_walk_13",
+      "kind": "function",
+      "addr": "0x1000015e0"
+    },
+    {
+      "name": "_walk_14",
+      "kind": "function",
+      "addr": "0x10000169c"
+    },
+    {
+      "name": "_walk_15",
+      "kind": "function",
+      "addr": "0x100001758"
+    },
+    {
+      "name": "_walk_16",
+      "kind": "function",
+      "addr": "0x100001814"
+    },
+    {
+      "name": "_walk_17",
+      "kind": "function",
+      "addr": "0x1000018d0"
+    },
+    {
+      "name": "_risky_concat",
+      "kind": "function",
+      "addr": "0x10000198c"
+    },
+    {
+      "name": "_find_token",
+      "kind": "function",
+      "addr": "0x1000019ec"
+    },
+    {
+      "name": "_free_list",
+      "kind": "function",
+      "addr": "0x100001a70"
+    },
+    {
+      "name": "___stack_chk_fail",
+      "kind": "function",
+      "addr": "0x100001bac"
+    }
+  ]
+}

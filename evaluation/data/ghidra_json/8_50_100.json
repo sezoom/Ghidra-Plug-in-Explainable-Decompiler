@@ -1,0 +1,178 @@
+{
+  "meta": {
+    "binary": "8_50_100",
+    "arch": "AARCH64_64",
+    "base_addr": "0x100000000",
+    "hash": "sha256:a5124be4c964ce1575c02c0c9bb13f5a8605ec7bdeb49705597792860471470a",
+    "ghidra_version": "12.0.4"
+  },
+  "functions": [
+    {
+      "name": "entry",
+      "addr": "0x1000004b0",
+      "exists": true,
+      "signature": {
+        "ret": "undefined",
+        "params": []
+      },
+      "locals": [
+        {
+          "name": "iVar1",
+          "type": "int"
+        },
+        {
+          "name": "uVar2",
+          "type": "uint"
+        },
+        {
+          "name": "auStack_78",
+          "type": "undefined1 [16]"
+        },
+        {
+          "name": "auStack_68",
+          "type": "undefined1 [64]"
+        },
+        {
+          "name": "local_28",
+          "type": "undefined6"
+        },
+        {
+          "name": "uStack_22",
+          "type": "undefined2"
+        },
+        {
+          "name": "uStack_20",
+          "type": "undefined6"
+        },
+        {
+          "name": "local_18",
+          "type": "long"
+        }
+      ],
+      "calls": [
+        {
+          "name": "entry",
+          "addr": "0x1000004b0"
+        },
+        {
+          "name": "_memset",
+          "addr": "0x100000810"
+        },
+        {
+          "name": "_parse_packet",
+          "addr": "0x1000005b4"
+        },
+        {
+          "name": "_inspect_packet",
+          "addr": "0x100000718"
+        },
+        {
+          "name": "_fprintf",
+          "addr": "0x100000804"
+        },
+        {
+          "name": "___stack_chk_fail",
+          "addr": "0x1000007f8"
+        }
+      ],
+      "strings_used": [
+        "parse error %d\\n"
+      ],
+      "constants_used": [
+        {
+          "hex": "0x10",
+          "decimal": 16
+        },
+        {
+          "hex": "0x40",
+          "decimal": 64
+        },
+        {
+          "hex": "0x564908003301",
+          "decimal": 94871666832129
+        },
+        {
+          "hex": "0x301",
+          "decimal": 769
+        },
+        {
+          "hex": "0x40209090703",
+          "decimal": 4406788032259
+        },
+        {
+          "hex": "0x50",
+          "decimal": 80
+        },
+        {
+          "hex": "0xe",
+          "decimal": 14
+        },
+        {
+          "hex": "0x40",
+          "decimal": 64
+        }
+      ],
+      "globals_used": [
+        "PTR____stack_chk_guard_100004018",
+        "___stack_chk_guard",
+        "DAT_100000828",
+        "DAT_100000828+6",
+        "LAB_100000554",
+        "LAB_100000524",
+        "PTR____stderrp_100004020",
+        "___stderrp",
+        "LAB_10000057c",
+        "LAB_1000005a4",
+        "LAB_1000005a0"
+      ],
+      "returns": [
+        {
+          "value": "*/ ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004018 - local_18,pvVar3)",
+          "conditional": false
+        },
+        {
+          "value": "iVar1 !\u003d 0",
+          "conditional": false
+        }
+      ],
+      "decompiled_c": "\nbool entry(void)\n\n{\n  int iVar1;\n  uint uVar2;\n  void *pvVar3;\n  undefined1 auStack_78 [16];\n  undefined1 auStack_68 [64];\n  undefined6 local_28;\n  undefined2 uStack_22;\n  undefined6 uStack_20;\n  long local_18;\n  \n  local_18 \u003d *(long *)PTR____stack_chk_guard_100004018;\n  local_28 \u003d 0x564908003301;\n  uStack_22 \u003d 0x301;\n  uStack_20 \u003d 0x40209090703;\n  _memset(auStack_78,0,0x50);\n  iVar1 \u003d _parse_packet(\u0026local_28,0xe,auStack_78);\n  if (iVar1 \u003d\u003d 0) {\n    _inspect_packet();\n    pvVar3 \u003d _memset(auStack_68,0,0x40);\n  }\n  else {\n    uVar2 \u003d _fprintf(*(FILE **)PTR____stderrp_100004020,\"parse error %d\\n\");\n    pvVar3 \u003d (void *)(ulong)uVar2;\n  }\n  if (*(long *)PTR____stack_chk_guard_100004018 - local_18 !\u003d 0) {\n                    /* WARNING: Subroutine does not return */\n    ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004018 - local_18,pvVar3);\n  }\n  return iVar1 !\u003d 0;\n}\n\n"
+    }
+  ],
+  "symbols": [
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x1000004b0"
+    },
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x1000004b0"
+    },
+    {
+      "name": "_memset",
+      "kind": "function",
+      "addr": "0x100000810"
+    },
+    {
+      "name": "_parse_packet",
+      "kind": "function",
+      "addr": "0x1000005b4"
+    },
+    {
+      "name": "_inspect_packet",
+      "kind": "function",
+      "addr": "0x100000718"
+    },
+    {
+      "name": "_fprintf",
+      "kind": "function",
+      "addr": "0x100000804"
+    },
+    {
+      "name": "___stack_chk_fail",
+      "kind": "function",
+      "addr": "0x1000007f8"
+    }
+  ]
+}

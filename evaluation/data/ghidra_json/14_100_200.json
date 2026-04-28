@@ -1,0 +1,297 @@
+{
+  "meta": {
+    "binary": "14_100_200",
+    "arch": "AARCH64_64",
+    "base_addr": "0x100000000",
+    "hash": "sha256:e1cada5fb38458f689a4c07ef26d404aebf4678a0ec7312636d3e275bc457984",
+    "ghidra_version": "12.0.4"
+  },
+  "functions": [
+    {
+      "name": "entry",
+      "addr": "0x100000460",
+      "exists": true,
+      "signature": {
+        "ret": "undefined",
+        "params": []
+      },
+      "locals": [
+        {
+          "name": "iVar1",
+          "type": "int"
+        },
+        {
+          "name": "uVar2",
+          "type": "undefined8"
+        },
+        {
+          "name": "local_588",
+          "type": "ulong"
+        },
+        {
+          "name": "local_574",
+          "type": "uint"
+        },
+        {
+          "name": "auStack_560",
+          "type": "undefined1 [1032]"
+        },
+        {
+          "name": "local_158",
+          "type": "ulong"
+        },
+        {
+          "name": "local_150",
+          "type": "long"
+        },
+        {
+          "name": "local_144",
+          "type": "int"
+        },
+        {
+          "name": "local_140",
+          "type": "undefined4"
+        },
+        {
+          "name": "auStack_13c",
+          "type": "undefined1 [20]"
+        },
+        {
+          "name": "auStack_128",
+          "type": "undefined1 [256]"
+        },
+        {
+          "name": "local_28",
+          "type": "long"
+        }
+      ],
+      "calls": [
+        {
+          "name": "entry",
+          "addr": "0x100000460"
+        },
+        {
+          "name": "_ring_init",
+          "addr": "0x1000006a8"
+        },
+        {
+          "name": "_ring_push",
+          "addr": "0x1000006d8"
+        },
+        {
+          "name": "___snprintf_chk",
+          "addr": "0x100000bc4"
+        },
+        {
+          "name": "_blob_fill",
+          "addr": "0x10000076c"
+        },
+        {
+          "name": "_mask_blob",
+          "addr": "0x100000854"
+        },
+        {
+          "name": "_blob_print",
+          "addr": "0x1000008f8"
+        },
+        {
+          "name": "_blob_find",
+          "addr": "0x1000009b0"
+        },
+        {
+          "name": "_fprintf",
+          "addr": "0x100000bdc"
+        },
+        {
+          "name": "_memset",
+          "addr": "0x100000be8"
+        },
+        {
+          "name": "_export_blob",
+          "addr": "0x100000a40"
+        },
+        {
+          "name": "_printf",
+          "addr": "0x100000bf4"
+        },
+        {
+          "name": "___stack_chk_fail",
+          "addr": "0x100000bd0"
+        }
+      ],
+      "strings_used": [
+        "slot3",
+        "expand 32-byte secret",
+        "slot%u",
+        "not found: %s\\n",
+        "export\u003d%s\\n"
+      ],
+      "constants_used": [
+        {
+          "hex": "0x408",
+          "decimal": 1032
+        },
+        {
+          "hex": "0x14",
+          "decimal": 20
+        },
+        {
+          "hex": "0x100",
+          "decimal": 256
+        },
+        {
+          "hex": "0x2",
+          "decimal": 2
+        },
+        {
+          "hex": "0x8",
+          "decimal": 8
+        },
+        {
+          "hex": "0x3",
+          "decimal": 3
+        },
+        {
+          "hex": "0x20",
+          "decimal": 32
+        },
+        {
+          "hex": "0x10",
+          "decimal": 16
+        },
+        {
+          "hex": "0x6",
+          "decimal": 6
+        },
+        {
+          "hex": "0x14",
+          "decimal": 20
+        },
+        {
+          "hex": "0x1000",
+          "decimal": 4096
+        },
+        {
+          "hex": "0x9e3779b9",
+          "decimal": 2654435769
+        },
+        {
+          "hex": "0x80",
+          "decimal": 128
+        },
+        {
+          "hex": "0x100",
+          "decimal": 256
+        }
+      ],
+      "globals_used": [
+        "PTR____stack_chk_guard_100004018",
+        "___stack_chk_guard",
+        "LAB_1000004b8",
+        "LAB_1000004a4",
+        "LAB_1000004c8",
+        "LAB_1000004f4",
+        "LAB_1000004e0",
+        "LAB_100000504",
+        "LAB_10000051c",
+        "LAB_1000005a0",
+        "LAB_10000052c",
+        "LAB_100000590",
+        "LAB_1000005a8",
+        "LAB_1000005e4",
+        "LAB_1000005c0",
+        "LAB_1000005d4",
+        "LAB_10000064c",
+        "LAB_100000600",
+        "LAB_100000674",
+        "PTR____stderrp_100004020",
+        "___stderrp",
+        "LAB_100000694",
+        "LAB_100000690"
+      ],
+      "returns": [
+        {
+          "value": "*/ ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004018 - local_28,iVar1)",
+          "conditional": false
+        },
+        {
+          "value": "0",
+          "conditional": false
+        }
+      ],
+      "decompiled_c": "\n/* WARNING: Restarted to delay deadcode elimination for space: stack */\n\nundefined8 entry(int param_1,long param_2)\n\n{\n  int iVar1;\n  undefined8 uVar2;\n  char *local_5a8;\n  char *local_5a0;\n  ulong local_588;\n  uint local_574;\n  undefined1 auStack_560 [1032];\n  ulong local_158;\n  long local_150;\n  int local_144;\n  undefined4 local_140;\n  undefined1 auStack_13c [20];\n  undefined1 auStack_128 [256];\n  long local_28;\n  \n  local_28 \u003d *(long *)PTR____stack_chk_guard_100004018;\n  local_140 \u003d 0;\n  if (param_1 \u003c 2) {\n    local_5a0 \u003d \"slot3\";\n  }\n  else {\n    local_5a0 \u003d *(char **)(param_2 + 8);\n  }\n  if (param_1 \u003c 3) {\n    local_5a8 \u003d \"expand 32-byte secret\";\n  }\n  else {\n    local_5a8 \u003d *(char **)(param_2 + 0x10);\n  }\n  local_150 \u003d param_2;\n  local_144 \u003d param_1;\n  _ring_init(auStack_560);\n  for (local_574 \u003d 0; local_574 \u003c 6; local_574 \u003d local_574 + 1) {\n    uVar2 \u003d _ring_push(local_574 - 6,auStack_560);\n    ___snprintf_chk(auStack_13c,0x14,0,0x14,\"slot%u\");\n    _blob_fill(uVar2,auStack_13c,local_574 + 0x1000,0x9e3779b9);\n    _mask_blob(uVar2,local_5a8);\n  }\n  for (local_588 \u003d 0; local_588 \u003c local_158; local_588 \u003d local_588 + 1) {\n    _blob_print(auStack_560 + local_588 * 0x80);\n  }\n  iVar1 \u003d _blob_find(local_588 - local_158,auStack_560,local_5a0);\n  if (iVar1 \u003c 0) {\n    iVar1 \u003d _fprintf(*(FILE **)PTR____stderrp_100004020,\"not found: %s\\n\");\n  }\n  else {\n    _memset(auStack_128,0,0x100);\n    _export_blob(auStack_560 + (long)iVar1 * 0x80,auStack_128,0x100);\n    iVar1 \u003d _printf(\"export\u003d%s\\n\");\n  }\n  if (*(long *)PTR____stack_chk_guard_100004018 - local_28 !\u003d 0) {\n                    /* WARNING: Subroutine does not return */\n    ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004018 - local_28,iVar1);\n  }\n  return 0;\n}\n\n"
+    }
+  ],
+  "symbols": [
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x100000460"
+    },
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x100000460"
+    },
+    {
+      "name": "_ring_init",
+      "kind": "function",
+      "addr": "0x1000006a8"
+    },
+    {
+      "name": "_ring_push",
+      "kind": "function",
+      "addr": "0x1000006d8"
+    },
+    {
+      "name": "___snprintf_chk",
+      "kind": "function",
+      "addr": "0x100000bc4"
+    },
+    {
+      "name": "_blob_fill",
+      "kind": "function",
+      "addr": "0x10000076c"
+    },
+    {
+      "name": "_mask_blob",
+      "kind": "function",
+      "addr": "0x100000854"
+    },
+    {
+      "name": "_blob_print",
+      "kind": "function",
+      "addr": "0x1000008f8"
+    },
+    {
+      "name": "_blob_find",
+      "kind": "function",
+      "addr": "0x1000009b0"
+    },
+    {
+      "name": "_fprintf",
+      "kind": "function",
+      "addr": "0x100000bdc"
+    },
+    {
+      "name": "_memset",
+      "kind": "function",
+      "addr": "0x100000be8"
+    },
+    {
+      "name": "_export_blob",
+      "kind": "function",
+      "addr": "0x100000a40"
+    },
+    {
+      "name": "_printf",
+      "kind": "function",
+      "addr": "0x100000bf4"
+    },
+    {
+      "name": "___stack_chk_fail",
+      "kind": "function",
+      "addr": "0x100000bd0"
+    }
+  ]
+}

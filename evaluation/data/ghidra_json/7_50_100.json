@@ -1,0 +1,197 @@
+{
+  "meta": {
+    "binary": "7_50_100",
+    "arch": "AARCH64_64",
+    "base_addr": "0x100000000",
+    "hash": "sha256:29bfdf1705a0c87e1eed61a03242e42e2399d5bec4bf4ee399b236c927a0789e",
+    "ghidra_version": "12.0.4"
+  },
+  "functions": [
+    {
+      "name": "entry",
+      "addr": "0x1000004b0",
+      "exists": true,
+      "signature": {
+        "ret": "undefined",
+        "params": []
+      },
+      "locals": [
+        {
+          "name": "iVar1",
+          "type": "int"
+        },
+        {
+          "name": "local_70",
+          "type": "ulong"
+        },
+        {
+          "name": "local_54",
+          "type": "undefined4"
+        },
+        {
+          "name": "local_18",
+          "type": "long"
+        }
+      ],
+      "calls": [
+        {
+          "name": "entry",
+          "addr": "0x1000004b0"
+        },
+        {
+          "name": "_calloc",
+          "addr": "0x1000007e0"
+        },
+        {
+          "name": "_update_label",
+          "addr": "0x100000628"
+        },
+        {
+          "name": "_load_key_material",
+          "addr": "0x100000664"
+        },
+        {
+          "name": "_print_record",
+          "addr": "0x100000714"
+        },
+        {
+          "name": "___memset_chk",
+          "addr": "0x1000007bc"
+        },
+        {
+          "name": "_free",
+          "addr": "0x1000007ec"
+        },
+        {
+          "name": "___stack_chk_fail",
+          "addr": "0x1000007c8"
+        }
+      ],
+      "strings_used": [
+        "backup",
+        "transport",
+        "ephemeral",
+        "beta-material",
+        "alpha-secret",
+        "gamma-token"
+      ],
+      "constants_used": [
+        {
+          "hex": "0x4",
+          "decimal": 4
+        },
+        {
+          "hex": "0x3",
+          "decimal": 3
+        },
+        {
+          "hex": "0x2",
+          "decimal": 2
+        },
+        {
+          "hex": "0x40",
+          "decimal": 64
+        },
+        {
+          "hex": "0x0",
+          "decimal": 0
+        },
+        {
+          "hex": "0x18",
+          "decimal": 24
+        },
+        {
+          "hex": "0x20",
+          "decimal": 32
+        },
+        {
+          "hex": "0x38",
+          "decimal": 56
+        },
+        {
+          "hex": "0xc0",
+          "decimal": 192
+        },
+        {
+          "hex": "0xffffffffffffffff",
+          "decimal": -1
+        }
+      ],
+      "globals_used": [
+        "PTR____stack_chk_guard_100004010",
+        "___stack_chk_guard",
+        "PTR_s_transport_100004040",
+        "PTR_s_ephemeral_100004050",
+        "PTR_s_alpha-secret_100004058",
+        "PTR_s_gamma-token_100004068",
+        "LAB_100000530",
+        "LAB_100000524",
+        "LAB_1000005f0",
+        "LAB_100000538",
+        "LAB_1000005c8",
+        "LAB_10000054c",
+        "LAB_1000005b8",
+        "LAB_100000618",
+        "LAB_100000614"
+      ],
+      "returns": [
+        {
+          "value": "*/ ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004010 - local_18)",
+          "conditional": false
+        },
+        {
+          "value": "local_54",
+          "conditional": false
+        }
+      ],
+      "decompiled_c": "\nundefined4 entry(void)\n\n{\n  int iVar1;\n  void *pvVar2;\n  ulong local_70;\n  undefined4 local_54;\n  char *local_50 [4];\n  char *local_30 [3];\n  long local_18;\n  \n  local_18 \u003d *(long *)PTR____stack_chk_guard_100004010;\n  local_30[1] \u003d \"backup\";\n  local_30[0] \u003d \"transport\";\n  local_30[2] \u003d \"ephemeral\";\n  local_50[1] \u003d \"beta-material\";\n  local_50[0] \u003d \"alpha-secret\";\n  local_50[2] \u003d \"gamma-token\";\n  pvVar2 \u003d _calloc(3,0x40);\n  if (pvVar2 \u003d\u003d (void *)0x0) {\n    local_54 \u003d 1;\n  }\n  else {\n    for (local_70 \u003d 0; local_70 \u003c 3; local_70 \u003d local_70 + 1) {\n      _update_label((void *)((long)pvVar2 + local_70 * 0x40),local_30[local_70]);\n      iVar1 \u003d _load_key_material(local_50[local_70],(long)pvVar2 + local_70 * 0x40 + 0x18,0x20);\n      *(long *)((long)pvVar2 + local_70 * 0x40 + 0x38) \u003d (long)iVar1;\n      _print_record((void *)((long)pvVar2 + local_70 * 0x40));\n    }\n    ___memset_chk(pvVar2,0,0xc0,0xffffffffffffffff);\n    _free(pvVar2);\n    local_54 \u003d 0;\n  }\n  if (*(long *)PTR____stack_chk_guard_100004010 - local_18 !\u003d 0) {\n                    /* WARNING: Subroutine does not return */\n    ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004010 - local_18);\n  }\n  return local_54;\n}\n\n"
+    }
+  ],
+  "symbols": [
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x1000004b0"
+    },
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x1000004b0"
+    },
+    {
+      "name": "_calloc",
+      "kind": "function",
+      "addr": "0x1000007e0"
+    },
+    {
+      "name": "_update_label",
+      "kind": "function",
+      "addr": "0x100000628"
+    },
+    {
+      "name": "_load_key_material",
+      "kind": "function",
+      "addr": "0x100000664"
+    },
+    {
+      "name": "_print_record",
+      "kind": "function",
+      "addr": "0x100000714"
+    },
+    {
+      "name": "___memset_chk",
+      "kind": "function",
+      "addr": "0x1000007bc"
+    },
+    {
+      "name": "_free",
+      "kind": "function",
+      "addr": "0x1000007ec"
+    },
+    {
+      "name": "___stack_chk_fail",
+      "kind": "function",
+      "addr": "0x1000007c8"
+    }
+  ]
+}

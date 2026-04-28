@@ -1,0 +1,517 @@
+{
+  "meta": {
+    "binary": "23_300_400",
+    "arch": "AARCH64_64",
+    "base_addr": "0x100000000",
+    "hash": "sha256:aef6512b58768778251f8643de0f3b87d9a81c37d7c1f4b1d93a5ee057148e88",
+    "ghidra_version": "12.0.4"
+  },
+  "functions": [
+    {
+      "name": "entry",
+      "addr": "0x1000004b0",
+      "exists": true,
+      "signature": {
+        "ret": "undefined",
+        "params": []
+      },
+      "locals": [
+        {
+          "name": "auStack_178",
+          "type": "undefined1 [168]"
+        },
+        {
+          "name": "auStack_d0",
+          "type": "undefined1 [32]"
+        },
+        {
+          "name": "auStack_b0",
+          "type": "undefined1 [32]"
+        },
+        {
+          "name": "auStack_90",
+          "type": "undefined1 [96]"
+        },
+        {
+          "name": "local_30",
+          "type": "undefined8"
+        },
+        {
+          "name": "local_28",
+          "type": "long"
+        }
+      ],
+      "calls": [
+        {
+          "name": "entry",
+          "addr": "0x1000004b0"
+        },
+        {
+          "name": "_init_record",
+          "addr": "0x100000a30"
+        },
+        {
+          "name": "_insecure_prompt",
+          "addr": "0x100000ac4"
+        },
+        {
+          "name": "_scramble",
+          "addr": "0x100000b70"
+        },
+        {
+          "name": "_xor_region",
+          "addr": "0x100000c98"
+        },
+        {
+          "name": "_write_record",
+          "addr": "0x100000d08"
+        },
+        {
+          "name": "_memset",
+          "addr": "0x100002290"
+        },
+        {
+          "name": "_read_record",
+          "addr": "0x100000d7c"
+        },
+        {
+          "name": "_score_0",
+          "addr": "0x100000df0"
+        },
+        {
+          "name": "_printf",
+          "addr": "0x10000229c"
+        },
+        {
+          "name": "_score_1",
+          "addr": "0x100000eb0"
+        },
+        {
+          "name": "_score_2",
+          "addr": "0x100000f70"
+        },
+        {
+          "name": "_score_3",
+          "addr": "0x100001030"
+        },
+        {
+          "name": "_score_4",
+          "addr": "0x1000010f0"
+        },
+        {
+          "name": "_score_5",
+          "addr": "0x1000011b0"
+        },
+        {
+          "name": "_score_6",
+          "addr": "0x100001270"
+        },
+        {
+          "name": "_score_7",
+          "addr": "0x100001330"
+        },
+        {
+          "name": "_score_8",
+          "addr": "0x1000013f0"
+        },
+        {
+          "name": "_score_9",
+          "addr": "0x1000014b0"
+        },
+        {
+          "name": "_score_10",
+          "addr": "0x100001570"
+        },
+        {
+          "name": "_score_11",
+          "addr": "0x100001630"
+        },
+        {
+          "name": "_score_12",
+          "addr": "0x1000016f0"
+        },
+        {
+          "name": "_score_13",
+          "addr": "0x1000017b0"
+        },
+        {
+          "name": "_score_14",
+          "addr": "0x100001870"
+        },
+        {
+          "name": "_score_15",
+          "addr": "0x100001930"
+        },
+        {
+          "name": "_score_16",
+          "addr": "0x1000019f0"
+        },
+        {
+          "name": "_score_17",
+          "addr": "0x100001ab0"
+        },
+        {
+          "name": "_score_18",
+          "addr": "0x100001b70"
+        },
+        {
+          "name": "_score_19",
+          "addr": "0x100001c30"
+        },
+        {
+          "name": "_score_20",
+          "addr": "0x100001cf0"
+        },
+        {
+          "name": "_score_21",
+          "addr": "0x100001db0"
+        },
+        {
+          "name": "_score_22",
+          "addr": "0x100001e70"
+        },
+        {
+          "name": "_score_23",
+          "addr": "0x100001f30"
+        },
+        {
+          "name": "_score_24",
+          "addr": "0x100001ff0"
+        },
+        {
+          "name": "_score_25",
+          "addr": "0x1000020b0"
+        },
+        {
+          "name": "_print_blob",
+          "addr": "0x100002170"
+        },
+        {
+          "name": "___stack_chk_fail",
+          "addr": "0x100002254"
+        }
+      ],
+      "strings_used": [
+        "/mnt/data/c_samples/sample3_record.bin",
+        "alice",
+        "hunter2",
+        "tag0",
+        "score0\u003d%u\\n",
+        "tag1",
+        "score1\u003d%u\\n",
+        "tag2",
+        "score2\u003d%u\\n",
+        "tag3",
+        "score3\u003d%u\\n",
+        "tag4",
+        "score4\u003d%u\\n",
+        "tag5",
+        "score5\u003d%u\\n",
+        "tag6",
+        "score6\u003d%u\\n",
+        "tag7",
+        "score7\u003d%u\\n",
+        "tag8",
+        "score8\u003d%u\\n",
+        "tag9",
+        "score9\u003d%u\\n",
+        "tag10",
+        "score10\u003d%u\\n",
+        "tag11",
+        "score11\u003d%u\\n",
+        "tag12",
+        "score12\u003d%u\\n",
+        "tag13",
+        "score13\u003d%u\\n",
+        "tag14",
+        "score14\u003d%u\\n",
+        "tag15",
+        "score15\u003d%u\\n",
+        "tag16",
+        "score16\u003d%u\\n",
+        "tag17",
+        "score17\u003d%u\\n",
+        "tag18",
+        "score18\u003d%u\\n",
+        "tag19",
+        "score19\u003d%u\\n",
+        "tag20",
+        "score20\u003d%u\\n",
+        "tag21",
+        "score21\u003d%u\\n",
+        "tag22",
+        "score22\u003d%u\\n",
+        "tag23",
+        "score23\u003d%u\\n",
+        "tag24",
+        "score24\u003d%u\\n",
+        "tag25",
+        "score25\u003d%u\\n"
+      ],
+      "constants_used": [
+        {
+          "hex": "0xa8",
+          "decimal": 168
+        },
+        {
+          "hex": "0x20",
+          "decimal": 32
+        },
+        {
+          "hex": "0x60",
+          "decimal": 96
+        },
+        {
+          "hex": "0x2",
+          "decimal": 2
+        },
+        {
+          "hex": "0x8",
+          "decimal": 8
+        },
+        {
+          "hex": "0x3",
+          "decimal": 3
+        },
+        {
+          "hex": "0x10",
+          "decimal": 16
+        },
+        {
+          "hex": "0x4",
+          "decimal": 4
+        },
+        {
+          "hex": "0x18",
+          "decimal": 24
+        },
+        {
+          "hex": "0x6c",
+          "decimal": 108
+        },
+        {
+          "hex": "0xa8",
+          "decimal": 168
+        }
+      ],
+      "globals_used": [
+        "PTR____stack_chk_guard_100004020",
+        "___stack_chk_guard",
+        "LAB_1000004fc",
+        "LAB_1000004ec",
+        "LAB_10000050c",
+        "LAB_100000534",
+        "LAB_100000524",
+        "LAB_100000544",
+        "LAB_10000056c",
+        "LAB_10000055c",
+        "LAB_10000057c",
+        "LAB_100000a1c",
+        "LAB_100000a18"
+      ],
+      "returns": [
+        {
+          "value": "*/ ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004020 - local_28)",
+          "conditional": false
+        },
+        {
+          "value": "0",
+          "conditional": false
+        }
+      ],
+      "decompiled_c": "\nundefined8 entry(int param_1,long param_2)\n\n{\n  char *local_1b0;\n  char *local_1a0;\n  char *local_198;\n  undefined1 auStack_178 [168];\n  undefined1 auStack_d0 [32];\n  undefined1 auStack_b0 [32];\n  undefined1 auStack_90 [96];\n  undefined8 local_30;\n  long local_28;\n  \n  local_28 \u003d *(long *)PTR____stack_chk_guard_100004020;\n  if (param_1 \u003c 2) {\n    local_198 \u003d \"/mnt/data/c_samples/sample3_record.bin\";\n  }\n  else {\n    local_198 \u003d *(char **)(param_2 + 8);\n  }\n  if (param_1 \u003c 3) {\n    local_1a0 \u003d \"alice\";\n  }\n  else {\n    local_1a0 \u003d *(char **)(param_2 + 0x10);\n  }\n  if (param_1 \u003c 4) {\n    local_1b0 \u003d \"hunter2\";\n  }\n  else {\n    local_1b0 \u003d *(char **)(param_2 + 0x18);\n  }\n  _init_record(auStack_d0,local_1a0,local_1b0);\n  _insecure_prompt(auStack_d0,auStack_b0);\n  _scramble(auStack_d0);\n  _xor_region(auStack_90,local_30,0x6c);\n  _write_record(local_198,auStack_d0);\n  _memset(auStack_178,0,0xa8);\n  _read_record(local_198,auStack_178);\n  _score_0(auStack_178,\"tag0\");\n  _printf(\"score0\u003d%u\\n\");\n  _score_1(auStack_178,\"tag1\");\n  _printf(\"score1\u003d%u\\n\");\n  _score_2(auStack_178,\"tag2\");\n  _printf(\"score2\u003d%u\\n\");\n  _score_3(auStack_178,\"tag3\");\n  _printf(\"score3\u003d%u\\n\");\n  _score_4(auStack_178,\"tag4\");\n  _printf(\"score4\u003d%u\\n\");\n  _score_5(auStack_178,\"tag5\");\n  _printf(\"score5\u003d%u\\n\");\n  _score_6(auStack_178,\"tag6\");\n  _printf(\"score6\u003d%u\\n\");\n  _score_7(auStack_178,\"tag7\");\n  _printf(\"score7\u003d%u\\n\");\n  _score_8(auStack_178,\"tag8\");\n  _printf(\"score8\u003d%u\\n\");\n  _score_9(auStack_178,\"tag9\");\n  _printf(\"score9\u003d%u\\n\");\n  _score_10(auStack_178,\"tag10\");\n  _printf(\"score10\u003d%u\\n\");\n  _score_11(auStack_178,\"tag11\");\n  _printf(\"score11\u003d%u\\n\");\n  _score_12(auStack_178,\"tag12\");\n  _printf(\"score12\u003d%u\\n\");\n  _score_13(auStack_178,\"tag13\");\n  _printf(\"score13\u003d%u\\n\");\n  _score_14(auStack_178,\"tag14\");\n  _printf(\"score14\u003d%u\\n\");\n  _score_15(auStack_178,\"tag15\");\n  _printf(\"score15\u003d%u\\n\");\n  _score_16(auStack_178,\"tag16\");\n  _printf(\"score16\u003d%u\\n\");\n  _score_17(auStack_178,\"tag17\");\n  _printf(\"score17\u003d%u\\n\");\n  _score_18(auStack_178,\"tag18\");\n  _printf(\"score18\u003d%u\\n\");\n  _score_19(auStack_178,\"tag19\");\n  _printf(\"score19\u003d%u\\n\");\n  _score_20(auStack_178,\"tag20\");\n  _printf(\"score20\u003d%u\\n\");\n  _score_21(auStack_178,\"tag21\");\n  _printf(\"score21\u003d%u\\n\");\n  _score_22(auStack_178,\"tag22\");\n  _printf(\"score22\u003d%u\\n\");\n  _score_23(auStack_178,\"tag23\");\n  _printf(\"score23\u003d%u\\n\");\n  _score_24(auStack_178,\"tag24\");\n  _printf(\"score24\u003d%u\\n\");\n  _score_25(auStack_178,\"tag25\");\n  _printf(\"score25\u003d%u\\n\");\n  _print_blob(auStack_178);\n  if (*(long *)PTR____stack_chk_guard_100004020 - local_28 !\u003d 0) {\n                    /* WARNING: Subroutine does not return */\n    ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004020 - local_28);\n  }\n  return 0;\n}\n\n"
+    }
+  ],
+  "symbols": [
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x1000004b0"
+    },
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x1000004b0"
+    },
+    {
+      "name": "_init_record",
+      "kind": "function",
+      "addr": "0x100000a30"
+    },
+    {
+      "name": "_insecure_prompt",
+      "kind": "function",
+      "addr": "0x100000ac4"
+    },
+    {
+      "name": "_scramble",
+      "kind": "function",
+      "addr": "0x100000b70"
+    },
+    {
+      "name": "_xor_region",
+      "kind": "function",
+      "addr": "0x100000c98"
+    },
+    {
+      "name": "_write_record",
+      "kind": "function",
+      "addr": "0x100000d08"
+    },
+    {
+      "name": "_memset",
+      "kind": "function",
+      "addr": "0x100002290"
+    },
+    {
+      "name": "_read_record",
+      "kind": "function",
+      "addr": "0x100000d7c"
+    },
+    {
+      "name": "_score_0",
+      "kind": "function",
+      "addr": "0x100000df0"
+    },
+    {
+      "name": "_printf",
+      "kind": "function",
+      "addr": "0x10000229c"
+    },
+    {
+      "name": "_score_1",
+      "kind": "function",
+      "addr": "0x100000eb0"
+    },
+    {
+      "name": "_score_2",
+      "kind": "function",
+      "addr": "0x100000f70"
+    },
+    {
+      "name": "_score_3",
+      "kind": "function",
+      "addr": "0x100001030"
+    },
+    {
+      "name": "_score_4",
+      "kind": "function",
+      "addr": "0x1000010f0"
+    },
+    {
+      "name": "_score_5",
+      "kind": "function",
+      "addr": "0x1000011b0"
+    },
+    {
+      "name": "_score_6",
+      "kind": "function",
+      "addr": "0x100001270"
+    },
+    {
+      "name": "_score_7",
+      "kind": "function",
+      "addr": "0x100001330"
+    },
+    {
+      "name": "_score_8",
+      "kind": "function",
+      "addr": "0x1000013f0"
+    },
+    {
+      "name": "_score_9",
+      "kind": "function",
+      "addr": "0x1000014b0"
+    },
+    {
+      "name": "_score_10",
+      "kind": "function",
+      "addr": "0x100001570"
+    },
+    {
+      "name": "_score_11",
+      "kind": "function",
+      "addr": "0x100001630"
+    },
+    {
+      "name": "_score_12",
+      "kind": "function",
+      "addr": "0x1000016f0"
+    },
+    {
+      "name": "_score_13",
+      "kind": "function",
+      "addr": "0x1000017b0"
+    },
+    {
+      "name": "_score_14",
+      "kind": "function",
+      "addr": "0x100001870"
+    },
+    {
+      "name": "_score_15",
+      "kind": "function",
+      "addr": "0x100001930"
+    },
+    {
+      "name": "_score_16",
+      "kind": "function",
+      "addr": "0x1000019f0"
+    },
+    {
+      "name": "_score_17",
+      "kind": "function",
+      "addr": "0x100001ab0"
+    },
+    {
+      "name": "_score_18",
+      "kind": "function",
+      "addr": "0x100001b70"
+    },
+    {
+      "name": "_score_19",
+      "kind": "function",
+      "addr": "0x100001c30"
+    },
+    {
+      "name": "_score_20",
+      "kind": "function",
+      "addr": "0x100001cf0"
+    },
+    {
+      "name": "_score_21",
+      "kind": "function",
+      "addr": "0x100001db0"
+    },
+    {
+      "name": "_score_22",
+      "kind": "function",
+      "addr": "0x100001e70"
+    },
+    {
+      "name": "_score_23",
+      "kind": "function",
+      "addr": "0x100001f30"
+    },
+    {
+      "name": "_score_24",
+      "kind": "function",
+      "addr": "0x100001ff0"
+    },
+    {
+      "name": "_score_25",
+      "kind": "function",
+      "addr": "0x1000020b0"
+    },
+    {
+      "name": "_print_blob",
+      "kind": "function",
+      "addr": "0x100002170"
+    },
+    {
+      "name": "___stack_chk_fail",
+      "kind": "function",
+      "addr": "0x100002254"
+    }
+  ]
+}
