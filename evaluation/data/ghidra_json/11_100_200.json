@@ -1,0 +1,282 @@
+{
+  "meta": {
+    "binary": "11_100_200",
+    "arch": "AARCH64_64",
+    "base_addr": "0x100000000",
+    "hash": "sha256:9d7e5414af41831116d4dec807d1017ab8b03553b8044fabb22b169f57b53c54",
+    "ghidra_version": "12.0.4"
+  },
+  "functions": [
+    {
+      "name": "entry",
+      "addr": "0x100000460",
+      "exists": true,
+      "signature": {
+        "ret": "undefined",
+        "params": []
+      },
+      "locals": [
+        {
+          "name": "iVar1",
+          "type": "int"
+        },
+        {
+          "name": "uVar2",
+          "type": "uint"
+        },
+        {
+          "name": "uVar3",
+          "type": "ulong"
+        },
+        {
+          "name": "local_880",
+          "type": "ulong"
+        },
+        {
+          "name": "local_864",
+          "type": "int"
+        },
+        {
+          "name": "local_860",
+          "type": "ulong"
+        },
+        {
+          "name": "local_858",
+          "type": "long"
+        },
+        {
+          "name": "local_850",
+          "type": "int"
+        },
+        {
+          "name": "local_84c",
+          "type": "undefined4"
+        },
+        {
+          "name": "local_848",
+          "type": "char [32]"
+        },
+        {
+          "name": "auStack_828",
+          "type": "undefined1 [24]"
+        },
+        {
+          "name": "auStack_810",
+          "type": "undefined1 [32]"
+        },
+        {
+          "name": "auStack_7f0",
+          "type": "undefined8 [121]"
+        },
+        {
+          "name": "auStack_428",
+          "type": "undefined1 [1024]"
+        },
+        {
+          "name": "local_28",
+          "type": "long"
+        }
+      ],
+      "calls": [
+        {
+          "name": "entry",
+          "addr": "0x100000460"
+        },
+        {
+          "name": "_bzero",
+          "addr": "0x100000bb4"
+        },
+        {
+          "name": "_load_defaults",
+          "addr": "0x10000067c"
+        },
+        {
+          "name": "_strtoul",
+          "addr": "0x100000c14"
+        },
+        {
+          "name": "_init_table",
+          "addr": "0x100000754"
+        },
+        {
+          "name": "_find_item",
+          "addr": "0x1000007bc"
+        },
+        {
+          "name": "_fprintf",
+          "addr": "0x100000bc0"
+        },
+        {
+          "name": "_process_record",
+          "addr": "0x100000848"
+        },
+        {
+          "name": "___memcpy_chk",
+          "addr": "0x100000b90"
+        },
+        {
+          "name": "_xor_stream",
+          "addr": "0x10000091c"
+        },
+        {
+          "name": "_puts",
+          "addr": "0x100000be4"
+        },
+        {
+          "name": "___stack_chk_fail",
+          "addr": "0x100000b9c"
+        }
+      ],
+      "strings_used": [
+        "alpha",
+        "missing key: %s\\n",
+        "leading byte became zero"
+      ],
+      "constants_used": [
+        {
+          "hex": "0x20",
+          "decimal": 32
+        },
+        {
+          "hex": "0x18",
+          "decimal": 24
+        },
+        {
+          "hex": "0x79",
+          "decimal": 121
+        },
+        {
+          "hex": "0x400",
+          "decimal": 1024
+        },
+        {
+          "hex": "0x12345678",
+          "decimal": 305419896
+        },
+        {
+          "hex": "0x400",
+          "decimal": 1024
+        },
+        {
+          "hex": "0x8",
+          "decimal": 8
+        },
+        {
+          "hex": "0x10",
+          "decimal": 16
+        },
+        {
+          "hex": "0x0",
+          "decimal": 0
+        },
+        {
+          "hex": "0x40",
+          "decimal": 64
+        },
+        {
+          "hex": "0x20",
+          "decimal": 32
+        }
+      ],
+      "globals_used": [
+        "PTR____stack_chk_guard_100004010",
+        "___stack_chk_guard",
+        "LAB_1000004ec",
+        "LAB_1000004dc",
+        "LAB_10000051c",
+        "LAB_1000004fc",
+        "LAB_100000578",
+        "LAB_100000548",
+        "PTR____stderrp_100004018",
+        "___stderrp",
+        "LAB_100000640",
+        "LAB_100000598",
+        "LAB_100000638",
+        "LAB_1000005ac",
+        "LAB_100000624",
+        "LAB_100000614",
+        "LAB_100000628",
+        "LAB_100000668",
+        "LAB_100000664"
+      ],
+      "returns": [
+        {
+          "value": "*/ ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004010 - local_28,uVar3)",
+          "conditional": false
+        },
+        {
+          "value": "local_84c",
+          "conditional": false
+        }
+      ],
+      "decompiled_c": "\nundefined4 entry(int param_1,long param_2)\n\n{\n  int iVar1;\n  uint uVar2;\n  ulong uVar3;\n  ulong local_880;\n  char *local_870;\n  int local_864;\n  ulong local_860;\n  long local_858;\n  int local_850;\n  undefined4 local_84c;\n  char local_848 [32];\n  undefined1 auStack_828 [24];\n  undefined1 auStack_810 [32];\n  undefined8 auStack_7f0 [121];\n  undefined1 auStack_428 [1024];\n  long local_28;\n  \n  local_28 \u003d *(long *)PTR____stack_chk_guard_100004010;\n  local_84c \u003d 0;\n  local_860 \u003d 0;\n  local_864 \u003d 0x12345678;\n  local_870 \u003d \"alpha\";\n  local_858 \u003d param_2;\n  local_850 \u003d param_1;\n  _bzero(auStack_828,0x400);\n  _load_defaults(auStack_828,\u0026local_860);\n  if (1 \u003c local_850) {\n    local_870 \u003d *(char **)(local_858 + 8);\n  }\n  uVar3 \u003d (ulong)(local_850 - 2U);\n  if (local_850 - 2U !\u003d 0 \u0026\u0026 1 \u003c local_850) {\n    uVar3 \u003d _strtoul(*(char **)(local_858 + 0x10),(char **)0x0,0);\n    local_864 \u003d (int)uVar3;\n  }\n  _init_table(uVar3,auStack_428,local_864);\n  iVar1 \u003d _find_item(auStack_828,local_860,local_870);\n  if (iVar1 \u003c 0) {\n    uVar2 \u003d _fprintf(*(FILE **)PTR____stderrp_100004018,\"missing key: %s\\n\");\n    uVar3 \u003d (ulong)uVar2;\n    local_84c \u003d 1;\n  }\n  else {\n    uVar3 \u003d _process_record(auStack_828 + (long)iVar1 * 0x40,auStack_428,local_864);\n    for (local_880 \u003d 0; local_880 \u003c local_860; local_880 \u003d local_880 + 1) {\n      ___memcpy_chk(local_848,auStack_810 + local_880 * 0x40,auStack_7f0[local_880 * 8],0x20);\n      uVar3 \u003d _xor_stream(local_848,auStack_7f0[local_880 * 8],auStack_428,\n                          (int)local_880 + local_864);\n      if (local_848[0] \u003d\u003d \u0027\\0\u0027) {\n        uVar2 \u003d _puts(\"leading byte became zero\");\n        uVar3 \u003d (ulong)uVar2;\n      }\n    }\n    local_84c \u003d 0;\n  }\n  if (*(long *)PTR____stack_chk_guard_100004010 - local_28 !\u003d 0) {\n                    /* WARNING: Subroutine does not return */\n    ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004010 - local_28,uVar3);\n  }\n  return local_84c;\n}\n\n"
+    }
+  ],
+  "symbols": [
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x100000460"
+    },
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x100000460"
+    },
+    {
+      "name": "_bzero",
+      "kind": "function",
+      "addr": "0x100000bb4"
+    },
+    {
+      "name": "_load_defaults",
+      "kind": "function",
+      "addr": "0x10000067c"
+    },
+    {
+      "name": "_strtoul",
+      "kind": "function",
+      "addr": "0x100000c14"
+    },
+    {
+      "name": "_init_table",
+      "kind": "function",
+      "addr": "0x100000754"
+    },
+    {
+      "name": "_find_item",
+      "kind": "function",
+      "addr": "0x1000007bc"
+    },
+    {
+      "name": "_fprintf",
+      "kind": "function",
+      "addr": "0x100000bc0"
+    },
+    {
+      "name": "_process_record",
+      "kind": "function",
+      "addr": "0x100000848"
+    },
+    {
+      "name": "___memcpy_chk",
+      "kind": "function",
+      "addr": "0x100000b90"
+    },
+    {
+      "name": "_xor_stream",
+      "kind": "function",
+      "addr": "0x10000091c"
+    },
+    {
+      "name": "_puts",
+      "kind": "function",
+      "addr": "0x100000be4"
+    },
+    {
+      "name": "___stack_chk_fail",
+      "kind": "function",
+      "addr": "0x100000b9c"
+    }
+  ]
+}

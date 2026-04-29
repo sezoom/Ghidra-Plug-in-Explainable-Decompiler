@@ -1,0 +1,67 @@
+{
+  "meta": {
+    "binary": "2_0_50",
+    "arch": "AARCH64_64",
+    "base_addr": "0x100000000",
+    "hash": "sha256:49b9a7c1749cf8c2c6163b903d293a181deb01c619b6b9190df164520691afb6",
+    "ghidra_version": "12.0.4"
+  },
+  "functions": [
+    {
+      "name": "entry",
+      "addr": "0x100000460",
+      "exists": true,
+      "signature": {
+        "ret": "undefined",
+        "params": []
+      },
+      "locals": [],
+      "calls": [
+        {
+          "name": "entry",
+          "addr": "0x100000460"
+        },
+        {
+          "name": "_puts",
+          "addr": "0x100000544"
+        },
+        {
+          "name": "_load_message",
+          "addr": "0x1000004a8"
+        }
+      ],
+      "strings_used": ["copying message", "very_long_secret"],
+      "constants_used": [],
+      "globals_used": [],
+      "returns": [
+        {
+          "value": "0",
+          "conditional": false
+        }
+      ],
+      "decompiled_c": "\nundefined4 entry(void)\n\n{\n  _puts(\"copying message\");\n  _load_message(\"very_long_secret\");\n  return 0;\n}\n\n"
+    }
+  ],
+  "symbols": [
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x100000460"
+    },
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x100000460"
+    },
+    {
+      "name": "_puts",
+      "kind": "function",
+      "addr": "0x100000544"
+    },
+    {
+      "name": "_load_message",
+      "kind": "function",
+      "addr": "0x1000004a8"
+    }
+  ]
+}

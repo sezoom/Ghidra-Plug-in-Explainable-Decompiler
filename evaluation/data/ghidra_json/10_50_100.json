@@ -1,0 +1,193 @@
+{
+  "meta": {
+    "binary": "10_50_100",
+    "arch": "AARCH64_64",
+    "base_addr": "0x100000000",
+    "hash": "sha256:5bc5badecaa7d7340a4334e8a7b0ae4778ce5a4dfae1d33df82b396c8e844d75",
+    "ghidra_version": "12.0.4"
+  },
+  "functions": [
+    {
+      "name": "entry",
+      "addr": "0x100000460",
+      "exists": true,
+      "signature": {
+        "ret": "undefined",
+        "params": []
+      },
+      "locals": [
+        {
+          "name": "sVar2",
+          "type": "size_t"
+        },
+        {
+          "name": "auStack_78",
+          "type": "undefined1 [96]"
+        },
+        {
+          "name": "local_18",
+          "type": "long"
+        }
+      ],
+      "calls": [
+        {
+          "name": "entry",
+          "addr": "0x100000460"
+        },
+        {
+          "name": "_join_fields",
+          "addr": "0x1000005a0"
+        },
+        {
+          "name": "_strlen",
+          "addr": "0x1000007f0"
+        },
+        {
+          "name": "_memset",
+          "addr": "0x1000007d8"
+        },
+        {
+          "name": "_xor_region",
+          "addr": "0x100000668"
+        },
+        {
+          "name": "_printf",
+          "addr": "0x1000007e4"
+        },
+        {
+          "name": "_hexdump",
+          "addr": "0x1000006d4"
+        },
+        {
+          "name": "___memset_chk",
+          "addr": "0x100000790"
+        },
+        {
+          "name": "_free",
+          "addr": "0x1000007c0"
+        },
+        {
+          "name": "_fprintf",
+          "addr": "0x1000007b4"
+        },
+        {
+          "name": "___stack_chk_fail",
+          "addr": "0x1000007a8"
+        }
+      ],
+      "strings_used": [
+        "nonce",
+        "counter",
+        "payload",
+        "raw\u003d%s\\n",
+        "join failed\\n"
+      ],
+      "constants_used": [
+        {
+          "hex": "0x60",
+          "decimal": 96
+        },
+        {
+          "hex": "0x0",
+          "decimal": 0
+        },
+        {
+          "hex": "0x60",
+          "decimal": 96
+        },
+        {
+          "hex": "0x5c",
+          "decimal": 92
+        },
+        {
+          "hex": "0xffffffffffffffff",
+          "decimal": -1
+        }
+      ],
+      "globals_used": [
+        "PTR____stack_chk_guard_100004018",
+        "___stack_chk_guard",
+        "LAB_1000004e8",
+        "LAB_1000004c4",
+        "PTR____stderrp_100004020",
+        "___stderrp",
+        "LAB_100000568",
+        "LAB_100000590",
+        "LAB_10000058c"
+      ],
+      "returns": [
+        {
+          "value": "*/ ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004018 - local_18)",
+          "conditional": false
+        },
+        {
+          "value": "pcVar1 \u003d\u003d (char *)0x0",
+          "conditional": false
+        }
+      ],
+      "decompiled_c": "\nbool entry(void)\n\n{\n  char *pcVar1;\n  size_t sVar2;\n  undefined1 auStack_78 [96];\n  long local_18;\n  \n  local_18 \u003d *(long *)PTR____stack_chk_guard_100004018;\n  pcVar1 \u003d (char *)_join_fields(\"nonce\",\"counter\",\"payload\");\n  if (pcVar1 !\u003d (char *)0x0) {\n    sVar2 \u003d _strlen(pcVar1);\n    _memset(auStack_78,0,0x60);\n    _xor_region(auStack_78,pcVar1,sVar2,0x5c);\n    _printf(\"raw\u003d%s\\n\");\n    _hexdump(auStack_78,sVar2);\n    ___memset_chk(pcVar1,0,sVar2,0xffffffffffffffff);\n    _free(pcVar1);\n  }\n  else {\n    _fprintf(*(FILE **)PTR____stderrp_100004020,\"join failed\\n\");\n  }\n  if (*(long *)PTR____stack_chk_guard_100004018 - local_18 !\u003d 0) {\n                    /* WARNING: Subroutine does not return */\n    ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004018 - local_18);\n  }\n  return pcVar1 \u003d\u003d (char *)0x0;\n}\n\n"
+    }
+  ],
+  "symbols": [
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x100000460"
+    },
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x100000460"
+    },
+    {
+      "name": "_join_fields",
+      "kind": "function",
+      "addr": "0x1000005a0"
+    },
+    {
+      "name": "_strlen",
+      "kind": "function",
+      "addr": "0x1000007f0"
+    },
+    {
+      "name": "_memset",
+      "kind": "function",
+      "addr": "0x1000007d8"
+    },
+    {
+      "name": "_xor_region",
+      "kind": "function",
+      "addr": "0x100000668"
+    },
+    {
+      "name": "_printf",
+      "kind": "function",
+      "addr": "0x1000007e4"
+    },
+    {
+      "name": "_hexdump",
+      "kind": "function",
+      "addr": "0x1000006d4"
+    },
+    {
+      "name": "___memset_chk",
+      "kind": "function",
+      "addr": "0x100000790"
+    },
+    {
+      "name": "_free",
+      "kind": "function",
+      "addr": "0x1000007c0"
+    },
+    {
+      "name": "_fprintf",
+      "kind": "function",
+      "addr": "0x1000007b4"
+    },
+    {
+      "name": "___stack_chk_fail",
+      "kind": "function",
+      "addr": "0x1000007a8"
+    }
+  ]
+}

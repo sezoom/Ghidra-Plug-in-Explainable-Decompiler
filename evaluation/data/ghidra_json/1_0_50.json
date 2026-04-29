@@ -1,0 +1,124 @@
+{
+  "meta": {
+    "binary": "1_0_50",
+    "arch": "AARCH64_64",
+    "base_addr": "0x100000000",
+    "hash": "sha256:994acbf2344397531dd43857a0791575b09ab0412fcdcc9e51d111d5faa20920",
+    "ghidra_version": "12.0.4"
+  },
+  "functions": [
+    {
+      "name": "entry",
+      "addr": "0x1000004b0",
+      "exists": true,
+      "signature": {
+        "ret": "undefined",
+        "params": []
+      },
+      "locals": [
+        {
+          "name": "acStack_48",
+          "type": "char [48]"
+        },
+        {
+          "name": "local_18",
+          "type": "long"
+        }
+      ],
+      "calls": [
+        {
+          "name": "entry",
+          "addr": "0x1000004b0"
+        },
+        {
+          "name": "_memcpy",
+          "addr": "0x1000005b4"
+        },
+        {
+          "name": "_strlen",
+          "addr": "0x1000005cc"
+        },
+        {
+          "name": "_printf",
+          "addr": "0x1000005c0"
+        },
+        {
+          "name": "_inspect_token",
+          "addr": "0x100000544"
+        },
+        {
+          "name": "___stack_chk_fail",
+          "addr": "0x1000005a8"
+        }
+      ],
+      "strings_used": [
+        "user\u003dalice;key\u003ddemo_secret",
+        "len\u003d%zu\\n"
+      ],
+      "constants_used": [
+        {
+          "hex": "0x30",
+          "decimal": 48
+        },
+        {
+          "hex": "0x30",
+          "decimal": 48
+        }
+      ],
+      "globals_used": [
+        "PTR____stack_chk_guard_100004008",
+        "___stack_chk_guard",
+        "LAB_100000534",
+        "LAB_100000530"
+      ],
+      "returns": [
+        {
+          "value": "*/ ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004008 - local_18)",
+          "conditional": false
+        },
+        {
+          "value": "0",
+          "conditional": false
+        }
+      ],
+      "decompiled_c": "\nundefined8 entry(void)\n\n{\n  char acStack_48 [48];\n  long local_18;\n  \n  local_18 \u003d *(long *)PTR____stack_chk_guard_100004008;\n  _memcpy(acStack_48,\"user\u003dalice;key\u003ddemo_secret\",0x30);\n  _strlen(acStack_48);\n  _printf(\"len\u003d%zu\\n\");\n  _inspect_token(acStack_48);\n  if (*(long *)PTR____stack_chk_guard_100004008 - local_18 !\u003d 0) {\n                    /* WARNING: Subroutine does not return */\n    ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004008 - local_18);\n  }\n  return 0;\n}\n\n"
+    }
+  ],
+  "symbols": [
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x1000004b0"
+    },
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x1000004b0"
+    },
+    {
+      "name": "_memcpy",
+      "kind": "function",
+      "addr": "0x1000005b4"
+    },
+    {
+      "name": "_strlen",
+      "kind": "function",
+      "addr": "0x1000005cc"
+    },
+    {
+      "name": "_printf",
+      "kind": "function",
+      "addr": "0x1000005c0"
+    },
+    {
+      "name": "_inspect_token",
+      "kind": "function",
+      "addr": "0x100000544"
+    },
+    {
+      "name": "___stack_chk_fail",
+      "kind": "function",
+      "addr": "0x1000005a8"
+    }
+  ]
+}

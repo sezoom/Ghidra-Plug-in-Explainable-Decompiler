@@ -1,0 +1,151 @@
+{
+  "meta": {
+    "binary": "3_0_50",
+    "arch": "AARCH64_64",
+    "base_addr": "0x100000000",
+    "hash": "sha256:9041eca4617d69e0685e0e9513eb8485d6bbf7659a110ad4543fdf7c9419c359",
+    "ghidra_version": "12.0.4"
+  },
+  "functions": [
+    {
+      "name": "entry",
+      "addr": "0x100000460",
+      "exists": true,
+      "signature": {
+        "ret": "undefined",
+        "params": []
+      },
+      "locals": [
+        {
+          "name": "uVar1",
+          "type": "uint"
+        },
+        {
+          "name": "local_58",
+          "type": "long"
+        },
+        {
+          "name": "local_40",
+          "type": "undefined4"
+        },
+        {
+          "name": "auStack_39",
+          "type": "undefined1 [33]"
+        },
+        {
+          "name": "local_18",
+          "type": "long"
+        }
+      ],
+      "calls": [
+        {
+          "name": "entry",
+          "addr": "0x100000460"
+        },
+        {
+          "name": "_parse_len",
+          "addr": "0x10000056c"
+        },
+        {
+          "name": "_memset",
+          "addr": "0x100000604"
+        },
+        {
+          "name": "___memcpy_chk",
+          "addr": "0x1000005ec"
+        },
+        {
+          "name": "_printf",
+          "addr": "0x100000610"
+        },
+        {
+          "name": "___stack_chk_fail",
+          "addr": "0x1000005f8"
+        }
+      ],
+      "strings_used": [
+        "12",
+        "nonce:abc123",
+        "buf\u003d%s n\u003d%d\\n"
+      ],
+      "constants_used": [
+        {
+          "hex": "0x21",
+          "decimal": 33
+        },
+        {
+          "hex": "0xc",
+          "decimal": 12
+        },
+        {
+          "hex": "0x21",
+          "decimal": 33
+        },
+        {
+          "hex": "0xc",
+          "decimal": 12
+        }
+      ],
+      "globals_used": [
+        "PTR____stack_chk_guard_100004010",
+        "___stack_chk_guard",
+        "LAB_1000004c8",
+        "LAB_1000004bc",
+        "LAB_100000534",
+        "LAB_1000004e4",
+        "LAB_1000004d8",
+        "LAB_1000004f0",
+        "LAB_10000055c",
+        "LAB_100000558"
+      ],
+      "returns": [
+        {
+          "value": "*/ ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004010 - local_18,pvVar2)",
+          "conditional": false
+        },
+        {
+          "value": "local_40",
+          "conditional": false
+        }
+      ],
+      "decompiled_c": "\nundefined4 entry(void)\n\n{\n  uint uVar1;\n  void *pvVar2;\n  long local_58;\n  undefined4 local_40;\n  undefined1 auStack_39 [33];\n  long local_18;\n  \n  local_18 \u003d *(long *)PTR____stack_chk_guard_100004010;\n  uVar1 \u003d _parse_len(\"12\");\n  pvVar2 \u003d _memset(auStack_39,0,0x21);\n  if ((int)uVar1 \u003c 0) {\n    local_40 \u003d 1;\n  }\n  else {\n    if (uVar1 \u003c 0xc) {\n      local_58 \u003d (long)(int)uVar1;\n    }\n    else {\n      local_58 \u003d 0xc;\n    }\n    ___memcpy_chk(auStack_39,\"nonce:abc123\",local_58,0x21);\n    uVar1 \u003d _printf(\"buf\u003d%s n\u003d%d\\n\");\n    pvVar2 \u003d (void *)(ulong)uVar1;\n    local_40 \u003d 0;\n  }\n  if (*(long *)PTR____stack_chk_guard_100004010 - local_18 !\u003d 0) {\n                    /* WARNING: Subroutine does not return */\n    ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004010 - local_18,pvVar2);\n  }\n  return local_40;\n}\n\n"
+    }
+  ],
+  "symbols": [
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x100000460"
+    },
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x100000460"
+    },
+    {
+      "name": "_parse_len",
+      "kind": "function",
+      "addr": "0x10000056c"
+    },
+    {
+      "name": "_memset",
+      "kind": "function",
+      "addr": "0x100000604"
+    },
+    {
+      "name": "___memcpy_chk",
+      "kind": "function",
+      "addr": "0x1000005ec"
+    },
+    {
+      "name": "_printf",
+      "kind": "function",
+      "addr": "0x100000610"
+    },
+    {
+      "name": "___stack_chk_fail",
+      "kind": "function",
+      "addr": "0x1000005f8"
+    }
+  ]
+}

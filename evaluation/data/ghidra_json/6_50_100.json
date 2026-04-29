@@ -1,0 +1,226 @@
+{
+  "meta": {
+    "binary": "6_50_100",
+    "arch": "AARCH64_64",
+    "base_addr": "0x100000000",
+    "hash": "sha256:b4a3ef2003b8a86b8fccfbb02d16ac29193f976b05f01e47ff187dcbc2bdb42f",
+    "ghidra_version": "12.0.4"
+  },
+  "functions": [
+    {
+      "name": "entry",
+      "addr": "0x1000004b0",
+      "exists": true,
+      "signature": {
+        "ret": "undefined",
+        "params": []
+      },
+      "locals": [
+        {
+          "name": "sVar1",
+          "type": "size_t"
+        },
+        {
+          "name": "local_5c",
+          "type": "undefined4"
+        },
+        {
+          "name": "auStack_58",
+          "type": "undefined1 [40]"
+        },
+        {
+          "name": "local_30",
+          "type": "undefined8"
+        },
+        {
+          "name": "uStack_28",
+          "type": "undefined8"
+        },
+        {
+          "name": "local_18",
+          "type": "long"
+        }
+      ],
+      "calls": [
+        {
+          "name": "entry",
+          "addr": "0x1000004b0"
+        },
+        {
+          "name": "_strlen",
+          "addr": "0x1000008b0"
+        },
+        {
+          "name": "_malloc",
+          "addr": "0x100000898"
+        },
+        {
+          "name": "_fprintf",
+          "addr": "0x100000880"
+        },
+        {
+          "name": "___memcpy_chk",
+          "addr": "0x100000850"
+        },
+        {
+          "name": "_mix_block",
+          "addr": "0x100000660"
+        },
+        {
+          "name": "_digest_hex",
+          "addr": "0x100000780"
+        },
+        {
+          "name": "_printf",
+          "addr": "0x1000008a4"
+        },
+        {
+          "name": "___memset_chk",
+          "addr": "0x10000085c"
+        },
+        {
+          "name": "_free",
+          "addr": "0x10000088c"
+        },
+        {
+          "name": "___stack_chk_fail",
+          "addr": "0x100000874"
+        }
+      ],
+      "strings_used": [
+        "default-seed",
+        "allocation failed\\n",
+        "input\u003d%s\\n",
+        "digest\u003d%s\\n"
+      ],
+      "constants_used": [
+        {
+          "hex": "0x28",
+          "decimal": 40
+        },
+        {
+          "hex": "0xfeedface0badc0de",
+          "decimal": -77129855729286946
+        },
+        {
+          "hex": "0x9abcdef012345678",
+          "decimal": -7296712173568108936
+        },
+        {
+          "hex": "0x2",
+          "decimal": 2
+        },
+        {
+          "hex": "0x8",
+          "decimal": 8
+        },
+        {
+          "hex": "0x0",
+          "decimal": 0
+        },
+        {
+          "hex": "0xffffffffffffffff",
+          "decimal": -1
+        },
+        {
+          "hex": "0x4",
+          "decimal": 4
+        },
+        {
+          "hex": "0x28",
+          "decimal": 40
+        }
+      ],
+      "globals_used": [
+        "PTR____stack_chk_guard_100004020",
+        "___stack_chk_guard",
+        "DAT_1000008c0",
+        "LAB_100000508",
+        "LAB_1000004f8",
+        "LAB_100000518",
+        "LAB_10000056c",
+        "LAB_100000548",
+        "PTR____stderrp_100004028",
+        "___stderrp",
+        "LAB_100000628",
+        "LAB_1000005c0",
+        "LAB_1000005a4",
+        "LAB_100000650",
+        "LAB_10000064c"
+      ],
+      "returns": [
+        {
+          "value": "*/ ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004020 - local_18)",
+          "conditional": false
+        },
+        {
+          "value": "local_5c",
+          "conditional": false
+        }
+      ],
+      "decompiled_c": "\nundefined4 entry(int param_1,long param_2)\n\n{\n  size_t sVar1;\n  void *pvVar2;\n  char *local_88;\n  undefined4 local_5c;\n  undefined1 auStack_58 [40];\n  undefined8 local_30;\n  undefined8 uStack_28;\n  long local_18;\n  \n  local_18 \u003d *(long *)PTR____stack_chk_guard_100004020;\n  uStack_28 \u003d 0xfeedface0badc0de;\n  local_30 \u003d 0x9abcdef012345678;\n  if (param_1 \u003c 2) {\n    local_88 \u003d \"default-seed\";\n  }\n  else {\n    local_88 \u003d *(char **)(param_2 + 8);\n  }\n  sVar1 \u003d _strlen(local_88);\n  pvVar2 \u003d _malloc(sVar1 + 1);\n  if (pvVar2 \u003d\u003d (void *)0x0) {\n    _fprintf(*(FILE **)PTR____stderrp_100004028,\"allocation failed\\n\");\n    local_5c \u003d 1;\n  }\n  else {\n    ___memcpy_chk(pvVar2,local_88,sVar1 + 1,0xffffffffffffffff);\n    _mix_block(\u0026local_30,pvVar2,sVar1);\n    if (4 \u003c sVar1) {\n      _mix_block(\u0026local_30,(long)pvVar2 + 1,sVar1 - 1);\n    }\n    _digest_hex(\u0026local_30,auStack_58,0x28);\n    _printf(\"input\u003d%s\\n\");\n    _printf(\"digest\u003d%s\\n\");\n    ___memset_chk(pvVar2,0,sVar1,0xffffffffffffffff);\n    _free(pvVar2);\n    local_5c \u003d 0;\n  }\n  if (*(long *)PTR____stack_chk_guard_100004020 - local_18 !\u003d 0) {\n                    /* WARNING: Subroutine does not return */\n    ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004020 - local_18);\n  }\n  return local_5c;\n}\n\n"
+    }
+  ],
+  "symbols": [
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x1000004b0"
+    },
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x1000004b0"
+    },
+    {
+      "name": "_strlen",
+      "kind": "function",
+      "addr": "0x1000008b0"
+    },
+    {
+      "name": "_malloc",
+      "kind": "function",
+      "addr": "0x100000898"
+    },
+    {
+      "name": "_fprintf",
+      "kind": "function",
+      "addr": "0x100000880"
+    },
+    {
+      "name": "___memcpy_chk",
+      "kind": "function",
+      "addr": "0x100000850"
+    },
+    {
+      "name": "_mix_block",
+      "kind": "function",
+      "addr": "0x100000660"
+    },
+    {
+      "name": "_digest_hex",
+      "kind": "function",
+      "addr": "0x100000780"
+    },
+    {
+      "name": "_printf",
+      "kind": "function",
+      "addr": "0x1000008a4"
+    },
+    {
+      "name": "___memset_chk",
+      "kind": "function",
+      "addr": "0x10000085c"
+    },
+    {
+      "name": "_free",
+      "kind": "function",
+      "addr": "0x10000088c"
+    },
+    {
+      "name": "___stack_chk_fail",
+      "kind": "function",
+      "addr": "0x100000874"
+    }
+  ]
+}

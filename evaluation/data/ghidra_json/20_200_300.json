@@ -1,0 +1,234 @@
+{
+  "meta": {
+    "binary": "20_200_300",
+    "arch": "AARCH64_64",
+    "base_addr": "0x100000000",
+    "hash": "sha256:a18409938edcad993868daf6ae0b4d1d39032022c20517ef2723a87be98e3cc9",
+    "ghidra_version": "12.0.4"
+  },
+  "functions": [
+    {
+      "name": "entry",
+      "addr": "0x100000460",
+      "exists": true,
+      "signature": {
+        "ret": "undefined",
+        "params": []
+      },
+      "locals": [
+        {
+          "name": "iVar1",
+          "type": "int"
+        },
+        {
+          "name": "local_ce0",
+          "type": "ulong"
+        },
+        {
+          "name": "auStack_cd0",
+          "type": "undefined1 [24]"
+        },
+        {
+          "name": "acStack_cb8",
+          "type": "char [32]"
+        },
+        {
+          "name": "auStack_c98",
+          "type": "undefined1 [184]"
+        },
+        {
+          "name": "auStack_be0",
+          "type": "undefined1 [3000]"
+        },
+        {
+          "name": "local_28",
+          "type": "long"
+        }
+      ],
+      "calls": [
+        {
+          "name": "entry",
+          "addr": "0x100000460"
+        },
+        {
+          "name": "_init_queue",
+          "addr": "0x1000005b4"
+        },
+        {
+          "name": "_populate_demo",
+          "addr": "0x100000628"
+        },
+        {
+          "name": "_import_message",
+          "addr": "0x1000006d4"
+        },
+        {
+          "name": "_copy_topic_line",
+          "addr": "0x100000818"
+        },
+        {
+          "name": "_printf",
+          "addr": "0x100001180"
+        },
+        {
+          "name": "_scan_topics",
+          "addr": "0x100000890"
+        },
+        {
+          "name": "_mutate_bodies",
+          "addr": "0x10000094c"
+        },
+        {
+          "name": "_rekey_queue",
+          "addr": "0x100000a04"
+        },
+        {
+          "name": "_dequeue",
+          "addr": "0x100000b70"
+        },
+        {
+          "name": "_print_message",
+          "addr": "0x100000c14"
+        },
+        {
+          "name": "_write_snapshot",
+          "addr": "0x100000d04"
+        },
+        {
+          "name": "___stack_chk_fail",
+          "addr": "0x100001150"
+        }
+      ],
+      "strings_used": [
+        "crypto.test|payload\u003ddemo-seed|111555",
+        "crypto.rotate.with.long.extension",
+        "copied\u003d%s\\n",
+        "crypto"
+      ],
+      "constants_used": [
+        {
+          "hex": "0x18",
+          "decimal": 24
+        },
+        {
+          "hex": "0x20",
+          "decimal": 32
+        },
+        {
+          "hex": "0xb8",
+          "decimal": 184
+        },
+        {
+          "hex": "0xbb8",
+          "decimal": 3000
+        },
+        {
+          "hex": "0x1b3c3",
+          "decimal": 111555
+        },
+        {
+          "hex": "0x20",
+          "decimal": 32
+        }
+      ],
+      "globals_used": [
+        "PTR____stack_chk_guard_100004018",
+        "___stack_chk_guard",
+        "LAB_1000004f4",
+        "LAB_100000534",
+        "LAB_100000504",
+        "LAB_100000524",
+        "LAB_100000548",
+        "LAB_10000056c",
+        "LAB_10000055c",
+        "PTR____stdoutp_100004020",
+        "___stdoutp",
+        "LAB_1000005a0",
+        "LAB_10000059c"
+      ],
+      "returns": [
+        {
+          "value": "*/ ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004018 - local_28)",
+          "conditional": false
+        },
+        {
+          "value": "0",
+          "conditional": false
+        }
+      ],
+      "decompiled_c": "\nundefined8 entry(void)\n\n{\n  int iVar1;\n  ulong local_ce0;\n  undefined1 auStack_cd0 [24];\n  char acStack_cb8 [32];\n  undefined1 auStack_c98 [184];\n  undefined1 auStack_be0 [3000];\n  long local_28;\n  \n  local_28 \u003d *(long *)PTR____stack_chk_guard_100004018;\n  _init_queue();\n  _populate_demo(auStack_be0);\n  _import_message(auStack_be0,\"crypto.test|payload\u003ddemo-seed|111555\");\n  _copy_topic_line(auStack_cd0,\"crypto.rotate.with.long.extension\");\n  _printf(\"copied\u003d%s\\n\");\n  _scan_topics(auStack_be0,\"crypto\");\n  _mutate_bodies(auStack_be0);\n  for (local_ce0 \u003d 0; local_ce0 \u003c 0x20; local_ce0 \u003d local_ce0 + 1) {\n    acStack_cb8[local_ce0] \u003d ((char)local_ce0 + \u0027\\x01\u0027) * \u0027\\x11\u0027;\n  }\n  _rekey_queue(local_ce0 - 0x20,auStack_be0,acStack_cb8,0x20);\n  while (iVar1 \u003d _dequeue(auStack_be0,auStack_c98), iVar1 \u003d\u003d 0) {\n    _print_message(auStack_be0,auStack_c98);\n  }\n  _write_snapshot(*(undefined8 *)PTR____stdoutp_100004020,auStack_be0);\n  if (*(long *)PTR____stack_chk_guard_100004018 - local_28 !\u003d 0) {\n                    /* WARNING: Subroutine does not return */\n    ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004018 - local_28);\n  }\n  return 0;\n}\n\n"
+    }
+  ],
+  "symbols": [
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x100000460"
+    },
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x100000460"
+    },
+    {
+      "name": "_init_queue",
+      "kind": "function",
+      "addr": "0x1000005b4"
+    },
+    {
+      "name": "_populate_demo",
+      "kind": "function",
+      "addr": "0x100000628"
+    },
+    {
+      "name": "_import_message",
+      "kind": "function",
+      "addr": "0x1000006d4"
+    },
+    {
+      "name": "_copy_topic_line",
+      "kind": "function",
+      "addr": "0x100000818"
+    },
+    {
+      "name": "_printf",
+      "kind": "function",
+      "addr": "0x100001180"
+    },
+    {
+      "name": "_scan_topics",
+      "kind": "function",
+      "addr": "0x100000890"
+    },
+    {
+      "name": "_mutate_bodies",
+      "kind": "function",
+      "addr": "0x10000094c"
+    },
+    {
+      "name": "_rekey_queue",
+      "kind": "function",
+      "addr": "0x100000a04"
+    },
+    {
+      "name": "_dequeue",
+      "kind": "function",
+      "addr": "0x100000b70"
+    },
+    {
+      "name": "_print_message",
+      "kind": "function",
+      "addr": "0x100000c14"
+    },
+    {
+      "name": "_write_snapshot",
+      "kind": "function",
+      "addr": "0x100000d04"
+    },
+    {
+      "name": "___stack_chk_fail",
+      "kind": "function",
+      "addr": "0x100001150"
+    }
+  ]
+}

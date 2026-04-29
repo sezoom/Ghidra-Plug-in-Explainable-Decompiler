@@ -1,0 +1,112 @@
+{
+  "meta": {
+    "binary": "5_0_50",
+    "arch": "AARCH64_64",
+    "base_addr": "0x100000000",
+    "hash": "sha256:fe05f0708f3c834902dcd73aabe3583b6e9ea787e7bcf578cd663408be3f666f",
+    "ghidra_version": "12.0.4"
+  },
+  "functions": [
+    {
+      "name": "entry",
+      "addr": "0x1000004b0",
+      "exists": true,
+      "signature": {
+        "ret": "undefined",
+        "params": []
+      },
+      "locals": [
+        {
+          "name": "uVar1",
+          "type": "undefined1"
+        },
+        {
+          "name": "local_28",
+          "type": "ulong"
+        },
+        {
+          "name": "local_1c",
+          "type": "undefined4"
+        },
+        {
+          "name": "local_18",
+          "type": "undefined2"
+        },
+        {
+          "name": "local_14",
+          "type": "undefined4"
+        }
+      ],
+      "calls": [
+        {
+          "name": "entry",
+          "addr": "0x1000004b0"
+        },
+        {
+          "name": "_mix_byte",
+          "addr": "0x10000054c"
+        },
+        {
+          "name": "_dump_bytes",
+          "addr": "0x100000574"
+        }
+      ],
+      "strings_used": [],
+      "constants_used": [
+        {
+          "hex": "0x72636573",
+          "decimal": 1919116659
+        },
+        {
+          "hex": "0x7465",
+          "decimal": 29797
+        },
+        {
+          "hex": "0x6",
+          "decimal": 6
+        },
+        {
+          "hex": "0x5a",
+          "decimal": 90
+        }
+      ],
+      "globals_used": [
+        "DAT_10000060c",
+        "DAT_100000610",
+        "LAB_1000004e8",
+        "LAB_100000530",
+        "LAB_1000004f8",
+        "LAB_100000520"
+      ],
+      "returns": [
+        {
+          "value": "0",
+          "conditional": false
+        }
+      ],
+      "decompiled_c": "\nundefined8 entry(void)\n\n{\n  undefined1 uVar1;\n  ulong local_28;\n  undefined4 local_1c;\n  undefined2 local_18;\n  undefined4 local_14;\n  \n  local_14 \u003d 0;\n  local_1c \u003d 0x72636573;\n  local_18 \u003d 0x7465;\n  for (local_28 \u003d 0; local_28 \u003c 6; local_28 \u003d local_28 + 1) {\n    uVar1 \u003d _mix_byte(*(undefined1 *)((long)\u0026local_1c + local_28),0x5a);\n    *(undefined1 *)((long)\u0026local_1c + local_28) \u003d uVar1;\n  }\n  _dump_bytes(local_28 - 6,\u0026local_1c,6);\n  return 0;\n}\n\n"
+    }
+  ],
+  "symbols": [
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x1000004b0"
+    },
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x1000004b0"
+    },
+    {
+      "name": "_mix_byte",
+      "kind": "function",
+      "addr": "0x10000054c"
+    },
+    {
+      "name": "_dump_bytes",
+      "kind": "function",
+      "addr": "0x100000574"
+    }
+  ]
+}

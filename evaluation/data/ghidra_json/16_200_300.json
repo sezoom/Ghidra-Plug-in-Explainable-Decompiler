@@ -1,0 +1,221 @@
+{
+  "meta": {
+    "binary": "16_200_300",
+    "arch": "AARCH64_64",
+    "base_addr": "0x100000000",
+    "hash": "sha256:320349e0e836ea9bd82b4bbb7f016c544627b867a85b95b0dd63fc6cc95ce7ea",
+    "ghidra_version": "12.0.4"
+  },
+  "functions": [
+    {
+      "name": "entry",
+      "addr": "0x1000004b0",
+      "exists": true,
+      "signature": {
+        "ret": "undefined",
+        "params": []
+      },
+      "locals": [
+        {
+          "name": "local_578",
+          "type": "long"
+        },
+        {
+          "name": "local_558",
+          "type": "ulong"
+        },
+        {
+          "name": "local_550",
+          "type": "undefined4"
+        },
+        {
+          "name": "auStack_54c",
+          "type": "undefined1 [64]"
+        },
+        {
+          "name": "auStack_50c",
+          "type": "undefined1 [8]"
+        },
+        {
+          "name": "auStack_504",
+          "type": "undefined1 [1016]"
+        },
+        {
+          "name": "auStack_10c",
+          "type": "undefined1 [228]"
+        },
+        {
+          "name": "local_28",
+          "type": "long"
+        }
+      ],
+      "calls": [
+        {
+          "name": "entry",
+          "addr": "0x1000004b0"
+        },
+        {
+          "name": "_init_context",
+          "addr": "0x10000061c"
+        },
+        {
+          "name": "_maybe_copy_alias",
+          "addr": "0x1000006cc"
+        },
+        {
+          "name": "_make_demo_frame",
+          "addr": "0x10000076c"
+        },
+        {
+          "name": "_mutate_bytes",
+          "addr": "0x100000884"
+        },
+        {
+          "name": "_dump_words",
+          "addr": "0x100000930"
+        },
+        {
+          "name": "_padded_copy",
+          "addr": "0x1000009a8"
+        },
+        {
+          "name": "_consume_frame",
+          "addr": "0x100000a40"
+        },
+        {
+          "name": "_printf",
+          "addr": "0x1000010b4"
+        },
+        {
+          "name": "_print_hex",
+          "addr": "0x100000c00"
+        },
+        {
+          "name": "___stack_chk_fail",
+          "addr": "0x100001060"
+        }
+      ],
+      "strings_used": [
+        "lab-user",
+        "test-client",
+        "consume rc\u003d%d\\n",
+        "backup prefix:\\n"
+      ],
+      "constants_used": [
+        {
+          "hex": "0x40",
+          "decimal": 64
+        },
+        {
+          "hex": "0x8",
+          "decimal": 8
+        },
+        {
+          "hex": "0x3f8",
+          "decimal": 1016
+        },
+        {
+          "hex": "0xe4",
+          "decimal": 228
+        },
+        {
+          "hex": "0x9",
+          "decimal": 9
+        },
+        {
+          "hex": "0x539",
+          "decimal": 1337
+        },
+        {
+          "hex": "0x40",
+          "decimal": 64
+        }
+      ],
+      "globals_used": [
+        "PTR____stack_chk_guard_100004018",
+        "___stack_chk_guard",
+        "LAB_100000530",
+        "LAB_100000520",
+        "LAB_10000053c",
+        "LAB_100000578",
+        "LAB_10000056c",
+        "LAB_100000584",
+        "LAB_100000608",
+        "LAB_100000604"
+      ],
+      "returns": [
+        {
+          "value": "*/ ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004018 - local_28)",
+          "conditional": false
+        },
+        {
+          "value": "0",
+          "conditional": false
+        }
+      ],
+      "decompiled_c": "\nundefined8 entry(void)\n\n{\n  long local_578;\n  ulong local_558;\n  undefined4 local_550;\n  undefined1 auStack_54c [64];\n  undefined1 auStack_50c [8];\n  undefined1 auStack_504 [1016];\n  undefined1 auStack_10c [228];\n  long local_28;\n  \n  local_28 \u003d *(long *)PTR____stack_chk_guard_100004018;\n  local_550 \u003d 0;\n  local_558 \u003d 0;\n  _init_context(auStack_10c,\"lab-user\");\n  _maybe_copy_alias(auStack_10c,\"test-client\");\n  _make_demo_frame(auStack_50c,\u0026local_558);\n  if (local_558 \u003c 9) {\n    local_578 \u003d 0;\n  }\n  else {\n    local_578 \u003d local_558 - 8;\n  }\n  _mutate_bytes(auStack_504,local_578,0x539);\n  _dump_words(auStack_10c,8);\n  _padded_copy();\n  _consume_frame(auStack_10c,auStack_50c,local_558);\n  _printf(\"consume rc\u003d%d\\n\");\n  _printf(\"backup prefix:\\n\");\n  _print_hex(auStack_54c,0x40);\n  if (*(long *)PTR____stack_chk_guard_100004018 - local_28 !\u003d 0) {\n                    /* WARNING: Subroutine does not return */\n    ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004018 - local_28);\n  }\n  return 0;\n}\n\n"
+    }
+  ],
+  "symbols": [
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x1000004b0"
+    },
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x1000004b0"
+    },
+    {
+      "name": "_init_context",
+      "kind": "function",
+      "addr": "0x10000061c"
+    },
+    {
+      "name": "_maybe_copy_alias",
+      "kind": "function",
+      "addr": "0x1000006cc"
+    },
+    {
+      "name": "_make_demo_frame",
+      "kind": "function",
+      "addr": "0x10000076c"
+    },
+    {
+      "name": "_mutate_bytes",
+      "kind": "function",
+      "addr": "0x100000884"
+    },
+    {
+      "name": "_dump_words",
+      "kind": "function",
+      "addr": "0x100000930"
+    },
+    {
+      "name": "_padded_copy",
+      "kind": "function",
+      "addr": "0x1000009a8"
+    },
+    {
+      "name": "_consume_frame",
+      "kind": "function",
+      "addr": "0x100000a40"
+    },
+    {
+      "name": "_printf",
+      "kind": "function",
+      "addr": "0x1000010b4"
+    },
+    {
+      "name": "_print_hex",
+      "kind": "function",
+      "addr": "0x100000c00"
+    },
+    {
+      "name": "___stack_chk_fail",
+      "kind": "function",
+      "addr": "0x100001060"
+    }
+  ]
+}

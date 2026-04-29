@@ -1,0 +1,253 @@
+{
+  "meta": {
+    "binary": "19_200_300",
+    "arch": "AARCH64_64",
+    "base_addr": "0x100000000",
+    "hash": "sha256:2372b26ead98003acbbfc3cf79d0a1393f601228661c00c671e3fbe26fc60582",
+    "ghidra_version": "12.0.4"
+  },
+  "functions": [
+    {
+      "name": "entry",
+      "addr": "0x1000004b0",
+      "exists": true,
+      "signature": {
+        "ret": "undefined",
+        "params": []
+      },
+      "locals": [
+        {
+          "name": "lVar1",
+          "type": "long"
+        },
+        {
+          "name": "auStack_2138",
+          "type": "undefined1 [4232]"
+        },
+        {
+          "name": "auStack_10b0",
+          "type": "undefined1 [4232]"
+        },
+        {
+          "name": "local_28",
+          "type": "long"
+        }
+      ],
+      "calls": [
+        {
+          "name": "entry",
+          "addr": "0x1000004b0"
+        },
+        {
+          "name": "_init_index",
+          "addr": "0x10000064c"
+        },
+        {
+          "name": "_create_sample_records",
+          "addr": "0x1000006a0"
+        },
+        {
+          "name": "_import_line",
+          "addr": "0x1000007f0"
+        },
+        {
+          "name": "_unsafe_copy_path",
+          "addr": "0x10000096c"
+        },
+        {
+          "name": "_sort_records",
+          "addr": "0x1000009e8"
+        },
+        {
+          "name": "_lookup_record",
+          "addr": "0x100000b38"
+        },
+        {
+          "name": "_xor_payload",
+          "addr": "0x100000bc0"
+        },
+        {
+          "name": "_patch_name",
+          "addr": "0x100000c50"
+        },
+        {
+          "name": "_print_record",
+          "addr": "0x100000cb0"
+        },
+        {
+          "name": "_fopen",
+          "addr": "0x1000011b8"
+        },
+        {
+          "name": "_save_index",
+          "addr": "0x100000db4"
+        },
+        {
+          "name": "_fclose",
+          "addr": "0x1000011ac"
+        },
+        {
+          "name": "_load_index",
+          "addr": "0x100000e50"
+        },
+        {
+          "name": "_export_text",
+          "addr": "0x100000f1c"
+        },
+        {
+          "name": "___stack_chk_fail",
+          "addr": "0x100001188"
+        }
+      ],
+      "strings_used": [
+        "./demo.idx",
+        "42,kappa,seed-material",
+        "./indexes/archive/2025/very/long/path/demo.idx",
+        "kappa-patched",
+        "/tmp/index.bin",
+        "wb",
+        "reload",
+        "rb"
+      ],
+      "constants_used": [
+        {
+          "hex": "0x1088",
+          "decimal": 4232
+        },
+        {
+          "hex": "0x2a",
+          "decimal": 42
+        },
+        {
+          "hex": "0x7e9",
+          "decimal": 2025
+        },
+        {
+          "hex": "0x2a",
+          "decimal": 42
+        },
+        {
+          "hex": "0x5a",
+          "decimal": 90
+        },
+        {
+          "hex": "0x0",
+          "decimal": 0
+        }
+      ],
+      "globals_used": [
+        "PTR____chkstk_darwin_100004000",
+        "PTR____stack_chk_guard_100004028",
+        "___stack_chk_guard",
+        "LAB_100000574",
+        "LAB_10000054c",
+        "LAB_1000005b4",
+        "LAB_100000598",
+        "LAB_100000600",
+        "LAB_1000005e8",
+        "PTR____stdoutp_100004030",
+        "___stdoutp",
+        "LAB_100000634",
+        "LAB_100000630"
+      ],
+      "returns": [
+        {
+          "value": "*/ ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004028 - local_28)",
+          "conditional": false
+        },
+        {
+          "value": "0",
+          "conditional": false
+        }
+      ],
+      "decompiled_c": "\nundefined8 entry(void)\n\n{\n  long lVar1;\n  FILE *pFVar2;\n  undefined1 auStack_2138 [4232];\n  undefined1 auStack_10b0 [4232];\n  long local_28;\n  \n  (*(code *)PTR____chkstk_darwin_100004000)();\n  local_28 \u003d *(long *)PTR____stack_chk_guard_100004028;\n  _init_index(auStack_10b0,\"./demo.idx\");\n  _create_sample_records(auStack_10b0);\n  _import_line(auStack_10b0,\"42,kappa,seed-material\");\n  _unsafe_copy_path(auStack_10b0,\"./indexes/archive/2025/very/long/path/demo.idx\");\n  _sort_records(auStack_10b0);\n  lVar1 \u003d _lookup_record(auStack_10b0,0x2a);\n  if (lVar1 !\u003d 0) {\n    _xor_payload(lVar1,0x5a);\n    _patch_name(lVar1,\"kappa-patched\");\n    _print_record(lVar1);\n  }\n  pFVar2 \u003d _fopen(\"/tmp/index.bin\",\"wb\");\n  if (pFVar2 !\u003d (FILE *)0x0) {\n    _save_index(pFVar2,auStack_10b0);\n    _fclose(pFVar2);\n  }\n  _init_index(auStack_2138,\"reload\");\n  pFVar2 \u003d _fopen(\"/tmp/index.bin\",\"rb\");\n  if (pFVar2 !\u003d (FILE *)0x0) {\n    _load_index(pFVar2,auStack_2138);\n    _fclose(pFVar2);\n  }\n  _export_text(*(undefined8 *)PTR____stdoutp_100004030,auStack_2138);\n  if (*(long *)PTR____stack_chk_guard_100004028 - local_28 !\u003d 0) {\n                    /* WARNING: Subroutine does not return */\n    ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004028 - local_28);\n  }\n  return 0;\n}\n\n"
+    }
+  ],
+  "symbols": [
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x1000004b0"
+    },
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x1000004b0"
+    },
+    {
+      "name": "_init_index",
+      "kind": "function",
+      "addr": "0x10000064c"
+    },
+    {
+      "name": "_create_sample_records",
+      "kind": "function",
+      "addr": "0x1000006a0"
+    },
+    {
+      "name": "_import_line",
+      "kind": "function",
+      "addr": "0x1000007f0"
+    },
+    {
+      "name": "_unsafe_copy_path",
+      "kind": "function",
+      "addr": "0x10000096c"
+    },
+    {
+      "name": "_sort_records",
+      "kind": "function",
+      "addr": "0x1000009e8"
+    },
+    {
+      "name": "_lookup_record",
+      "kind": "function",
+      "addr": "0x100000b38"
+    },
+    {
+      "name": "_xor_payload",
+      "kind": "function",
+      "addr": "0x100000bc0"
+    },
+    {
+      "name": "_patch_name",
+      "kind": "function",
+      "addr": "0x100000c50"
+    },
+    {
+      "name": "_print_record",
+      "kind": "function",
+      "addr": "0x100000cb0"
+    },
+    {
+      "name": "_fopen",
+      "kind": "function",
+      "addr": "0x1000011b8"
+    },
+    {
+      "name": "_save_index",
+      "kind": "function",
+      "addr": "0x100000db4"
+    },
+    {
+      "name": "_fclose",
+      "kind": "function",
+      "addr": "0x1000011ac"
+    },
+    {
+      "name": "_load_index",
+      "kind": "function",
+      "addr": "0x100000e50"
+    },
+    {
+      "name": "_export_text",
+      "kind": "function",
+      "addr": "0x100000f1c"
+    },
+    {
+      "name": "___stack_chk_fail",
+      "kind": "function",
+      "addr": "0x100001188"
+    }
+  ]
+}

@@ -1,0 +1,132 @@
+{
+  "meta": {
+    "binary": "13_100_200",
+    "arch": "AARCH64_64",
+    "base_addr": "0x100000000",
+    "hash": "sha256:75f19f38d82ae188141cfc11038ef8907a82fe3bb9780ee5a533e9f72f0ef660",
+    "ghidra_version": "12.0.4"
+  },
+  "functions": [
+    {
+      "name": "entry",
+      "addr": "0x1000004b0",
+      "exists": true,
+      "signature": {
+        "ret": "undefined",
+        "params": []
+      },
+      "locals": [
+        {
+          "name": "uVar1",
+          "type": "uint"
+        },
+        {
+          "name": "local_40",
+          "type": "ulong"
+        },
+        {
+          "name": "local_18",
+          "type": "long"
+        }
+      ],
+      "calls": [
+        {
+          "name": "entry",
+          "addr": "0x1000004b0"
+        },
+        {
+          "name": "_analyze_line",
+          "addr": "0x100000580"
+        },
+        {
+          "name": "_puts",
+          "addr": "0x100000cc8"
+        },
+        {
+          "name": "___stack_chk_fail",
+          "addr": "0x100000c74"
+        }
+      ],
+      "strings_used": [
+        "Payload,User,alice,Role,admin,MAC,11223344",
+        "Header,Nonce,00010203,Flag,AA55",
+        "Trailer,CRC,beef,Padding,0000",
+        "-- boundary --"
+      ],
+      "constants_used": [
+        {
+          "hex": "0x3",
+          "decimal": 3
+        },
+        {
+          "hex": "0xab4130",
+          "decimal": 11223344
+        },
+        {
+          "hex": "0x27db",
+          "decimal": 10203
+        },
+        {
+          "hex": "0x2",
+          "decimal": 2
+        },
+        {
+          "hex": "0x0",
+          "decimal": 0
+        }
+      ],
+      "globals_used": [
+        "PTR____stack_chk_guard_100004018",
+        "___stack_chk_guard",
+        "PTR_s_Header,Nonce,00010203,Flag,AA55_100004080",
+        "PTR_s_Trailer,CRC,beef,Padding,0000_100004090",
+        "LAB_1000004f0",
+        "LAB_100000550",
+        "LAB_100000500",
+        "LAB_10000053c",
+        "LAB_10000052c",
+        "LAB_100000540",
+        "LAB_100000570",
+        "LAB_10000056c"
+      ],
+      "returns": [
+        {
+          "value": "0",
+          "conditional": false
+        },
+        {
+          "value": "*/ ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004018 - local_18,param_1)",
+          "conditional": false
+        }
+      ],
+      "decompiled_c": "\nundefined8 entry(ulong param_1)\n\n{\n  uint uVar1;\n  ulong local_40;\n  char *local_30 [3];\n  long local_18;\n  \n  local_18 \u003d *(long *)PTR____stack_chk_guard_100004018;\n  local_30[1] \u003d \"Payload,User,alice,Role,admin,MAC,11223344\";\n  local_30[0] \u003d \"Header,Nonce,00010203,Flag,AA55\";\n  local_30[2] \u003d \"Trailer,CRC,beef,Padding,0000\";\n  for (local_40 \u003d 0; local_40 \u003c 3; local_40 \u003d local_40 + 1) {\n    param_1 \u003d _analyze_line(local_30[local_40]);\n    if (local_40 % 2 \u003d\u003d 0) {\n      uVar1 \u003d _puts(\"-- boundary --\");\n      param_1 \u003d (ulong)uVar1;\n    }\n  }\n  if (*(long *)PTR____stack_chk_guard_100004018 - local_18 \u003d\u003d 0) {\n    return 0;\n  }\n                    /* WARNING: Subroutine does not return */\n  ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004018 - local_18,param_1);\n}\n\n"
+    }
+  ],
+  "symbols": [
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x1000004b0"
+    },
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x1000004b0"
+    },
+    {
+      "name": "_analyze_line",
+      "kind": "function",
+      "addr": "0x100000580"
+    },
+    {
+      "name": "_puts",
+      "kind": "function",
+      "addr": "0x100000cc8"
+    },
+    {
+      "name": "___stack_chk_fail",
+      "kind": "function",
+      "addr": "0x100000c74"
+    }
+  ]
+}

@@ -1,0 +1,277 @@
+{
+  "meta": {
+    "binary": "17_200_300",
+    "arch": "AARCH64_64",
+    "base_addr": "0x100000000",
+    "hash": "sha256:92a6324fa1c7730292b0761b27b4b3a733cc9ae01c33aeb3f50ef870cb7b07dd",
+    "ghidra_version": "12.0.4"
+  },
+  "functions": [
+    {
+      "name": "entry",
+      "addr": "0x1000004b0",
+      "exists": true,
+      "signature": {
+        "ret": "undefined",
+        "params": []
+      },
+      "locals": [
+        {
+          "name": "iVar1",
+          "type": "int"
+        },
+        {
+          "name": "local_1680",
+          "type": "ulong"
+        },
+        {
+          "name": "auStack_1678",
+          "type": "undefined1 [3084]"
+        },
+        {
+          "name": "local_a6c",
+          "type": "undefined4"
+        },
+        {
+          "name": "auStack_a68",
+          "type": "undefined1 [64]"
+        },
+        {
+          "name": "auStack_a28",
+          "type": "undefined1 [480]"
+        },
+        {
+          "name": "auStack_848",
+          "type": "undefined1 [2080]"
+        },
+        {
+          "name": "local_28",
+          "type": "long"
+        }
+      ],
+      "calls": [
+        {
+          "name": "entry",
+          "addr": "0x1000004b0"
+        },
+        {
+          "name": "_memset",
+          "addr": "0x1000012a0"
+        },
+        {
+          "name": "_bzero",
+          "addr": "0x100001288"
+        },
+        {
+          "name": "_init_slots",
+          "addr": "0x100000654"
+        },
+        {
+          "name": "_load_defaults",
+          "addr": "0x10000075c"
+        },
+        {
+          "name": "_demo_commands",
+          "addr": "0x100000828"
+        },
+        {
+          "name": "_insecure_note_copy",
+          "addr": "0x1000009e8"
+        },
+        {
+          "name": "_log_line",
+          "addr": "0x100000a5c"
+        },
+        {
+          "name": "_mutate_slot",
+          "addr": "0x100000ad8"
+        },
+        {
+          "name": "_dump_slot",
+          "addr": "0x100000b68"
+        },
+        {
+          "name": "_fill_audit_log",
+          "addr": "0x100000c58"
+        },
+        {
+          "name": "_write_report",
+          "addr": "0x100000d3c"
+        },
+        {
+          "name": "_zero_slot",
+          "addr": "0x100000db4"
+        },
+        {
+          "name": "_time",
+          "addr": "0x1000012e8"
+        },
+        {
+          "name": "_printf",
+          "addr": "0x1000012ac"
+        },
+        {
+          "name": "___stack_chk_fail",
+          "addr": "0x100001270"
+        }
+      ],
+      "strings_used": [
+        "operator note: rotate export and rewrap old secrets",
+        "timestamp\u003d%ld\\n"
+      ],
+      "constants_used": [
+        {
+          "hex": "0xc0c",
+          "decimal": 3084
+        },
+        {
+          "hex": "0x40",
+          "decimal": 64
+        },
+        {
+          "hex": "0x1e0",
+          "decimal": 480
+        },
+        {
+          "hex": "0x820",
+          "decimal": 2080
+        },
+        {
+          "hex": "0x40",
+          "decimal": 64
+        },
+        {
+          "hex": "0xc08",
+          "decimal": 3080
+        },
+        {
+          "hex": "0x10",
+          "decimal": 16
+        },
+        {
+          "hex": "0x4",
+          "decimal": 4
+        },
+        {
+          "hex": "0xa0",
+          "decimal": 160
+        },
+        {
+          "hex": "0x0",
+          "decimal": 0
+        }
+      ],
+      "globals_used": [
+        "PTR____chkstk_darwin_100004000",
+        "PTR____stack_chk_guard_100004028",
+        "___stack_chk_guard",
+        "LAB_100000560",
+        "LAB_1000005c8",
+        "LAB_100000570",
+        "LAB_1000005b8",
+        "PTR____stdoutp_100004030",
+        "___stdoutp",
+        "LAB_10000063c",
+        "LAB_100000638"
+      ],
+      "returns": [
+        {
+          "value": "*/ ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004028 - local_28,iVar1)",
+          "conditional": false
+        },
+        {
+          "value": "0",
+          "conditional": false
+        }
+      ],
+      "decompiled_c": "\nundefined8 entry(void)\n\n{\n  int iVar1;\n  ulong local_1680;\n  undefined1 auStack_1678 [3084];\n  undefined4 local_a6c;\n  undefined1 auStack_a68 [64];\n  undefined1 auStack_a28 [480];\n  undefined1 auStack_848 [2080];\n  long local_28;\n  \n  (*(code *)PTR____chkstk_darwin_100004000)();\n  local_28 \u003d *(long *)PTR____stack_chk_guard_100004028;\n  local_a6c \u003d 0;\n  _memset(auStack_a68,0,0x40);\n  _bzero(auStack_1678,0xc08);\n  _init_slots();\n  _load_defaults(auStack_a28,0x10);\n  _demo_commands(auStack_a28,0x10,auStack_1678);\n  _insecure_note_copy(auStack_a68,\"operator note: rotate export and rewrap old secrets\");\n  _log_line(auStack_1678,auStack_a68);\n  for (local_1680 \u003d 0; local_1680 \u003c 4; local_1680 \u003d local_1680 + 1) {\n    _mutate_slot(auStack_a28 + local_1680 * 0xa0,local_1680 + 1);\n    _dump_slot(auStack_a28 + local_1680 * 0xa0);\n  }\n  _fill_audit_log(local_1680 - 4,auStack_1678,auStack_a28,0x10);\n  _write_report(*(undefined8 *)PTR____stdoutp_100004030,auStack_1678);\n  _zero_slot(auStack_848);\n  _time((time_t *)0x0);\n  iVar1 \u003d _printf(\"timestamp\u003d%ld\\n\");\n  if (*(long *)PTR____stack_chk_guard_100004028 - local_28 !\u003d 0) {\n                    /* WARNING: Subroutine does not return */\n    ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004028 - local_28,iVar1);\n  }\n  return 0;\n}\n\n"
+    }
+  ],
+  "symbols": [
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x1000004b0"
+    },
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x1000004b0"
+    },
+    {
+      "name": "_memset",
+      "kind": "function",
+      "addr": "0x1000012a0"
+    },
+    {
+      "name": "_bzero",
+      "kind": "function",
+      "addr": "0x100001288"
+    },
+    {
+      "name": "_init_slots",
+      "kind": "function",
+      "addr": "0x100000654"
+    },
+    {
+      "name": "_load_defaults",
+      "kind": "function",
+      "addr": "0x10000075c"
+    },
+    {
+      "name": "_demo_commands",
+      "kind": "function",
+      "addr": "0x100000828"
+    },
+    {
+      "name": "_insecure_note_copy",
+      "kind": "function",
+      "addr": "0x1000009e8"
+    },
+    {
+      "name": "_log_line",
+      "kind": "function",
+      "addr": "0x100000a5c"
+    },
+    {
+      "name": "_mutate_slot",
+      "kind": "function",
+      "addr": "0x100000ad8"
+    },
+    {
+      "name": "_dump_slot",
+      "kind": "function",
+      "addr": "0x100000b68"
+    },
+    {
+      "name": "_fill_audit_log",
+      "kind": "function",
+      "addr": "0x100000c58"
+    },
+    {
+      "name": "_write_report",
+      "kind": "function",
+      "addr": "0x100000d3c"
+    },
+    {
+      "name": "_zero_slot",
+      "kind": "function",
+      "addr": "0x100000db4"
+    },
+    {
+      "name": "_time",
+      "kind": "function",
+      "addr": "0x1000012e8"
+    },
+    {
+      "name": "_printf",
+      "kind": "function",
+      "addr": "0x1000012ac"
+    },
+    {
+      "name": "___stack_chk_fail",
+      "kind": "function",
+      "addr": "0x100001270"
+    }
+  ]
+}

@@ -1,0 +1,510 @@
+{
+  "meta": {
+    "binary": "25_300_400",
+    "arch": "AARCH64_64",
+    "base_addr": "0x100000000",
+    "hash": "sha256:4fdd7e4f8f7f137ef2a67a38db756251e0decc4750b13a069a6ca4564910225b",
+    "ghidra_version": "12.0.4"
+  },
+  "functions": [
+    {
+      "name": "entry",
+      "addr": "0x1000004b0",
+      "exists": true,
+      "signature": {
+        "ret": "undefined",
+        "params": []
+      },
+      "locals": [
+        {
+          "name": "auStack_c8",
+          "type": "undefined1 [160]"
+        },
+        {
+          "name": "local_28",
+          "type": "long"
+        }
+      ],
+      "calls": [
+        {
+          "name": "entry",
+          "addr": "0x1000004b0"
+        },
+        {
+          "name": "_blob_init",
+          "addr": "0x100000a8c"
+        },
+        {
+          "name": "_parse_words",
+          "addr": "0x100000af4"
+        },
+        {
+          "name": "_dup_text",
+          "addr": "0x100000bbc"
+        },
+        {
+          "name": "_printf",
+          "addr": "0x100002688"
+        },
+        {
+          "name": "_free",
+          "addr": "0x100002670"
+        },
+        {
+          "name": "_probe_0",
+          "addr": "0x100000c30"
+        },
+        {
+          "name": "_probe_1",
+          "addr": "0x100000cf8"
+        },
+        {
+          "name": "_probe_2",
+          "addr": "0x100000dc0"
+        },
+        {
+          "name": "_probe_3",
+          "addr": "0x100000e88"
+        },
+        {
+          "name": "_probe_4",
+          "addr": "0x100000f50"
+        },
+        {
+          "name": "_probe_5",
+          "addr": "0x100001018"
+        },
+        {
+          "name": "_probe_6",
+          "addr": "0x1000010e0"
+        },
+        {
+          "name": "_probe_7",
+          "addr": "0x1000011a8"
+        },
+        {
+          "name": "_probe_8",
+          "addr": "0x100001270"
+        },
+        {
+          "name": "_probe_9",
+          "addr": "0x100001338"
+        },
+        {
+          "name": "_probe_10",
+          "addr": "0x100001400"
+        },
+        {
+          "name": "_probe_11",
+          "addr": "0x1000014c8"
+        },
+        {
+          "name": "_probe_12",
+          "addr": "0x100001590"
+        },
+        {
+          "name": "_probe_13",
+          "addr": "0x100001658"
+        },
+        {
+          "name": "_probe_14",
+          "addr": "0x100001720"
+        },
+        {
+          "name": "_probe_15",
+          "addr": "0x1000017e8"
+        },
+        {
+          "name": "_probe_16",
+          "addr": "0x1000018b0"
+        },
+        {
+          "name": "_probe_17",
+          "addr": "0x100001978"
+        },
+        {
+          "name": "_probe_18",
+          "addr": "0x100001a40"
+        },
+        {
+          "name": "_probe_19",
+          "addr": "0x100001b08"
+        },
+        {
+          "name": "_probe_20",
+          "addr": "0x100001bd0"
+        },
+        {
+          "name": "_probe_21",
+          "addr": "0x100001c98"
+        },
+        {
+          "name": "_probe_22",
+          "addr": "0x100001d60"
+        },
+        {
+          "name": "_probe_23",
+          "addr": "0x100001e28"
+        },
+        {
+          "name": "_probe_24",
+          "addr": "0x100001ef0"
+        },
+        {
+          "name": "_probe_25",
+          "addr": "0x100001fb8"
+        },
+        {
+          "name": "_probe_26",
+          "addr": "0x100002080"
+        },
+        {
+          "name": "_probe_27",
+          "addr": "0x100002148"
+        },
+        {
+          "name": "_probe_28",
+          "addr": "0x100002210"
+        },
+        {
+          "name": "_probe_29",
+          "addr": "0x1000022d8"
+        },
+        {
+          "name": "_maybe_overread",
+          "addr": "0x1000023a0"
+        },
+        {
+          "name": "_hexdump",
+          "addr": "0x10000242c"
+        },
+        {
+          "name": "___stack_chk_fail",
+          "addr": "0x100002658"
+        }
+      ],
+      "strings_used": [
+        "key-42",
+        "derive mask expand mix xor rotate compare",
+        "copy\u003d%s\\n",
+        "phase0",
+        "probe0\u003d%08x\\n",
+        "phase1",
+        "probe1\u003d%08x\\n",
+        "phase2",
+        "probe2\u003d%08x\\n",
+        "phase3",
+        "probe3\u003d%08x\\n",
+        "phase4",
+        "probe4\u003d%08x\\n",
+        "phase5",
+        "probe5\u003d%08x\\n",
+        "phase6",
+        "probe6\u003d%08x\\n",
+        "phase7",
+        "probe7\u003d%08x\\n",
+        "phase8",
+        "probe8\u003d%08x\\n",
+        "phase9",
+        "probe9\u003d%08x\\n",
+        "phase10",
+        "probe10\u003d%08x\\n",
+        "phase11",
+        "probe11\u003d%08x\\n",
+        "phase12",
+        "probe12\u003d%08x\\n",
+        "phase13",
+        "probe13\u003d%08x\\n",
+        "phase14",
+        "probe14\u003d%08x\\n",
+        "phase15",
+        "probe15\u003d%08x\\n",
+        "phase16",
+        "probe16\u003d%08x\\n",
+        "phase17",
+        "probe17\u003d%08x\\n",
+        "phase18",
+        "probe18\u003d%08x\\n",
+        "phase19",
+        "probe19\u003d%08x\\n",
+        "phase20",
+        "probe20\u003d%08x\\n",
+        "phase21",
+        "probe21\u003d%08x\\n",
+        "phase22",
+        "probe22\u003d%08x\\n",
+        "phase23",
+        "probe23\u003d%08x\\n",
+        "phase24",
+        "probe24\u003d%08x\\n",
+        "phase25",
+        "probe25\u003d%08x\\n",
+        "phase26",
+        "probe26\u003d%08x\\n",
+        "phase27",
+        "probe27\u003d%08x\\n",
+        "phase28",
+        "probe28\u003d%08x\\n",
+        "phase29",
+        "probe29\u003d%08x\\n"
+      ],
+      "constants_used": [
+        {
+          "hex": "0xa0",
+          "decimal": 160
+        },
+        {
+          "hex": "0x2",
+          "decimal": 2
+        },
+        {
+          "hex": "0x2a",
+          "decimal": 42
+        },
+        {
+          "hex": "0x8",
+          "decimal": 8
+        },
+        {
+          "hex": "0x3",
+          "decimal": 3
+        },
+        {
+          "hex": "0x10",
+          "decimal": 16
+        },
+        {
+          "hex": "0x0",
+          "decimal": 0
+        }
+      ],
+      "globals_used": [
+        "PTR____stack_chk_guard_100004018",
+        "___stack_chk_guard",
+        "LAB_1000004fc",
+        "LAB_1000004ec",
+        "LAB_10000050c",
+        "LAB_100000538",
+        "LAB_100000528",
+        "LAB_100000548",
+        "LAB_100000594",
+        "LAB_100000570",
+        "LAB_100000a78",
+        "LAB_100000a74"
+      ],
+      "returns": [
+        {
+          "value": "*/ ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004018 - local_28)",
+          "conditional": false
+        },
+        {
+          "value": "0",
+          "conditional": false
+        }
+      ],
+      "decompiled_c": "\nundefined8 entry(int param_1,long param_2)\n\n{\n  void *pvVar1;\n  char *local_f0;\n  char *local_e8;\n  undefined1 auStack_c8 [160];\n  long local_28;\n  \n  local_28 \u003d *(long *)PTR____stack_chk_guard_100004018;\n  if (param_1 \u003c 2) {\n    local_e8 \u003d \"key-42\";\n  }\n  else {\n    local_e8 \u003d *(char **)(param_2 + 8);\n  }\n  _blob_init(auStack_c8,local_e8);\n  if (param_1 \u003c 3) {\n    local_f0 \u003d \"derive mask expand mix xor rotate compare\";\n  }\n  else {\n    local_f0 \u003d *(char **)(param_2 + 0x10);\n  }\n  _parse_words(local_f0);\n  pvVar1 \u003d (void *)_dup_text(auStack_c8);\n  if (pvVar1 !\u003d (void *)0x0) {\n    _printf(\"copy\u003d%s\\n\");\n    _free(pvVar1);\n  }\n  _probe_0(auStack_c8,\"phase0\");\n  _printf(\"probe0\u003d%08x\\n\");\n  _probe_1(auStack_c8,\"phase1\");\n  _printf(\"probe1\u003d%08x\\n\");\n  _probe_2(auStack_c8,\"phase2\");\n  _printf(\"probe2\u003d%08x\\n\");\n  _probe_3(auStack_c8,\"phase3\");\n  _printf(\"probe3\u003d%08x\\n\");\n  _probe_4(auStack_c8,\"phase4\");\n  _printf(\"probe4\u003d%08x\\n\");\n  _probe_5(auStack_c8,\"phase5\");\n  _printf(\"probe5\u003d%08x\\n\");\n  _probe_6(auStack_c8,\"phase6\");\n  _printf(\"probe6\u003d%08x\\n\");\n  _probe_7(auStack_c8,\"phase7\");\n  _printf(\"probe7\u003d%08x\\n\");\n  _probe_8(auStack_c8,\"phase8\");\n  _printf(\"probe8\u003d%08x\\n\");\n  _probe_9(auStack_c8,\"phase9\");\n  _printf(\"probe9\u003d%08x\\n\");\n  _probe_10(auStack_c8,\"phase10\");\n  _printf(\"probe10\u003d%08x\\n\");\n  _probe_11(auStack_c8,\"phase11\");\n  _printf(\"probe11\u003d%08x\\n\");\n  _probe_12(auStack_c8,\"phase12\");\n  _printf(\"probe12\u003d%08x\\n\");\n  _probe_13(auStack_c8,\"phase13\");\n  _printf(\"probe13\u003d%08x\\n\");\n  _probe_14(auStack_c8,\"phase14\");\n  _printf(\"probe14\u003d%08x\\n\");\n  _probe_15(auStack_c8,\"phase15\");\n  _printf(\"probe15\u003d%08x\\n\");\n  _probe_16(auStack_c8,\"phase16\");\n  _printf(\"probe16\u003d%08x\\n\");\n  _probe_17(auStack_c8,\"phase17\");\n  _printf(\"probe17\u003d%08x\\n\");\n  _probe_18(auStack_c8,\"phase18\");\n  _printf(\"probe18\u003d%08x\\n\");\n  _probe_19(auStack_c8,\"phase19\");\n  _printf(\"probe19\u003d%08x\\n\");\n  _probe_20(auStack_c8,\"phase20\");\n  _printf(\"probe20\u003d%08x\\n\");\n  _probe_21(auStack_c8,\"phase21\");\n  _printf(\"probe21\u003d%08x\\n\");\n  _probe_22(auStack_c8,\"phase22\");\n  _printf(\"probe22\u003d%08x\\n\");\n  _probe_23(auStack_c8,\"phase23\");\n  _printf(\"probe23\u003d%08x\\n\");\n  _probe_24(auStack_c8,\"phase24\");\n  _printf(\"probe24\u003d%08x\\n\");\n  _probe_25(auStack_c8,\"phase25\");\n  _printf(\"probe25\u003d%08x\\n\");\n  _probe_26(auStack_c8,\"phase26\");\n  _printf(\"probe26\u003d%08x\\n\");\n  _probe_27(auStack_c8,\"phase27\");\n  _printf(\"probe27\u003d%08x\\n\");\n  _probe_28(auStack_c8,\"phase28\");\n  _printf(\"probe28\u003d%08x\\n\");\n  _probe_29(auStack_c8,\"phase29\");\n  _printf(\"probe29\u003d%08x\\n\");\n  _maybe_overread(auStack_c8);\n  _hexdump(auStack_c8);\n  if (*(long *)PTR____stack_chk_guard_100004018 - local_28 !\u003d 0) {\n                    /* WARNING: Subroutine does not return */\n    ___stack_chk_fail(*(long *)PTR____stack_chk_guard_100004018 - local_28);\n  }\n  return 0;\n}\n\n"
+    }
+  ],
+  "symbols": [
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x1000004b0"
+    },
+    {
+      "name": "entry",
+      "kind": "function",
+      "addr": "0x1000004b0"
+    },
+    {
+      "name": "_blob_init",
+      "kind": "function",
+      "addr": "0x100000a8c"
+    },
+    {
+      "name": "_parse_words",
+      "kind": "function",
+      "addr": "0x100000af4"
+    },
+    {
+      "name": "_dup_text",
+      "kind": "function",
+      "addr": "0x100000bbc"
+    },
+    {
+      "name": "_printf",
+      "kind": "function",
+      "addr": "0x100002688"
+    },
+    {
+      "name": "_free",
+      "kind": "function",
+      "addr": "0x100002670"
+    },
+    {
+      "name": "_probe_0",
+      "kind": "function",
+      "addr": "0x100000c30"
+    },
+    {
+      "name": "_probe_1",
+      "kind": "function",
+      "addr": "0x100000cf8"
+    },
+    {
+      "name": "_probe_2",
+      "kind": "function",
+      "addr": "0x100000dc0"
+    },
+    {
+      "name": "_probe_3",
+      "kind": "function",
+      "addr": "0x100000e88"
+    },
+    {
+      "name": "_probe_4",
+      "kind": "function",
+      "addr": "0x100000f50"
+    },
+    {
+      "name": "_probe_5",
+      "kind": "function",
+      "addr": "0x100001018"
+    },
+    {
+      "name": "_probe_6",
+      "kind": "function",
+      "addr": "0x1000010e0"
+    },
+    {
+      "name": "_probe_7",
+      "kind": "function",
+      "addr": "0x1000011a8"
+    },
+    {
+      "name": "_probe_8",
+      "kind": "function",
+      "addr": "0x100001270"
+    },
+    {
+      "name": "_probe_9",
+      "kind": "function",
+      "addr": "0x100001338"
+    },
+    {
+      "name": "_probe_10",
+      "kind": "function",
+      "addr": "0x100001400"
+    },
+    {
+      "name": "_probe_11",
+      "kind": "function",
+      "addr": "0x1000014c8"
+    },
+    {
+      "name": "_probe_12",
+      "kind": "function",
+      "addr": "0x100001590"
+    },
+    {
+      "name": "_probe_13",
+      "kind": "function",
+      "addr": "0x100001658"
+    },
+    {
+      "name": "_probe_14",
+      "kind": "function",
+      "addr": "0x100001720"
+    },
+    {
+      "name": "_probe_15",
+      "kind": "function",
+      "addr": "0x1000017e8"
+    },
+    {
+      "name": "_probe_16",
+      "kind": "function",
+      "addr": "0x1000018b0"
+    },
+    {
+      "name": "_probe_17",
+      "kind": "function",
+      "addr": "0x100001978"
+    },
+    {
+      "name": "_probe_18",
+      "kind": "function",
+      "addr": "0x100001a40"
+    },
+    {
+      "name": "_probe_19",
+      "kind": "function",
+      "addr": "0x100001b08"
+    },
+    {
+      "name": "_probe_20",
+      "kind": "function",
+      "addr": "0x100001bd0"
+    },
+    {
+      "name": "_probe_21",
+      "kind": "function",
+      "addr": "0x100001c98"
+    },
+    {
+      "name": "_probe_22",
+      "kind": "function",
+      "addr": "0x100001d60"
+    },
+    {
+      "name": "_probe_23",
+      "kind": "function",
+      "addr": "0x100001e28"
+    },
+    {
+      "name": "_probe_24",
+      "kind": "function",
+      "addr": "0x100001ef0"
+    },
+    {
+      "name": "_probe_25",
+      "kind": "function",
+      "addr": "0x100001fb8"
+    },
+    {
+      "name": "_probe_26",
+      "kind": "function",
+      "addr": "0x100002080"
+    },
+    {
+      "name": "_probe_27",
+      "kind": "function",
+      "addr": "0x100002148"
+    },
+    {
+      "name": "_probe_28",
+      "kind": "function",
+      "addr": "0x100002210"
+    },
+    {
+      "name": "_probe_29",
+      "kind": "function",
+      "addr": "0x1000022d8"
+    },
+    {
+      "name": "_maybe_overread",
+      "kind": "function",
+      "addr": "0x1000023a0"
+    },
+    {
+      "name": "_hexdump",
+      "kind": "function",
+      "addr": "0x10000242c"
+    },
+    {
+      "name": "___stack_chk_fail",
+      "kind": "function",
+      "addr": "0x100002658"
+    }
+  ]
+}
