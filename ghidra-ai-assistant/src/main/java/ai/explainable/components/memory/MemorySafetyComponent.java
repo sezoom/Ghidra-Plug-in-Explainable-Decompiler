@@ -4,10 +4,23 @@ import ai.explainable.backend.BackendClient;
 import ai.explainable.components.AnalysisComponent;
 import ai.explainable.plugin.AnalysisContext;
 import ai.explainable.plugin.AnalysisView;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class MemorySafetyComponent
     implements AnalysisComponent<MemorySafetyResult>
 {
+
+    private static final List<String> TABLE_COLUMNS = Arrays.asList(
+        "ID",
+        "Severity",
+        "Category",
+        "Location",
+        "Description",
+        "Suggestion"
+    );
 
     @Override
     public String getId() {
@@ -45,50 +58,29 @@ public class MemorySafetyComponent
     ) {
         view.showCodePreview(
             context.getDecompiledCode(),
-            java.util.Collections.emptyList()
+            Collections.emptyList()
         );
-        view.showResultText(format(result));
+        view.showResultTable(
+            buildSummary(result),
+            TABLE_COLUMNS,
+            buildRows(result)
+        );
         view.setApplyEnabled(false);
     }
 
-    private String format(MemorySafetyResult safetyResult) {
+    private String buildSummary(MemorySafetyResult safetyResult) {
         if (safetyResult == null) {
             return "No memory safety result returned.";
         }
         StringBuilder sb = new StringBuilder();
-        sb
-            .append("Overall Assessment:\n")
-            .append(
-                AnalysisContext.safeTrim(safetyResult.getOverallAssessment())
-            )
-            .append("\n\nIssues:\n");
-        if (
-            safetyResult.getIssues() == null ||
-            safetyResult.getIssues().isEmpty()
-        ) {
-            sb.append("No memory safety issues detected.");
-            return sb.toString();
-        }
-        for (MemorySafetyIssue issue : safetyResult.getIssues()) {
-            sb
-                .append("[")
-                .append(
-                    issue.getSeverity() != null
-                        ? issue.getSeverity().toUpperCase()
-                        : "UNKNOWN"
-                )
-                .append("] ")
-                .append(issue.getIssueType())
-                .append(" @ ")
-                .append(issue.getLocation())
-                .append("\n")
-                .append(issue.getDescription())
-                .append("\nSuggestion: ")
-                .append(issue.getSuggestion())
-                .append("\n\n");
-        }
+        String summary = AnalysisContext.safeTrim(
+            safetyResult.getOverallAssessment()
+        );
+        sb.append(
+            summary.isEmpty() ? "No overall assessment provided." : summary
+        );
 
-        // ── Append control layer output if present ──────────────────────
+        // ── Append control layer output if present ───────────────────────
         if (
             safetyResult.getControlOutput() != null &&
             !safetyResult.getControlOutput().isBlank()
@@ -98,8 +90,41 @@ public class MemorySafetyComponent
                 .append(safetyResult.getControlOutput())
                 .append("\n");
         }
-        // ────────────────────────────────────────────────────────────────
+        // ─────────────────────────────────────────────────────────────────
 
         return sb.toString();
+    }
+
+    private List<List<String>> buildRows(MemorySafetyResult safetyResult) {
+        if (
+            safetyResult == null ||
+            safetyResult.getIssues() == null ||
+            safetyResult.getIssues().isEmpty()
+        ) {
+            return Collections.emptyList();
+        }
+
+        List<List<String>> rows = new ArrayList<>();
+        int index = 1;
+        for (MemorySafetyIssue issue : safetyResult.getIssues()) {
+            String severity = AnalysisContext.toTitleCaseLabel(issue.getSeverity());
+            String category = AnalysisContext.toTitleCaseLabel(issue.getIssueType());
+            String location = AnalysisContext.safeTrim(issue.getLocation());
+            String description = AnalysisContext.safeTrim(issue.getDescription());
+            String suggestion = AnalysisContext.safeTrim(issue.getSuggestion());
+
+            rows.add(
+                Arrays.asList(
+                    "M" + index,
+                    severity,
+                    category,
+                    location,
+                    description,
+                    suggestion
+                )
+            );
+            index++;
+        }
+        return rows;
     }
 }
