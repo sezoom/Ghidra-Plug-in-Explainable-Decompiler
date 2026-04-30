@@ -7,4 +7,5 @@ ghidra-ai-assistant/.settings/
 ghidra-ai-assistant/build/
 ghidra-ai-assistant/dist/
 *.env
-*/__pycache__/
+__pycache__/
+.DS_Store
