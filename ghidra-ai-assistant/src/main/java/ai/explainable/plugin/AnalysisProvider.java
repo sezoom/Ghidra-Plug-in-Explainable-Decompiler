@@ -224,7 +224,7 @@ public class AnalysisProvider
         resultArea.setLineWrap(true);
         resultArea.setWrapStyleWord(true);
 
-        tableSummaryArea = new JTextArea(4, 60);
+        tableSummaryArea = new JTextArea(12, 60);
         tableSummaryArea.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
         tableSummaryArea.setEditable(false);
         tableSummaryArea.setLineWrap(true);
@@ -308,7 +308,7 @@ public class AnalysisProvider
                 );
                 rowHeight = Math.max(
                     rowHeight,
-                    component.getPreferredSize().height + 6
+                    component.getPreferredSize().height / 4
                 );
             }
             resultTable.setRowHeight(row, rowHeight);
