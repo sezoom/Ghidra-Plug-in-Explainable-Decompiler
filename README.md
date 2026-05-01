@@ -20,7 +20,9 @@ AI Explainable-Decompiler is a modular Ghidra plugin and backend system for AI-a
 
 
 ![k2think.png](./images/clib1.gif)
-[Watch the demo video](./images/clib1.mp4)
+
+[Watch the demo video](https://youtu.be/3Yuh1n8GwvI)
+
 ---
 
 ## Architecture
